@@ -1,0 +1,16 @@
+{
+  "nutripal": "NutriPal",
+  "byContinuingYouAgreeToOur": "By continuing you agree to our",
+  "privacyPolicy": "Privacy Policy",
+  "next": "Next",
+  "healthyEatingMadeEasy": "Healthy eating made easy.",
+  "firstWhatCanWeCallYou": "First, what can we call you?",
+  "wedLikeToGetToKnowYou": "We'd like to get to know you.",
+  "preferredFirstName": "Preferred first name",
+  "selectAllThatApply": "Select all that apply.",
+  "loginFailed": "Login Failed",
+  "weCouldntSignYouIn": "We couldn’t sign you in. Please check your internet connection or try again.",
+  "dashboard": "Dashboard",
+  "report": "Report",
+  "userDetails": "User Details"
+}
