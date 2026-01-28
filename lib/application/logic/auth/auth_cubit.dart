@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/repository/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -8,6 +9,8 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepository authRepository;
 
   AuthCubit({required this.authRepository}) : super(AuthLoading());
+
+  ProfileEntity? entity;
 
   /// Gets the current user, if exists.
   void getUser() async {

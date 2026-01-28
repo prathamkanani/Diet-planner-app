@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../application/logic/auth/auth_state.dart';
-import '../../../domain/entity/profile_entity.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../onboarding/onboarding_page.dart';
@@ -17,7 +16,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late final AuthCubit cubit;
-  late final ProfileEntity entity;
 
   @override
   void initState() {
@@ -34,8 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   /// Navigating to the User Profile page
   void _listenToAuthState(BuildContext context, final AuthState state) {
     if (state is AuthAuthenticated) {
-      entity = state.profile;
-      locator.registerSingleton(entity);
+      cubit.entity = state.profile;
       context.pushAndRemoveUntil(const OnboardingPage());
     }
   }

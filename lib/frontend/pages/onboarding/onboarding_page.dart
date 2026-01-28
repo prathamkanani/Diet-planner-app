@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../domain/entity/dialog_entity.dart';
 import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/entity/gender_enum.dart';
@@ -37,17 +38,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int currentPage = 0;
   int? selectedGender;
 
-  // TODO: how to register the updated entity.
-  late ProfileEntity entity = locator.get<ProfileEntity>();
-  late ProfileEntity updatedEntity = ProfileModel.fromEntityToUpdate(
-    entity: entity,
-    age: ageController.text,
-    height: heightController.text,
-    weight: weightController.text,
-    gender: (selectedGender == 1)
-        ? Gender.male.toString()
-        : Gender.female.toString(),
-  );
+  /// Creates a new instance of cubit so stored entity is null.
+  AuthCubit cubit = locator.get<AuthCubit>();
+  late ProfileEntity entity = cubit.entity!;
 
   @override
   void initState() {
@@ -94,6 +87,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
         }).toList()[page];
       },
     );
+  }
+
+  void toStoreUpdatedProfile(ProfileEntity entity) {
+    ProfileEntity updatedEntity = ProfileModel.fromEntityToUpdate(
+      entity: entity,
+      age: ageController.text,
+      height: heightController.text,
+      weight: weightController.text,
+      gender: (selectedGender == 1)
+          ? Gender.male.toString()
+          : Gender.female.toString(),
+    );
+    cubit.entity = updatedEntity;
   }
 
   @override
@@ -166,7 +172,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
               dialogBuilder(context, currentPage);
             } else {
               currentPage == 5
-                  ? context.push(const HomePage())
+                  ? {
+                toStoreUpdatedProfile(entity),
+                context.push(const HomePage())
+              }
                   : _goToNextPage();
             }
           },

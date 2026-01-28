@@ -62,7 +62,7 @@ class CheckCircleContainer extends StatelessWidget {
                   ? Icon(Icons.check_circle, color: colorScheme.primary)
                   : Icon(
                       Icons.circle_outlined,
-                      color: colorScheme.onPrimaryContainer,
+                      color: colorScheme.primaryContainer,
                     ),
             ],
           ),

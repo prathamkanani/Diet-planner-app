@@ -1,5 +1,6 @@
 import 'item.dart';
 
+/// Health Habits Enum that contains all the types of health habits.
 enum HealthHabitsEnum {
   eatMindfully("Eat Mindfully"),
   eatABalancedDiet("Eat A Balanced Diet"),
@@ -10,6 +11,7 @@ enum HealthHabitsEnum {
   const HealthHabitsEnum(this.name);
 }
 
+/// Health Habits Entity
 class HealthHabitsEntity {
   final int id;
   final HealthHabitsEnum healthHabit;

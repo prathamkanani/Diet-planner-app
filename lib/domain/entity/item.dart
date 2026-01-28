@@ -1,5 +1,4 @@
-import 'meal_planning_entity.dart';
-
+/// A selectable item to be shown in the UI. (shown in selectable chip in the UI).
 class Item {
   final int id;
   final String title;
@@ -12,8 +11,4 @@ class Item {
     this.subtitle = '',
     this.isSubtitle = false,
   });
-
-  factory Item.fromMealPlanning(MealPlanningEntity meal) {
-    return Item(id: meal.id, title: meal.mealPlanning.name);
-  }
 }
