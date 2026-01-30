@@ -9,9 +9,9 @@ abstract interface class ProfileSource {
 
   Future<void> editProfile(ProfileEntity userProfile);
 
-  Future<ProfileEntity> createProfile(ProfileEntity userProfile);
+  Future<ProfileEntity> createProfile(String userId);
 
-  Future<ProfileEntity> getUserProfile(ProfileEntity userProfile);
+  Future<ProfileEntity> getUserProfile(String userId);
 }
 
 class ProfileRemoteDataSource implements ProfileSource {
@@ -32,11 +32,11 @@ class ProfileRemoteDataSource implements ProfileSource {
 
   /// Gets the profile from the profile table.
   @override
-  Future<ProfileEntity> getUserProfile(ProfileEntity profile) async {
+  Future<ProfileEntity> getUserProfile(String userId) async {
     final response = await supabase
         .from('profiles')
         .select()
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .single();
     return ProfileModel.fromJson(response);
   }
@@ -51,18 +51,18 @@ class ProfileRemoteDataSource implements ProfileSource {
 
   /// Creates a user profile for the very first time and gets that profile.
   @override
-  Future<ProfileEntity> createProfile(ProfileEntity profile) async {
+  Future<ProfileEntity> createProfile(String userId) async {
     final int res = await supabase
         .from('profiles')
         .count(CountOption.exact)
-        .eq('user_id', user.id);
+        .eq('user_id', userId);
     if (res > 0) {
-      return getUserProfile(profile);
+      return getUserProfile(userId);
     } else {
       String seed = const Uuid().v4();
       final response = await supabase
           .from('profiles')
-          .insert(ProfileModel.fromSupabaseUserAndEntity(user, profile, seed))
+          .insert(ProfileModel.fromAvatar(userId: userId, avatar: seed))
           .select()
           .single();
       return ProfileModel.fromJson(response);

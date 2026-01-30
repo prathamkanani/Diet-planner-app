@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../application/logic/auth/auth_state.dart';
+import '../../../application/service/app_data_service.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../onboarding/onboarding_page.dart';
@@ -32,16 +33,17 @@ class _LoginPageState extends State<LoginPage> {
   /// Navigating to the User Profile page
   void _listenToAuthState(BuildContext context, final AuthState state) {
     if (state is AuthAuthenticated) {
-      cubit.entity = state.profile;
+      final AppDataService appDataService = locator.get<AppDataService>();
+      appDataService.userId = state.authEntity.userId;
       context.pushAndRemoveUntil(const OnboardingPage());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = ColorScheme.of(context);
+    final ColorScheme cs = context.cs;
     return Scaffold(
-      backgroundColor: colorScheme.primary,
+      backgroundColor: cs.primary,
       body: BlocConsumer<AuthCubit, AuthState>(
         bloc: cubit,
         listener: _listenToAuthState,

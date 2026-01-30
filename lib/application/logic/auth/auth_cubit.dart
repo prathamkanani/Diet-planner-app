@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/repository/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -10,14 +9,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.authRepository}) : super(AuthLoading());
 
-  ProfileEntity? entity;
-
   /// Gets the current user, if exists.
   void getUser() async {
     try {
-      final user = authRepository.getUser();
-      if (user != null) {
-        return emit(AuthAuthenticated(user));
+      final authUser = authRepository.getUser();
+      if (authUser != null) {
+        return emit(AuthAuthenticated(authUser));
       }
       return emit(AuthUnauthenticated());
     } catch (e) {
@@ -28,9 +25,9 @@ class AuthCubit extends Cubit<AuthState> {
   /// Lets the user sign in.
   Future<void> signIn() async {
     try {
-      final userProfile = await authRepository.signIn();
-      if (userProfile != null) {
-        emit(AuthAuthenticated(userProfile));
+      final authUser = await authRepository.signIn();
+      if (authUser != null) {
+        emit(AuthAuthenticated(authUser));
       }
     } catch (e) {
       emit(AuthAuthenticationFailed(message: e.toString()));

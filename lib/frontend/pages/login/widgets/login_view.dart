@@ -26,14 +26,14 @@ class LoginView extends StatelessWidget {
             const Spacer(),
             Image.asset(
               AppAssets.appLogo,
-              height: 100,
-              width: 100,
+              height: 200,
+              width: 200,
               fit: .cover,
             ),
-            AppSpacing.h08,
+            const Spacer(),
             Text(
               S.of(context).nutripal,
-              style: textTheme.titleLarge?.copyWith(
+              style: textTheme.displaySmall?.copyWith(
                 color: colorScheme.onPrimary,
                 fontWeight: .bold,
               ),
@@ -49,6 +49,7 @@ class LoginView extends StatelessWidget {
             AppSpacing.h24,
             Text(
               'Sign in to securely save your data, personalize your experience, and track your progress',
+              textAlign: .center,
               style: textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onPrimary,
                 fontWeight: FontWeight.w600,
@@ -72,7 +73,7 @@ class LoginView extends StatelessWidget {
               style: textTheme.titleSmall?.copyWith(
                 color: colorScheme.onPrimary,
                 decoration: TextDecoration.underline,
-                decorationColor: colorScheme.onPrimary
+                decorationColor: colorScheme.onPrimary,
               ),
             ),
           ],

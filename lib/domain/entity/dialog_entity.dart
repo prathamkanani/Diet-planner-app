@@ -1,12 +1,12 @@
 class DialogEntity {
   final int page;
   final String title;
-  final String content;
+  final String? content;
 
   const DialogEntity({
     required this.page,
     required this.title,
-    required this.content,
+    this.content,
   });
 }
 
@@ -27,5 +27,13 @@ final List<DialogEntity> dialogs = [
     title: "What's your activity level?",
     content:
         "Please enter your best guess. We'll use this to personalize your plan",
+  ),
+  const DialogEntity(
+    page: 4,
+    title: "Please enter all the fields.",
+  ),
+  const DialogEntity(
+    page: 5,
+    title: "Please enter all the fields.",
   ),
 ];

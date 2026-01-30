@@ -145,6 +145,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: b9d46faecab38fc8cc286f80bc4d61a3bb5d4ac49e51ed877b4d6706efe57b25
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.1"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "7586e476d70caecaf1686d21eee7247ea43ef5c345eab9e0cc3583ff13378d78"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   ed25519_edwards:
     dependency: transitive
     description:
@@ -153,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: "3e0141505477fd8ad55d6eb4e7776d3fe8430be8e497ccb1521370c3f21a3e2b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.8"
   fake_async:
     dependency: transitive
     description:
@@ -185,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      sha256: "7ca9a40f4eb85949190e54087be8b4d6ac09dc4c54238d782a34cf1f7c011de9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -198,6 +230,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.1"
+  flutter_gemini:
+    dependency: "direct main"
+    description:
+      name: flutter_gemini
+      sha256: b7264b1d19acc4b1a5628a0e26c0976aa1fb948f0d3243bc3510ff51e09476b7
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -598,7 +638,7 @@ packages:
     source: hosted
     version: "0.28.0"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences
       sha256: "2939ae520c9024cb197fc20dee269cd8cdbf564c8b5746374ec6cacdc5169e64"

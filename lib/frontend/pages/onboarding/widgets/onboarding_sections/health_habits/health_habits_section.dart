@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/health_habits_entity.dart';
-import '../../../../../../domain/entity/item.dart';
 import '../../../../../config/app_spacing.dart';
 import 'health_habit_chip.dart';
 
@@ -11,21 +12,25 @@ import 'health_habit_chip.dart';
 /// eat more whole foods, eat more fibre, eat more vegetables,
 /// eat more fruit, something else, I'm not sure
 class HealthHabitsSection extends StatefulWidget {
-  const HealthHabitsSection({super.key});
+  final void Function(Set<HealthHabits>) selectedHabit;
+
+  const HealthHabitsSection({super.key, required this.selectedHabit});
 
   @override
   State<HealthHabitsSection> createState() => _HealthHabitsSectionState();
 }
 
 class _HealthHabitsSectionState extends State<HealthHabitsSection> {
+  late final OnboardingCubit cubit = context.read<OnboardingCubit>();
+  late final Set<HealthHabits> selectedHabits = cubit.healthHabits;
 
-  void _handleTap(Item item) {
+  void _handleTap(HealthHabits habit) {
     setState(() {
-      if (selectedIds.contains(item.id)) {
-        selectedIds.remove(item.id);
-      } else {
-        selectedIds.add(item.id);
+      if (selectedHabits.contains(habit)) {
+        selectedHabits.remove(habit);
+        return;
       }
+      selectedHabits.add(habit);
     });
   }
 
@@ -46,13 +51,14 @@ class _HealthHabitsSectionState extends State<HealthHabitsSection> {
         Flexible(
           child: ListView(
             padding: EdgeInsets.zero,
-            children: healthHabits.map((hHabit) {
-              final bool isSelected = selectedIds.contains(hHabit.id);
+            children: HealthHabits.values.map((final HealthHabits habit) {
+              final bool isSelected = selectedHabits.contains(habit);
+              isSelected? widget.selectedHabit(selectedHabits) : null;
               return Align(
                 alignment: .centerLeft,
                 child: HealthHabitChip(
+                  habit: habit,
                   isSelected: isSelected,
-                  item: healthToItem(hHabit),
                   onTap: _handleTap,
                 ),
               );

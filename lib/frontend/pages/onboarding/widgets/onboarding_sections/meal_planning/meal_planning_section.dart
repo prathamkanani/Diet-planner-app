@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/entity/item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/meal_planning_entity.dart';
 import '../../../../../config/app_spacing.dart';
 import 'check_circle_container.dart';
@@ -14,19 +15,23 @@ import 'check_circle_container.dart';
 /// frequently
 /// always
 class MealPlanningSection extends StatefulWidget {
-  final void Function(int) selectId;
-
-  const MealPlanningSection({super.key, required this.selectId});
+  final void Function(MealPlanning) advanceMealPlanning;
+  const MealPlanningSection({super.key, required this.advanceMealPlanning});
 
   @override
   State<MealPlanningSection> createState() => _MealPlanningSectionState();
 }
 
 class _MealPlanningSectionState extends State<MealPlanningSection> {
+  late final OnboardingCubit cubit = context.read<OnboardingCubit>();
 
-  void _handleTap(Item item) {
+  void _handleTap(MealPlanning meal) {
     setState(() {
-      selectedItemId = (selectedItemId == item.id) ? null : item.id;
+      if(cubit.mealPlan == null) {
+        cubit.mealPlan = meal;
+        return;
+      }
+      cubit.mealPlan = (cubit.mealPlan == meal) ? null : meal;
     });
   }
 
@@ -45,13 +50,14 @@ class _MealPlanningSectionState extends State<MealPlanningSection> {
         Flexible(
           child: ListView(
             padding: EdgeInsets.zero,
-            children: mealPlans.map((meal) {
-              final bool isSelected = selectedItemId == meal.id;
-              widget.selectId(selectedItemId ?? -1);
-              return CheckCircleContainer(
+            children: MealPlanning.values.map((meal) {
+              bool isSelected = cubit.mealPlan == meal;
+              isSelected? widget.advanceMealPlanning(cubit.mealPlan!) : null;
+              return CheckCircleContainer<MealPlanning>(
+                title: meal.meal,
                 isSelected: isSelected,
                 onTap: _handleTap,
-                item: mealToItem(meal),
+                value: meal,
               );
             }).toList(),
           ),

@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../domain/entity/gender_enum.dart';
 import '../../domain/entity/profile_entity.dart';
 
 /// Data-Transfer Object for the profile entity.
@@ -17,6 +18,27 @@ class ProfileModel extends ProfileEntity {
     super.gender,
     super.age,
   });
+
+  factory ProfileModel.fromUserDetails({
+    required String userId,
+    required String name,
+    required Gender gender,
+    required String age,
+    required String height,
+    required String weight,
+  }) {
+    return ProfileModel(
+      userId: userId,
+      fullName: name,
+      gender: gender,
+      age: int.tryParse(age),
+      height: double.tryParse(height),
+      weight: double.tryParse(weight)
+    );
+  }
+
+  ProfileModel.fromAvatar({required String userId, required String avatar})
+    : this(userId: userId, avatarUrl: avatar);
 
   factory ProfileModel.fromEntity(ProfileEntity entity) {
     return ProfileModel(
@@ -53,26 +75,7 @@ class ProfileModel extends ProfileEntity {
       height: profile?.height,
       weight: profile?.weight,
       gender: profile?.gender,
-      age: profile?.age
-    );
-  }
-
-  factory ProfileModel.fromEntityToUpdate({
-    required ProfileEntity entity,
-    required String? age,
-    required String? gender,
-    required String? height,
-    required String? weight,
-  }) {
-    return ProfileModel(
-      userId: entity.userId,
-      fullName: entity.fullName,
-      email: entity.email,
-      mobileNumber: entity.mobileNumber,
-      height: double.tryParse(height ?? ''),
-      weight: double.tryParse(weight ?? ''),
-      gender: gender,
-      age: int.tryParse(age ?? ''),
+      age: profile?.age,
     );
   }
 
@@ -83,10 +86,10 @@ class ProfileModel extends ProfileEntity {
       'full_name': fullName,
       'email': email,
       'mobile_number': mobileNumber,
-      'height' : height,
-      'weight' : weight,
-      'gender' : gender,
-      'age' : age
+      'height': height,
+      'weight': weight,
+      'gender': gender,
+      'age': age,
     };
   }
 }

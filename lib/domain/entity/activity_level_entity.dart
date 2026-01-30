@@ -1,31 +1,29 @@
-import 'item.dart';
-
-enum ActivityLevelEnumTitle {
+enum ActivityLevelTitle {
   notVeryActive("Not Very Active"),
   lightlyActive("Lightly Active"),
   active("Active"),
   veryActive("Very Active");
 
-  final String name;
+  final String title;
 
-  const ActivityLevelEnumTitle(this.name);
+  const ActivityLevelTitle(this.title);
 }
 
-enum ActivityLevelEnumSubtitle {
+enum ActivityLevelSubtitle {
   notVeryActive("Spend most of the day sitting (e.g., desk job)."),
   lightlyActive("Spend most of the day sitting (e.g., desk job)."),
   active("Spend most of the day sitting (e.g., desk job)."),
   veryActive("Spend most of the day sitting (e.g., desk job).");
 
-  final String name;
+  final String subtitle;
 
-  const ActivityLevelEnumSubtitle(this.name);
+  const ActivityLevelSubtitle(this.subtitle);
 }
 
 class ActivityLevelEntity {
   final int id;
-  final ActivityLevelEnumTitle title;
-  final ActivityLevelEnumSubtitle subtitle;
+  final ActivityLevelTitle title;
+  final ActivityLevelSubtitle subtitle;
 
   const ActivityLevelEntity({
     required this.id,
@@ -34,20 +32,3 @@ class ActivityLevelEntity {
   });
 }
 
-Item activityToItem(ActivityLevelEntity activity) {
-  return Item(
-    id: activity.id,
-    title: activity.title.name,
-    isSubtitle: true,
-    subtitle: activity.subtitle.name,
-  );
-}
-
-int? selectedItemId;
-final List<ActivityLevelEntity> activityLevels = [
-  const ActivityLevelEntity(
-    id: 1,
-    title: ActivityLevelEnumTitle.notVeryActive,
-    subtitle: ActivityLevelEnumSubtitle.notVeryActive,
-  ),
-];

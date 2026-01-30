@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/entity/item.dart';
+import '../../../../../../domain/entity/health_habits_entity.dart';
 
 class HealthHabitChip extends StatelessWidget {
-  final Item item;
+  final HealthHabits habit;
   final bool isSelected;
-  final ValueChanged<Item> onTap;
+  final ValueChanged<HealthHabits> onTap;
 
   const HealthHabitChip({
     super.key,
-    required this.item,
+    required this.habit,
     required this.isSelected,
     required this.onTap,
   });
@@ -19,10 +19,12 @@ class HealthHabitChip extends StatelessWidget {
     final ColorScheme colorScheme = ColorScheme.of(context);
 
     return GestureDetector(
-      onTap: () => onTap(item),
+      onTap: () => onTap(habit),
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected ? colorScheme.primary.withValues(alpha: 0.2) : null,
+          color: isSelected
+              ? colorScheme.primary.withValues(alpha: 0.2)
+              : colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
@@ -35,7 +37,7 @@ class HealthHabitChip extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            item.title,
+            habit.name,
             style: textTheme.titleSmall?.copyWith(
               color: isSelected ? colorScheme.primary : null,
               fontWeight: FontWeight.w900,

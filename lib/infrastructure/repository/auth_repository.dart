@@ -1,5 +1,5 @@
 import '../../application/service/auth_service.dart';
-import '../../domain/entity/profile_entity.dart';
+import '../../domain/entity/auth_entity.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../source/auth_source.dart';
 
@@ -7,18 +7,18 @@ import '../source/auth_source.dart';
 ///
 /// * [source] : The source that is called by the repository.
 class AuthRepositoryImpl implements AuthRepository {
-  final SupabaseAuthSource source;
+  final AuthDataSource source;
 
-  AuthRepositoryImpl(this.source);
+  const AuthRepositoryImpl(this.source);
 
   @override
-  ProfileEntity? getUser() {
+  AuthEntity? getUser() {
     return source.getUser();
   }
 
   /// This method signs in the user.
   @override
-  Future<ProfileEntity?> signIn() async {
+  Future<AuthEntity?> signIn() async {
     // Signing in using google auth provider.
     final user = await source.signIn(FederatedAuthType.google);
     return user;

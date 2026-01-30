@@ -1,5 +1,4 @@
 import 'activity_level_entity.dart';
-import 'dialog_entity.dart';
 import 'health_habits_entity.dart';
 import 'meal_planning_entity.dart';
 import 'profile_entity.dart';
@@ -7,19 +6,19 @@ import 'profile_entity.dart';
 class OnboardingEntity {
   final ProfileEntity profileEntity;
 
-  final HealthHabitsEntity healthHabitsEntity;
+  final Set<HealthHabits> healthHabits;
 
-  final MealPlanningEntity mealPlanningEntity;
+  final MealPlanning mealPlanning;
 
   final ActivityLevelEntity activityLevelEntity;
 
-  final DialogEntity dialogEntity;
+  final String country;
 
-  const OnboardingEntity(
-    this.profileEntity,
-    this.healthHabitsEntity,
-    this.mealPlanningEntity,
-    this.activityLevelEntity,
-    this.dialogEntity,
-  );
+  const OnboardingEntity({
+    required this.country,
+    required this.profileEntity,
+    required this.healthHabits,
+    required this.mealPlanning,
+    required this.activityLevelEntity,
+  });
 }

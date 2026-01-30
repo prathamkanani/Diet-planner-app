@@ -7,45 +7,34 @@ class AppTheme {
 
     brightness: Brightness.light,
 
+    dividerColor: Colors.transparent,
+
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xffaded74),
       secondary: Colors.white,
       primaryContainer: const Color(0xff858383),
       onPrimaryContainer: const Color(0xfff8f5f5),
-      secondaryContainer: const Color(0xffeae6e6),
+      secondaryContainer: const Color(0xfff4f0f0),
       onSecondaryContainer: const Color(0xff000000),
+      surface: Colors.white,
       onSurface: Colors.black,
       shadow: Colors.black,
     ),
 
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(color: Colors.black),
-      displayMedium: TextStyle(color: Colors.black),
-      displaySmall: TextStyle(color: Colors.black),
-      headlineLarge: TextStyle(color: Colors.black),
-      headlineMedium: TextStyle(color: Colors.black),
-      headlineSmall: TextStyle(color: Colors.black),
-      titleLarge: TextStyle(color: Colors.black),
-      titleMedium: TextStyle(color: Colors.black),
-      titleSmall: TextStyle(color: Colors.black),
-      bodyLarge: TextStyle(color: Colors.black),
-      bodyMedium: TextStyle(color: Colors.black),
-      bodySmall: TextStyle(color: Colors.black),
-      labelLarge: TextStyle(color: Colors.black),
-      labelMedium: TextStyle(color: Colors.black),
-      labelSmall: TextStyle(color: Colors.black),
-    ),
+    appBarTheme: const AppBarTheme(backgroundColor: Color(0xfff4f0f0)),
 
     inputDecorationTheme: const InputDecorationThemeData(
       border: OutlineInputBorder(
         borderSide: BorderSide(color: Color(0xffd6d1d1), width: 2),
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xffd6d1d1), width: 2),
+        borderSide: BorderSide(color: Color(0xffa6a3a3), width: 2),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.black, width: 2),
       ),
+      filled: true,
+      fillColor: Color(0xFFFFFFFF),
     ),
 
     textSelectionTheme: const TextSelectionThemeData(

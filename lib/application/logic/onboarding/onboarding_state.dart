@@ -1,7 +1,26 @@
-sealed class OnboardingState {}
+import '../../../domain/entity/onboarding_entity.dart';
 
-class OnboardingLoadingState extends OnboardingState {}
+sealed class OnboardingState {
+  const OnboardingState();
+}
 
-class OnboardingLoadedState extends OnboardingState {}
+class OnboardingLoadingState extends OnboardingState {
+  const OnboardingLoadingState();
+}
 
-class OnboardingErrorState extends OnboardingState {}
+class OnboardingLoadedState extends OnboardingState {
+  final OnboardingEntity onboard;
+
+  const OnboardingLoadedState(this.onboard);
+}
+
+class OnboardingPromptState extends OnboardingState {
+  final bool isLoading;
+  const OnboardingPromptState(this.isLoading);
+}
+
+class OnboardingErrorState extends OnboardingState {
+  final Object? error;
+
+  const OnboardingErrorState(this.error);
+}

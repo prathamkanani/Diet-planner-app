@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     final ColorScheme colorScheme = ColorScheme.of(context);
 
     return Scaffold(
+      backgroundColor: colorScheme.secondaryContainer,
       appBar: AppBar(title: Text(pageToTitle(_selectedIndex))),
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: Container(

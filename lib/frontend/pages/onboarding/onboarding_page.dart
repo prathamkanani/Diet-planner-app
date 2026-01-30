@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../../application/logic/auth/auth_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../application/logic/onboarding/onboarding_cubit.dart';
+import '../../../application/service/app_data_service.dart';
+import '../../../domain/entity/activity_level_entity.dart';
 import '../../../domain/entity/dialog_entity.dart';
-import '../../../domain/entity/profile_entity.dart';
+import '../../../domain/entity/health_habits_entity.dart';
+import '../../../domain/entity/meal_planning_entity.dart';
+import '../../../domain/entity/onboarding_entity.dart';
 import '../../../domain/entity/gender_enum.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
@@ -26,6 +31,8 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
+  final AppDataService appDataService = locator.get<AppDataService>();
+  late final OnboardingCubit cubit;
   late final PageController _pageController;
   late final TextEditingController userNameController,
       ageController,
@@ -33,14 +40,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       heightController,
       weightController;
 
-  int mealPlanSelected = -1;
-  int activityLevelSelected = -1;
-  int currentPage = 0;
-  int? selectedGender;
-
-  /// Creates a new instance of cubit so stored entity is null.
-  AuthCubit cubit = locator.get<AuthCubit>();
-  late ProfileEntity entity = cubit.entity!;
+  int _currentPage = 0;
 
   @override
   void initState() {
@@ -51,6 +51,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     userNameController = TextEditingController();
     heightController = TextEditingController();
     weightController = TextEditingController();
+    cubit = locator.get<OnboardingCubit>();
   }
 
   @override
@@ -61,6 +62,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     locationController.dispose();
     heightController.dispose();
     weightController.dispose();
+    cubit.close();
     super.dispose();
   }
 
@@ -78,6 +80,61 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
+  void _storeOnboardingEntity() {
+    cubit.sendPrompt(
+      OnboardingEntity(
+        country: locationController.text,
+        profileEntity: ProfileModel.fromUserDetails(
+          userId: appDataService.userId!,
+          name: userNameController.text,
+          gender: cubit.gender!,
+          age: ageController.text,
+          height: heightController.text,
+          weight: weightController.text,
+        ),
+        healthHabits: cubit.healthHabits,
+        mealPlanning: cubit.mealPlan!,
+        activityLevelEntity: cubit.activityLevel!,
+      ),
+    );
+
+    cubit.saveOnboardingDetails(
+      OnboardingEntity(
+        country: locationController.text,
+        profileEntity: ProfileModel.fromUserDetails(
+          userId: appDataService.userId!,
+          name: userNameController.text,
+          gender: cubit.gender!,
+          age: ageController.text,
+          height: heightController.text,
+          weight: weightController.text,
+        ),
+        healthHabits: cubit.healthHabits,
+        mealPlanning: cubit.mealPlan!,
+        activityLevelEntity: cubit.activityLevel!,
+      ),
+    );
+  }
+
+  void _next(BuildContext context) {
+    if ((userNameController.text.isEmpty && _currentPage == 0) ||
+        (cubit.mealPlan == null && _currentPage == 2) ||
+        (cubit.activityLevel == null && _currentPage == 3) ||
+        (ageController.text.isEmpty &&
+            locationController.text.isEmpty &&
+            cubit.gender == null &&
+            _currentPage == 4) ||
+        (heightController.text.isEmpty &&
+            weightController.text.isEmpty &&
+            _currentPage == 5)) {
+      dialogBuilder(context, _currentPage);
+    } else {
+      _currentPage == 5
+          ? {_storeOnboardingEntity(), context.push(const HomePage())}
+          : _goToNextPage();
+    }
+  }
+
   Future<void> dialogBuilder(BuildContext context, int page) {
     return showDialog(
       context: context,
@@ -89,96 +146,81 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  void toStoreUpdatedProfile(ProfileEntity entity) {
-    ProfileEntity updatedEntity = ProfileModel.fromEntityToUpdate(
-      entity: entity,
-      age: ageController.text,
-      height: heightController.text,
-      weight: weightController.text,
-      gender: (selectedGender == 1)
-          ? Gender.male.toString()
-          : Gender.female.toString(),
-    );
-    cubit.entity = updatedEntity;
+  /// To update page and its current index.
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = ColorScheme.of(context);
+    final ColorScheme cs = context.cs;
 
     return Scaffold(
-      backgroundColor: colorScheme.onPrimary,
-      body: Padding(
-        padding: const EdgeInsetsGeometry.all(16),
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
-            PageviewIndicator(count: 6, currentPage: currentPage),
-            AppSpacing.h16,
-            Expanded(
+      backgroundColor: cs.secondaryContainer,
+      body: Column(
+        children: [
+          SizedBox(height: MediaQuery.sizeOf(context).height * 0.06),
+          PageviewIndicator(count: 6, currentPage: _currentPage),
+          AppSpacing.h16,
+          Expanded(
+            child: BlocProvider.value(
+              value: cubit,
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (int index) {
-                  setState(() {
-                    currentPage = index;
-                  });
-                },
-                children: [
-                  UsernameSection(controller: userNameController),
-                  const HealthHabitsSection(),
-                  MealPlanningSection(
-                    selectId: (int i) {
-                      mealPlanSelected = i;
-                    },
-                  ),
-                  ActivityLevelSection(
-                    selectId: (int i) {
-                      activityLevelSelected = i;
-                    },
-                  ),
-                  UserDetailSection(
-                    ageController: ageController,
-                    locationController: locationController,
-                    selectedId: (int? id) {
-                      selectedGender = id;
-                    },
-                  ),
-                  MoreAboutUserSection(
-                    heightController: heightController,
-                    weightController: weightController,
-                  ),
-                ],
+                onPageChanged: _onPageChanged,
+                children:
+                    <Widget>[
+                      UsernameSection(controller: userNameController),
+                      HealthHabitsSection(
+                        selectedHabit: (Set<HealthHabits> h) {
+                          cubit.healthHabits = h;
+                        },
+                      ),
+                      MealPlanningSection(
+                        advanceMealPlanning: (MealPlanning m) {
+                          cubit.mealPlan = m;
+                        },
+                      ),
+                      ActivityLevelSection(
+                        selectedActivity: (ActivityLevelEntity a) {
+                          cubit.activityLevel = a;
+                        },
+                      ),
+                      UserDetailSection(
+                        ageController: ageController,
+                        locationController: locationController,
+                        selectedGender: (Gender g) {
+                          cubit.gender = g;
+                        },
+                      ),
+                      MoreAboutUserSection(
+                        heightController: heightController,
+                        weightController: weightController,
+                      ),
+                    ].map((widget) {
+                      return Padding(padding: const .all(16), child: widget);
+                    }).toList(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       // This lifts up the bottom nav bar.
       // insets - part of the screen completely
       // obscured by system UI(like keyboard).
       // viewInsetsOf.bottom pushes the content
-      // up by the exact height of keyboard
+      // up by the exact height of keyboard.
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(
           bottom: MediaQuery.viewInsetsOf(context).bottom,
         ),
         child: BottomActionBar(
           onPrevious: _goBack,
-          onNext: () {
-            if ((userNameController.text.isEmpty && currentPage == 0) ||
-                (mealPlanSelected == -1 && currentPage == 2) ||
-                (activityLevelSelected == -1 && currentPage == 3)) {
-              dialogBuilder(context, currentPage);
-            } else {
-              currentPage == 5
-                  ? {
-                toStoreUpdatedProfile(entity),
-                context.push(const HomePage())
-              }
-                  : _goToNextPage();
-            }
-          },
+          onNext: () => _next(context),
         ),
       ),
     );

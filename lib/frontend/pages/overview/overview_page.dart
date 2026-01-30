@@ -33,8 +33,8 @@ class _OverviewPageState extends State<OverviewPage> {
 
   void _goToNextPage() {
     _pageViewController.nextPage(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.decelerate,
     );
   }
 
@@ -45,27 +45,30 @@ class _OverviewPageState extends State<OverviewPage> {
 
     return Scaffold(
       backgroundColor: colorScheme.primary,
-      body: Padding(
-        padding: const EdgeInsets.all(48.0),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: PageView(
-                  controller: _pageViewController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (index) {
-                    setState(() => currentPage = index);
-                  },
-                  children: <Widget>[
-                    const OverviewSectionOne(),
-                    const OverviewSectionTwo(),
-                    const OverviewSectionThree(),
-                  ],
-                ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: PageView(
+                controller: _pageViewController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  setState(() => currentPage = index);
+                },
+                children:
+                    <Widget>[
+                      const OverviewSectionOne(),
+                      const OverviewSectionTwo(),
+                      const OverviewSectionThree(),
+                    ].map((widget) {
+                      return Padding(padding: const .all(48), child: widget);
+                    }).toList(),
               ),
-              AppSpacing.h16,
-              SizedBox(
+            ),
+            AppSpacing.h16,
+            Padding(
+              padding: const .symmetric(horizontal: 48),
+              child: SizedBox(
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: () {
@@ -84,10 +87,15 @@ class _OverviewPageState extends State<OverviewPage> {
                   ),
                 ),
               ),
-              AppSpacing.h24,
-              NavIndicator(count: 3, currentPage: currentPage),
-            ],
-          ),
+            ),
+            AppSpacing.h24,
+            Padding(
+              padding: .only(
+                bottom: MediaQuery.viewPaddingOf(context).bottom + 20,
+              ),
+              child: NavIndicator(count: 3, currentPage: currentPage),
+            ),
+          ],
         ),
       ),
     );

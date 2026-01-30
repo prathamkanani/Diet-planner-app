@@ -4,7 +4,6 @@ import '../../../config/app_spacing.dart';
 
 class BottomActionBar extends StatelessWidget {
   final VoidCallback onNext;
-
   final VoidCallback onPrevious;
 
   const BottomActionBar({

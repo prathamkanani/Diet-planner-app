@@ -13,13 +13,13 @@ class SignInWithGoogleButton extends StatelessWidget {
 
     return SizedBox(
       height: 48,
-      width: double.infinity,
+      // width: double.infinity,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           backgroundColor: colorScheme.onSecondary,
           foregroundColor: colorScheme.onPrimary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+          shape: RoundedSuperellipseBorder(
+            borderRadius: BorderRadius.circular(13),
           ),
         ),
         onPressed: onPressed,

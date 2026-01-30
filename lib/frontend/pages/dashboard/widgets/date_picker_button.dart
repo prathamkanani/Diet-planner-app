@@ -18,10 +18,10 @@ class DatePickerButton extends StatelessWidget {
         date.year == now.year && date.month == now.month && date.day == now.day;
 
     if (isToday) {
-      return 'Today ${DateFormat('MMM d').format(date)}';
+      return 'Today';
     }
 
-    return DateFormat('d MMM yy').format(date);
+    return DateFormat('d MMM yyyy').format(date);
   }
 
   @override

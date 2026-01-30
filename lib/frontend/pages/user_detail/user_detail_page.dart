@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../application/formatters/phone_formatter.dart';
 import '../../../application/logic/profile/profile_cubit.dart';
+import '../../../application/service/app_data_service.dart';
 import '../../../application/validator/email_validator.dart';
 import '../../../application/validator/name_validator.dart';
-import '../../../domain/entity/profile_entity.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../config/app_spacing.dart';
-import 'widgets/user_avatar.dart';
 
 class UserDetailPage extends StatefulWidget {
   const UserDetailPage({super.key});
@@ -17,6 +16,7 @@ class UserDetailPage extends StatefulWidget {
 }
 
 class _UserDetailPageState extends State<UserDetailPage> {
+  final AppDataService appDataService = locator.get<AppDataService>();
   late final ProfileCubit profileCubit;
   late final TextEditingController fullNameController,
       emailController,
@@ -25,15 +25,15 @@ class _UserDetailPageState extends State<UserDetailPage> {
       genderController,
       heightController,
       weightController;
-  final ProfileEntity profile = locator.get<ProfileEntity>();
 
   @override
   void initState() {
     super.initState();
-    profileCubit = locator.get<ProfileCubit>()..createProfile(profile: profile);
-    fullNameController = TextEditingController(text: profile.fullName);
-    emailController = TextEditingController(text: profile.email);
-    mobileNumController = TextEditingController(text: profile.mobileNumber);
+    profileCubit = locator.get<ProfileCubit>()
+      ..createProfile(userId: appDataService.userId!);
+    fullNameController = TextEditingController(/*text: profile.fullName*/);
+    emailController = TextEditingController(/*text: profile.email*/);
+    mobileNumController = TextEditingController(/*text: profile.mobileNumber*/);
     ageController = TextEditingController();
     genderController = TextEditingController();
     heightController = TextEditingController();
@@ -56,11 +56,11 @@ class _UserDetailPageState extends State<UserDetailPage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsetsGeometry.all(16),
+        padding: const .all(16),
         child: Column(
           children: [
             // User Avatar
-            UserAvatar(profileCubit: profileCubit, profileEntity: profile),
+            // UserAvatar(profileCubit: profileCubit, profileEntity: profile),
             AppSpacing.h16,
 
             // Full Name Text Field

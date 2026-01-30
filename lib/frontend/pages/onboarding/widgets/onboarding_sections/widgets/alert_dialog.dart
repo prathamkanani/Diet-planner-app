@@ -10,13 +10,14 @@ class CustomAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = TextTheme.of(context);
+    final bool isContent = dialog.content != null;
 
     return AlertDialog(
       title: Text(
         dialog.title,
         style: textTheme.titleLarge,
       ),
-      content: Text(dialog.content),
+      content: isContent ? Text(dialog.content!) : null,
       actions: [
         TextButton(onPressed: context.pop, child: const Text('Go back')),
       ],

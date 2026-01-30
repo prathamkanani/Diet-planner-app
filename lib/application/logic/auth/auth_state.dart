@@ -1,4 +1,5 @@
-import '../../../domain/entity/profile_entity.dart';
+
+import '../../../domain/entity/auth_entity.dart';
 
 /// Base state for the [AuthCubit]
 sealed class AuthState {}
@@ -11,11 +12,11 @@ final class AuthUnauthenticated extends AuthState {}
 
 /// State when a user is authenticated.
 ///
-/// * [profile] : The authenticated profile [ProfileEntity].
+/// * [authEntity] : The authenticated profile [AuthEntity].
 final class AuthAuthenticated extends AuthState {
-  final ProfileEntity profile;
+  final AuthEntity authEntity;
 
-  AuthAuthenticated(this.profile);
+  AuthAuthenticated(this.authEntity);
 }
 
 /// State when a user authentication fails.

@@ -1,3 +1,5 @@
+import 'gender_enum.dart';
+
 /// Represents basic user information
 class ProfileEntity {
   /// Unique user ID.
@@ -22,7 +24,7 @@ class ProfileEntity {
 
   final double? height;
 
-  final String? gender;
+  final Gender? gender;
 
   final int? age;
 

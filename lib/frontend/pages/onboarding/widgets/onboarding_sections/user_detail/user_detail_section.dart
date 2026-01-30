@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/entity/item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/gender_enum.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
@@ -7,13 +8,13 @@ import '../meal_planning/check_circle_container.dart';
 class UserDetailSection extends StatefulWidget {
   final TextEditingController ageController;
   final TextEditingController locationController;
-  final void Function(int?) selectedId;
+  final void Function(Gender) selectedGender;
 
   const UserDetailSection({
     super.key,
-    required this.selectedId,
     required this.ageController,
     required this.locationController,
+    required this.selectedGender
   });
 
   @override
@@ -21,9 +22,12 @@ class UserDetailSection extends StatefulWidget {
 }
 
 class _UserDetailSectionState extends State<UserDetailSection> {
-  void _handleTap(Item item) {
+  late final OnboardingCubit cubit = context.read<OnboardingCubit>();
+  late Gender? gender = cubit.gender;
+
+  void _handleTap(Gender selectGender) {
     setState(() {
-      selectedItemId = (selectedItemId == item.id) ? null : item.id;
+      gender = (gender == selectGender) ? null : selectGender;
     });
   }
 
@@ -43,14 +47,18 @@ class _UserDetailSectionState extends State<UserDetailSection> {
           Text('Please select a gender', style: textTheme.titleSmall),
           AppSpacing.h08,
           Row(
-            children: items.map((item) {
-              final bool isSelected = selectedItemId == item.id;
-              widget.selectedId(selectedItemId);
+            children: Gender.values.map((final Gender g) {
+              final bool isSelected = gender == g;
+              isSelected? widget.selectedGender(g): null;
               return Expanded(
-                child: CheckCircleContainer(
-                  isSelected: isSelected,
-                  onTap: _handleTap,
-                  item: item,
+                child: Padding(
+                  padding: EdgeInsets.only(right: (g.index == 0) ? 8.0 : 0.0),
+                  child: CheckCircleContainer(
+                    title: g.gender,
+                    isSelected: isSelected,
+                    onTap: _handleTap,
+                    value: g,
+                  ),
                 ),
               );
             }).toList(),

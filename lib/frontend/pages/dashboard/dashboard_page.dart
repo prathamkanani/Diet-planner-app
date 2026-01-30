@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../config/app_spacing.dart';
 import 'widgets/date_picker_button.dart';
+import 'widgets/meal_list.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -35,42 +36,33 @@ class _DashboardState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = ColorScheme.of(context);
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: colorScheme.onPrimaryContainer
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  onPressed: _previousDay,
-                  icon: const Icon(Icons.arrow_back_ios),
-                ),
-
-                DatePickerButton(
-                  date: selectedDate,
-                  onDatePicked: (date) {
-                    setState(() {
-                      selectedDate = date;
-                    });
-                  },
-                ),
-
-                IconButton(
-                  onPressed: _isToday(selectedDate) ? null : _nextDay,
-                  icon: const Icon(Icons.arrow_forward_ios),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: _previousDay,
+                icon: const Icon(Icons.arrow_back_ios),
+              ),
+              DatePickerButton(
+                date: selectedDate,
+                onDatePicked: (date) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                },
+              ),
+              IconButton(
+                onPressed: _isToday(selectedDate) ? null : _nextDay,
+                icon: const Icon(Icons.arrow_forward_ios),
+              ),
+            ],
           ),
           AppSpacing.h16,
-
+          const Expanded(child: MealList()),
         ],
       ),
     );

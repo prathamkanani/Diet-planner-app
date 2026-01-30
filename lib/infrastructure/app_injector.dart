@@ -1,14 +1,20 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../application/logic/auth/auth_cubit.dart';
+import '../application/logic/onboarding/onboarding_cubit.dart';
 import '../application/logic/profile/profile_cubit.dart';
+import '../application/service/app_data_service.dart';
 import '../application/service/auth_service.dart';
 import '../application/service/locator.dart';
 import '../domain/repository/auth_repository.dart';
+import '../domain/repository/onboarding_repository.dart';
 import '../domain/repository/profile_repository.dart';
 import 'repository/auth_repository.dart';
+import 'repository/onboarding_repository.dart';
 import 'repository/profile_repository.dart';
+import 'service/app_data_service.dart';
 import 'service/auth_service.dart';
 import 'source/auth_source.dart';
+import 'source/onboard_source.dart';
 import 'source/profile_source.dart';
 
 /// Global instance for locator
@@ -29,8 +35,11 @@ class DependencyInjector implements AppInjector {
     // Registering Federated Auth service
     locator.registerFactory<FederatedAuthService>(() => AuthService());
 
+    // Registering AppDataService
+    locator.registerSingleton<AppDataService>(AppDataServiceImpl());
+
     // Registering Auth dependencies
-    locator.registerFactory<SupabaseAuthSource>(
+    locator.registerFactory<AuthDataSource>(
       () => SupabaseAuthSource(
         locator.get<SupabaseClient>(),
         locator.get<FederatedAuthService>(),
@@ -44,14 +53,23 @@ class DependencyInjector implements AppInjector {
     );
 
     // Registering Profile Dependencies
-    locator.registerFactory<ProfileRemoteDataSource>(
-          () => ProfileRemoteDataSource(locator.get()),
+    locator.registerFactory<ProfileSource>(
+      () => ProfileRemoteDataSource(locator.get()),
     );
     locator.registerFactory<ProfileRepository>(
-          () => ProfileRepositoryImpl(locator.get()),
+      () => ProfileRepositoryImpl(locator.get()),
     );
     locator.registerFactory<ProfileCubit>(
-          () => ProfileCubit(repository: locator.get()),
+      () => ProfileCubit(repository: locator.get()),
+    );
+
+    // Registering Onboarding Dependencies
+    locator.registerFactory<OnboardingSource>(() => OnboardingRemoteSource(locator.get()));
+    locator.registerFactory<OnboardingRepository>(
+      () => OnboardingRepositoryImpl(locator.get()),
+    );
+    locator.registerFactory<OnboardingCubit>(
+      () => OnboardingCubit(repository: locator.get()),
     );
   }
 }

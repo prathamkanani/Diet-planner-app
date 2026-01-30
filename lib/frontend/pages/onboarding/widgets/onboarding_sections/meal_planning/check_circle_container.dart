@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/entity/item.dart';
 
-class CheckCircleContainer extends StatelessWidget {
-  final Item item;
+class CheckCircleContainer<T> extends StatelessWidget {
+  final T value;
+  final String title;
+  final String? subtitle;
+  final bool isSubtitle;
   final bool isSelected;
-  final ValueChanged<Item> onTap;
+  final ValueChanged<T> onTap;
 
   const CheckCircleContainer({
     super.key,
     required this.isSelected,
     required this.onTap,
-    required this.item,
+    required this.value,
+    required this.title,
+    this.subtitle,
+    this.isSubtitle = false,
   });
 
   @override
@@ -19,13 +24,15 @@ class CheckCircleContainer extends StatelessWidget {
     final TextTheme textTheme = TextTheme.of(context);
 
     return GestureDetector(
-      onTap: () => onTap(item),
+      onTap: () => onTap(value),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: colorScheme.secondaryContainer.withValues(alpha: 0.6),
+          color: colorScheme.surface,
           border: BoxBorder.all(
-            color: isSelected ? colorScheme.primary : colorScheme.onPrimary,
+            color: isSelected
+                ? colorScheme.primary
+                : colorScheme.primaryContainer,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
@@ -41,14 +48,14 @@ class CheckCircleContainer extends StatelessWidget {
                   crossAxisAlignment: .start,
                   children: [
                     Text(
-                      item.title,
+                      title,
                       style: textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    ?item.isSubtitle
+                    ?isSubtitle
                         ? Text(
-                            item.subtitle,
+                            subtitle!,
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.onSecondaryContainer,
                               fontWeight: FontWeight.w500,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/activity_level_entity.dart';
-import '../../../../../../domain/entity/item.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
 
@@ -10,19 +11,22 @@ import '../meal_planning/check_circle_container.dart';
 ///
 /// not very active, lightly active, active, very active
 class ActivityLevelSection extends StatefulWidget {
-  final void Function(int) selectId;
+  final void Function(ActivityLevelEntity) selectedActivity;
 
-  const ActivityLevelSection({super.key, required this.selectId});
+  const ActivityLevelSection({super.key, required this.selectedActivity});
 
   @override
   State<ActivityLevelSection> createState() => _ActivityLevelSectionState();
 }
 
 class _ActivityLevelSectionState extends State<ActivityLevelSection> {
+  late final OnboardingCubit cubit = context.read<OnboardingCubit>();
+  late ActivityLevelEntity? selectedActivity = cubit.activityLevel;
+  late List<ActivityLevelEntity> activityLevels = cubit.activityLevels;
 
-  void _handleTap(Item item) {
+  void _handleTap(ActivityLevelEntity activity) {
     setState(() {
-      selectedItemId = (selectedItemId == item.id) ? null : item.id;
+      selectedActivity = (selectedActivity == activity) ? null : activity;
     });
   }
 
@@ -44,10 +48,13 @@ class _ActivityLevelSectionState extends State<ActivityLevelSection> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: activityLevels.map((activity) {
-              final bool isSelected = selectedItemId == activity.id;
-              widget.selectId(selectedItemId ?? -1);
-              return CheckCircleContainer(
-                item: activityToItem(activity),
+              final bool isSelected = selectedActivity == activity;
+              isSelected ? widget.selectedActivity(activity) : null;
+              return CheckCircleContainer<ActivityLevelEntity>(
+                title: activity.title.title,
+                subtitle: activity.subtitle.subtitle,
+                isSubtitle: true,
+                value: activity,
                 isSelected: isSelected,
                 onTap: _handleTap,
               );

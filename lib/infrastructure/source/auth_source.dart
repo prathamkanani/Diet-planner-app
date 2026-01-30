@@ -1,16 +1,15 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../application/service/auth_service.dart';
-import '../../domain/entity/profile_entity.dart';
+import '../../domain/entity/auth_entity.dart';
 import '../../domain/entity/session_entity.dart';
-import '../model/profile_model.dart';
 
 // Defines contracts for authentication operations.
 abstract interface class AuthDataSource {
-  Future<ProfileEntity?> signIn(FederatedAuthType type);
+  Future<AuthEntity?> signIn(FederatedAuthType type);
 
   Future<void> signOut(FederatedAuthType type);
 
-  ProfileEntity? getUser();
+  AuthEntity? getUser();
 }
 
 class SupabaseAuthSource implements AuthDataSource {
@@ -21,15 +20,15 @@ class SupabaseAuthSource implements AuthDataSource {
 
   /// Gets user from supabase current session.
   @override
-  ProfileEntity? getUser() {
+  AuthEntity? getUser() {
     final Session? session = supabase.auth.currentSession;
     if (session == null) return null;
-    return ProfileEntity(userId: session.user.id);
+    return AuthEntity(userId: session.user.id);
   }
 
   /// Lets user sign in.
   @override
-  Future<ProfileEntity?> signIn(FederatedAuthType type) async {
+  Future<AuthEntity?> signIn(FederatedAuthType type) async {
     final SessionEntity sessionEntity = await authService.signIn(type);
 
     // Handing over to supabase.
@@ -43,7 +42,7 @@ class SupabaseAuthSource implements AuthDataSource {
     final User currentUser = result.user!;
 
     // Converts supabase's user to profile entity.
-    return ProfileModel.fromSupabaseUserAndEntity(currentUser, null, '');
+    return AuthEntity(userId: currentUser.id);
   }
 
   /// Lets the user sign out from supabase and google.

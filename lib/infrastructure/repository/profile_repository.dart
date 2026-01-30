@@ -4,7 +4,7 @@ import '../source/profile_source.dart';
 
 /// Concrete implementation of Profile Repository
 class ProfileRepositoryImpl implements ProfileRepository {
-  final ProfileRemoteDataSource source;
+  final ProfileSource source;
 
   ProfileRepositoryImpl(this.source);
 
@@ -19,14 +19,14 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<ProfileEntity> getUserProfile(ProfileEntity profile) async {
-    final userProfile = await source.getUserProfile(profile);
+  Future<ProfileEntity> getUserProfile(String userId) async {
+    final userProfile = await source.getUserProfile(userId);
     return userProfile;
   }
 
   @override
-  Future<ProfileEntity> createUserProfile(ProfileEntity profile) async {
-    final userProfile = await source.createProfile(profile);
+  Future<ProfileEntity> createUserProfile(String userId) async {
+    final userProfile = await source.createProfile(userId);
     return userProfile;
   }
 }

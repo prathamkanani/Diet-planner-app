@@ -1,3 +1,6 @@
+import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'env.dart';
 import 'frontend/config/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,8 +17,13 @@ void main() async {
   // Initialise supabase.
   await SupabaseConfig.initializeSupabase();
 
+  Gemini.init(apiKey: geminiKey);
+
   // Locate the dependencies.
-  DependencyInjector().init();
+  await DependencyInjector().init();
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  locator.registerSingleton(preferences);
 
   runApp(const MyApp());
 }
