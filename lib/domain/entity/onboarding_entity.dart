@@ -1,16 +1,16 @@
-import 'activity_level_entity.dart';
+import '../eum/activity_level_entity.dart';
 import 'health_habits_entity.dart';
-import 'meal_planning_entity.dart';
+import 'meal_planning.dart';
 import 'profile_entity.dart';
 
 class OnboardingEntity {
   final ProfileEntity profileEntity;
 
-  final Set<HealthHabits> healthHabits;
+  final List<HealthHabits> healthHabits;
 
   final MealPlanning mealPlanning;
 
-  final ActivityLevelEntity activityLevelEntity;
+  final ActivityLevel activityLevel;
 
   final String country;
 
@@ -19,6 +19,6 @@ class OnboardingEntity {
     required this.profileEntity,
     required this.healthHabits,
     required this.mealPlanning,
-    required this.activityLevelEntity,
+    required this.activityLevel,
   });
 }

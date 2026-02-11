@@ -1,7 +1,7 @@
 // © Meditab Software 2025
 import 'package:flutter/material.dart';
 import '../../../config/app_spacing.dart';
-import 'fade_animation.dart';
+import '../../../widgets/fade_animation.dart';
 
 class OverviewSectionOne extends StatelessWidget {
   const OverviewSectionOne({super.key});

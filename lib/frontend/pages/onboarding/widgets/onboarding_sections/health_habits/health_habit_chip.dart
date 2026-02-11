@@ -37,7 +37,7 @@ class HealthHabitChip extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            habit.name,
+            habit.habits,
             style: textTheme.titleSmall?.copyWith(
               color: isSelected ? colorScheme.primary : null,
               fontWeight: FontWeight.w900,

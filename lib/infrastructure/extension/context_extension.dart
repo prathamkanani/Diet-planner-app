@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../frontend/widgets/page_navigation_animation.dart';
+
 extension ContextExtension on BuildContext {
   /// Shorthand method to push navigate to a required [child].
   ///
@@ -58,7 +60,7 @@ extension ContextExtension on BuildContext {
   Future<void> pushReplacement(Widget child) async {
     Navigator.pushReplacement(
       this,
-      MaterialPageRoute(builder: (context) => child),
+      PageNavigationAnimation(page: child),
     );
   }
 

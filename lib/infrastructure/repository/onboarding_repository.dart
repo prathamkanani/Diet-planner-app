@@ -15,7 +15,7 @@ class OnboardingRepositoryImpl implements OnboardingRepository {
   }
 
   @override
-  Stream<Map<String, dynamic>> sendPrompt(OnboardingEntity onboard) {
-    return source.generateMealPlan(onboard);
+  Future<String?> generateMeal(OnboardingEntity onboard) async {
+    return await source.generateMealAI(onboard);
   }
 }

@@ -173,6 +173,41 @@ class S {
       args: [],
     );
   }
+
+  /// `Sorry, unable to log in. Please check your internet connection.`
+  String get sorryUnableToLogIn {
+    return Intl.message(
+      'Sorry, unable to log in. Please check your internet connection.',
+      name: 'sorryUnableToLogIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgain {
+    return Intl.message('Try again', name: 'tryAgain', desc: '', args: []);
+  }
+
+  /// `Please wait while we log you in...`
+  String get pleaseWaitWhileWeLogYouIn {
+    return Intl.message(
+      'Please wait while we log you in...',
+      name: 'pleaseWaitWhileWeLogYouIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oops, No data found!`
+  String get oopsNoDataFound {
+    return Intl.message(
+      'Oops, No data found!',
+      name: 'oopsNoDataFound',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

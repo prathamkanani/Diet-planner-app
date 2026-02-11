@@ -12,7 +12,7 @@ import 'health_habit_chip.dart';
 /// eat more whole foods, eat more fibre, eat more vegetables,
 /// eat more fruit, something else, I'm not sure
 class HealthHabitsSection extends StatefulWidget {
-  final void Function(Set<HealthHabits>) selectedHabit;
+  final void Function(List<HealthHabits>) selectedHabit;
 
   const HealthHabitsSection({super.key, required this.selectedHabit});
 
@@ -22,7 +22,7 @@ class HealthHabitsSection extends StatefulWidget {
 
 class _HealthHabitsSectionState extends State<HealthHabitsSection> {
   late final OnboardingCubit cubit = context.read<OnboardingCubit>();
-  late final Set<HealthHabits> selectedHabits = cubit.healthHabits;
+  late final List<HealthHabits> selectedHabits = cubit.healthHabits;
 
   void _handleTap(HealthHabits habit) {
     setState(() {
@@ -53,7 +53,7 @@ class _HealthHabitsSectionState extends State<HealthHabitsSection> {
             padding: EdgeInsets.zero,
             children: HealthHabits.values.map((final HealthHabits habit) {
               final bool isSelected = selectedHabits.contains(habit);
-              isSelected? widget.selectedHabit(selectedHabits) : null;
+              isSelected ? widget.selectedHabit(selectedHabits) : null;
               return Align(
                 alignment: .centerLeft,
                 child: HealthHabitChip(

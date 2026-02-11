@@ -23,10 +23,4 @@ class ProfileRepositoryImpl implements ProfileRepository {
     final userProfile = await source.getUserProfile(userId);
     return userProfile;
   }
-
-  @override
-  Future<ProfileEntity> createUserProfile(String userId) async {
-    final userProfile = await source.createProfile(userId);
-    return userProfile;
-  }
 }

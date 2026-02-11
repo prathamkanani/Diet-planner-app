@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../infrastructure/extension/context_extension.dart';
+
 class DatePickerButton extends StatelessWidget {
   final DateTime date;
   final ValueChanged<DateTime> onDatePicked;
@@ -26,9 +28,9 @@ class DatePickerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = ColorScheme.of(context);
+    final ColorScheme cs = context.cs;
 
-    return TextButton(
+    return TextButton.icon(
       onPressed: () async {
         final DateTime? pickedDate = await showDatePicker(
           context: context,
@@ -41,9 +43,11 @@ class DatePickerButton extends StatelessWidget {
           onDatePicked(pickedDate);
         }
       },
-      child: Text(
+      icon: Icon(Icons.calendar_month_rounded, color: cs.onSurface),
+      iconAlignment: .end,
+      label: Text(
         formatDateWithToday(date),
-        style: TextStyle(color: colorScheme.onSurface),
+        style: TextStyle(color: cs.onSurface),
       ),
     );
   }

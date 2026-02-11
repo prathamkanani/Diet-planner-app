@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
-import '../../../config/app_assets.dart';
-import '../../../config/app_spacing.dart';
+import '../../../../domain/entity/daily_meals_entity.dart';
+import '../../../../domain/entity/meal_option_list_entity.dart';
 import 'meal_tile.dart';
 
-class MealList extends StatelessWidget {
-  const MealList({super.key});
+class DailyMealList extends StatelessWidget {
+  final DailyMealsEntity dailyMealsEntity;
+
+  const DailyMealList({super.key, required this.dailyMealsEntity});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: const [
-        MealTile(title: 'Breakfast', image: AppAssets.breakfast),
-        AppSpacing.h08,
-        MealTile(title: 'Lunch', image: AppAssets.lunch),
-      ],
+    return ListView.builder(
+      itemCount: dailyMealsEntity.mealOptionListEntity.length,
+      itemBuilder: (BuildContext context, int index) {
+        final MealOptionListEntity meal =
+            dailyMealsEntity.mealOptionListEntity[index];
+
+        return MealTile(
+          mealOptionListEntity: meal,
+          loggedMeals: dailyMealsEntity.loggedMeal,
+          currentDate: dailyMealsEntity.currentDate,
+        );
+      },
     );
   }
 }

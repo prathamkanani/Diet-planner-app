@@ -1,6 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../../domain/entity/gender_enum.dart';
+import '../../domain/eum/gender_enum.dart';
 import '../../domain/entity/profile_entity.dart';
 
 /// Data-Transfer Object for the profile entity.
@@ -47,6 +46,10 @@ class ProfileModel extends ProfileEntity {
       fullName: entity.fullName,
       email: entity.email,
       mobileNumber: entity.mobileNumber,
+      weight: entity.weight,
+      height: entity.height,
+      age: entity.age,
+      gender: entity.gender
     );
   }
 
@@ -88,7 +91,7 @@ class ProfileModel extends ProfileEntity {
       'mobile_number': mobileNumber,
       'height': height,
       'weight': weight,
-      'gender': gender,
+      'gender': gender?.name,
       'age': age,
     };
   }

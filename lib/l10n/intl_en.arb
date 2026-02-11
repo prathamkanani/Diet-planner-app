@@ -12,5 +12,9 @@
   "weCouldntSignYouIn": "We couldn’t sign you in. Please check your internet connection or try again.",
   "dashboard": "Dashboard",
   "report": "Report",
-  "userDetails": "User Details"
+  "userDetails": "User Details",
+  "sorryUnableToLogIn": "Sorry, unable to log in. Please check your internet connection.",
+  "tryAgain": "Try again",
+  "pleaseWaitWhileWeLogYouIn": "Please wait while we log you in...",
+  "oopsNoDataFound": "Oops, No data found!"
 }

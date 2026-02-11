@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../config/app_assets.dart';
 import '../../../config/app_spacing.dart';
-import 'fade_animation.dart';
+import '../../../widgets/fade_animation.dart';
 
 class OverviewSectionTwo extends StatelessWidget {
   const OverviewSectionTwo({super.key});

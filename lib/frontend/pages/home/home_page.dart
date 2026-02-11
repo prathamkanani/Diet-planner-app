@@ -42,7 +42,9 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: colorScheme.secondaryContainer,
-      appBar: AppBar(title: Text(pageToTitle(_selectedIndex))),
+      appBar: AppBar(
+        title: Text(pageToTitle(_selectedIndex)),
+      ),
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

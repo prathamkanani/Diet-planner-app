@@ -1,5 +1,4 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uuid/uuid.dart';
 import '../../domain/entity/profile_entity.dart';
 import '../model/profile_model.dart';
 
@@ -8,8 +7,6 @@ abstract interface class ProfileSource {
   Future<void> saveProfile(ProfileEntity userProfile, String seed);
 
   Future<void> editProfile(ProfileEntity userProfile);
-
-  Future<ProfileEntity> createProfile(String userId);
 
   Future<ProfileEntity> getUserProfile(String userId);
 }
@@ -47,25 +44,5 @@ class ProfileRemoteDataSource implements ProfileSource {
     await supabase
         .from('profiles')
         .update(ProfileModel.fromEntity(userProfile).toJson());
-  }
-
-  /// Creates a user profile for the very first time and gets that profile.
-  @override
-  Future<ProfileEntity> createProfile(String userId) async {
-    final int res = await supabase
-        .from('profiles')
-        .count(CountOption.exact)
-        .eq('user_id', userId);
-    if (res > 0) {
-      return getUserProfile(userId);
-    } else {
-      String seed = const Uuid().v4();
-      final response = await supabase
-          .from('profiles')
-          .insert(ProfileModel.fromAvatar(userId: userId, avatar: seed))
-          .select()
-          .single();
-      return ProfileModel.fromJson(response);
-    }
   }
 }

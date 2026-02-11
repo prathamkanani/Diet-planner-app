@@ -35,6 +35,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginFailed": MessageLookupByLibrary.simpleMessage("Login Failed"),
     "next": MessageLookupByLibrary.simpleMessage("Next"),
     "nutripal": MessageLookupByLibrary.simpleMessage("NutriPal"),
+    "oopsNoDataFound": MessageLookupByLibrary.simpleMessage(
+      "Oops, No data found!",
+    ),
+    "pleaseWaitWhileWeLogYouIn": MessageLookupByLibrary.simpleMessage(
+      "Please wait while we log you in...",
+    ),
     "preferredFirstName": MessageLookupByLibrary.simpleMessage(
       "Preferred first name",
     ),
@@ -43,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectAllThatApply": MessageLookupByLibrary.simpleMessage(
       "Select all that apply.",
     ),
+    "sorryUnableToLogIn": MessageLookupByLibrary.simpleMessage(
+      "Sorry, unable to log in. Please check your internet connection.",
+    ),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
     "userDetails": MessageLookupByLibrary.simpleMessage("User Details"),
     "weCouldntSignYouIn": MessageLookupByLibrary.simpleMessage(
       "We couldn’t sign you in. Please check your internet connection or try again.",

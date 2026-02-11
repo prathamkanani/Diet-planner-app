@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/entity/gender_enum.dart';
+import '../../../../../../domain/eum/gender_enum.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
 

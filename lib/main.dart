@@ -4,7 +4,7 @@ import 'env.dart';
 import 'frontend/config/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'frontend/pages/overview/overview_page.dart';
+import 'frontend/pages/bootstrap/bootstrap_page.dart';
 import 'generated/l10n.dart';
 import 'infrastructure/app_injector.dart';
 import 'infrastructure/source/supabase_init.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const OverviewPage(),
+      home: const BootstrapPage(),
     );
   }
 }

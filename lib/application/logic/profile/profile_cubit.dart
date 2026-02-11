@@ -10,11 +10,13 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   ProfileCubit({required this.repository}) : super(ProfileLoadingState());
 
-  /// It creates the user profile for the first time.
-  Future<void> createProfile({required String userId}) async {
-    emit(ProfileLoadingState());
-    final userProfile = await repository.createUserProfile(userId);
-    emit(ProfileEditState(profile: userProfile));
+  Future<void> getProfile(String userId) async {
+    try {
+      final userProfile = await repository.getUserProfile(userId);
+      emit(ProfileEditState(profile: userProfile));
+    }  catch (e) {
+      emit(ProfileErrorState(e));
+    }
   }
 
   /// It saves the user profile.

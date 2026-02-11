@@ -8,13 +8,18 @@ class ReportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          MealLogBarChart(logs: logs),
-          AppSpacing.h16,
-        ],
+    final ColorScheme colorScheme = ColorScheme.of(context);
+
+    return Scaffold(
+      backgroundColor: colorScheme.secondaryContainer,
+      body: Padding(
+        padding: const .all(16.0),
+        child: Column(
+          children: [
+            MealLogBarChart(logs: logs),
+            AppSpacing.h16,
+          ],
+        ),
       ),
     );
   }

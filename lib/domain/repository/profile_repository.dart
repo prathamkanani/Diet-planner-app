@@ -5,9 +5,6 @@ abstract interface class ProfileRepository {
   /// Gets user profile
   Future<ProfileEntity> getUserProfile(String userId);
 
-  /// Creates a user profile at the time of first sign up.
-  Future<ProfileEntity> createUserProfile(String userId);
-
   /// Saves the user profile to the database
   Future<void> saveUserProfile(ProfileEntity profile, String seed);
 

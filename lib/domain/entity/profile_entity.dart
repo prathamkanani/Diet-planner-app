@@ -1,4 +1,4 @@
-import 'gender_enum.dart';
+import '../eum/gender_enum.dart';
 
 /// Represents basic user information
 class ProfileEntity {

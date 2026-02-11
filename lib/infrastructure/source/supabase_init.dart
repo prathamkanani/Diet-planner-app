@@ -7,14 +7,14 @@ class SupabaseConfig {
     await Supabase.initialize(
       url: supabaseUrl,
       anonKey: supabaseKey,
-      authOptions: const FlutterAuthClientOptions(
 
+      authOptions: const FlutterAuthClientOptions(
         // Auto refresh token before expiry
         autoRefreshToken: true,
 
         // Removes user session as soon as
         // app closes or restarts/reloads.
-        localStorage: EmptyLocalStorage(),
+        // localStorage: EmptyLocalStorage(),
       ),
     );
   }

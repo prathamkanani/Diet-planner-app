@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/entity/meal_planning_entity.dart';
+import '../../../../../../domain/entity/meal_planning.dart';
 import '../../../../../config/app_spacing.dart';
 import 'check_circle_container.dart';
 

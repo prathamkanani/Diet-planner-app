@@ -5,8 +5,10 @@ import '../../../application/logic/profile/profile_cubit.dart';
 import '../../../application/service/app_data_service.dart';
 import '../../../application/validator/email_validator.dart';
 import '../../../application/validator/name_validator.dart';
+import '../../../domain/entity/profile_entity.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../config/app_spacing.dart';
+import 'widgets/user_avatar.dart';
 
 class UserDetailPage extends StatefulWidget {
   const UserDetailPage({super.key});
@@ -17,6 +19,7 @@ class UserDetailPage extends StatefulWidget {
 
 class _UserDetailPageState extends State<UserDetailPage> {
   final AppDataService appDataService = locator.get<AppDataService>();
+  late final ProfileEntity? profile = appDataService.profile;
   late final ProfileCubit profileCubit;
   late final TextEditingController fullNameController,
       emailController,
@@ -30,14 +33,14 @@ class _UserDetailPageState extends State<UserDetailPage> {
   void initState() {
     super.initState();
     profileCubit = locator.get<ProfileCubit>()
-      ..createProfile(userId: appDataService.userId!);
-    fullNameController = TextEditingController(/*text: profile.fullName*/);
-    emailController = TextEditingController(/*text: profile.email*/);
-    mobileNumController = TextEditingController(/*text: profile.mobileNumber*/);
-    ageController = TextEditingController();
-    genderController = TextEditingController();
-    heightController = TextEditingController();
-    weightController = TextEditingController();
+      ..getProfile(appDataService.userId!);
+    fullNameController = TextEditingController(text: profile?.fullName);
+    emailController = TextEditingController(text: profile?.email);
+    mobileNumController = TextEditingController(text: profile?.mobileNumber);
+    ageController = TextEditingController(text: profile?.age.toString());
+    genderController = TextEditingController(text: profile?.gender?.gender);
+    heightController = TextEditingController(text: profile?.height.toString());
+    weightController = TextEditingController(text: profile?.weight.toString());
   }
 
   @override
@@ -54,108 +57,123 @@ class _UserDetailPageState extends State<UserDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const .all(16),
-        child: Column(
-          children: [
-            // User Avatar
-            // UserAvatar(profileCubit: profileCubit, profileEntity: profile),
-            AppSpacing.h16,
+    final ColorScheme colorScheme = ColorScheme.of(context);
+    final AppDataService appDataService = locator.get();
 
-            // Full Name Text Field
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Full Name'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: fullNameController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) => nameValidator(value),
-              decoration: const InputDecoration(
-                hintText: 'Enter your full name',
+    return Scaffold(
+      backgroundColor: colorScheme.secondaryContainer,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // User Avatar
+              // UserAvatar(
+              //   profileCubit: profileCubit,
+              //   profileEntity: appDataService.profile!,
+              // ),
+              AppSpacing.h16,
+
+              // Full Name Text Field
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Full Name'),
               ),
-            ),
-            AppSpacing.h16,
+              AppSpacing.h04,
+              TextFormField(
+                controller: fullNameController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) => nameValidator(value),
+                decoration: const InputDecoration(
+                  hintText: 'Enter your full name',
+                ),
+              ),
+              AppSpacing.h16,
 
-            // Email Text Field
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Email'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: emailController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) => emailValidator(value),
-              decoration: const InputDecoration(hintText: 'Enter your email'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            AppSpacing.h16,
+              // Email Text Field
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Email'),
+              ),
+              AppSpacing.h04,
+              TextFormField(
+                controller: emailController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (value) => emailValidator(value),
+                decoration: const InputDecoration(hintText: 'Enter your email'),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              AppSpacing.h16,
 
-            // Mobile Number Text Field
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Mobile number'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: mobileNumController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(hintText: 'Mobile Number'),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                PhoneInputFormatter(),
-              ],
-            ),
-            AppSpacing.h16,
+              // Mobile Number Text Field
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Mobile number'),
+              ),
+              AppSpacing.h04,
+              TextFormField(
+                controller: mobileNumController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(hintText: 'Mobile Number'),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  PhoneInputFormatter(),
+                ],
+              ),
+              AppSpacing.h16,
 
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Age'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: ageController,
-              decoration: const InputDecoration(hintText: 'Enter your age'),
-              keyboardType: TextInputType.number,
-            ),
-            AppSpacing.h16,
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Age'),
+              ),
+              AppSpacing.h04,
+              TextFormField(
+                controller: ageController,
+                decoration: const InputDecoration(hintText: 'Enter your age'),
+                keyboardType: TextInputType.number,
+              ),
+              AppSpacing.h16,
 
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Gender'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: genderController,
-              decoration: const InputDecoration(hintText: 'Enter your gender'),
-            ),
-            AppSpacing.h16,
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Gender'),
+              ),
+              AppSpacing.h04,
+              TextFormField(
+                controller: genderController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your gender',
+                ),
+              ),
+              AppSpacing.h16,
 
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Height'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: heightController,
-              decoration: const InputDecoration(hintText: 'Enter your height'),
-            ),
-            AppSpacing.h16,
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Height'),
+              ),
+              AppSpacing.h04,
+              TextFormField(
+                controller: heightController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your height',
+                ),
+              ),
+              AppSpacing.h16,
 
-            const Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Text('Weight'),
-            ),
-            AppSpacing.h04,
-            TextFormField(
-              controller: weightController,
-              decoration: const InputDecoration(hintText: 'Enter your weight'),
-            ),
-            AppSpacing.h16,
-          ],
+              const Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Text('Weight'),
+              ),
+              AppSpacing.h04,
+              TextFormField(
+                controller: weightController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your weight',
+                ),
+              ),
+              AppSpacing.h16,
+            ],
+          ),
         ),
       ),
     );

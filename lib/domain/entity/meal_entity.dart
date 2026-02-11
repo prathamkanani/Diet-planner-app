@@ -1,9 +1,17 @@
-enum MealType { breakfast, lunch, dinner }
+enum MealType {
+  breakfast('Breakfast'),
+  lunch('Lunch'),
+  dinner('Dinner');
+
+  final String mealType;
+
+  const MealType(this.mealType);
+}
+
+enum MealOption { A, B}
 
 class MealEntity {
-  final DateTime day;
-
-  final MealType mealType;
+  final MealOption option;
 
   final String dish;
 
@@ -11,17 +19,16 @@ class MealEntity {
 
   final int protein;
 
-  final int carbohydrate;
+  final int carbs;
 
   final int fat;
 
   const MealEntity({
-    required this.mealType,
+    required this.option,
     required this.dish,
-    required this.day,
     required this.calorie,
     required this.protein,
-    required this.carbohydrate,
+    required this.carbs,
     required this.fat,
   });
 }
