@@ -55,7 +55,7 @@ class ExpandableMealOption extends StatelessWidget {
       bloc: cubit,
       // TODO: Stop building it when its loading and build when its logged.
       buildWhen: (_, next) {
-        return next is !MealLoggingState;
+        return next is! MealLoggingState;
       },
       builder: (context, state) {
         bool isSelected = false;
@@ -71,7 +71,9 @@ class ExpandableMealOption extends StatelessWidget {
                 ? () => dialogBuilder(context, true)
                 : isTypeLogged
                 ? () => dialogBuilder(context, false)
-                : () => context.read<MealLogCubit>().toggleMeal(mealType, meal),
+                : isSelected
+                ? () => cubit.unselectedMeal(mealType, meal)
+                : () => cubit.selectedMeal(mealType, meal),
             child: Card(
               color: cs.secondaryContainer,
               child: ListTile(

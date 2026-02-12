@@ -21,6 +21,7 @@ class MealTile extends StatefulWidget {
 
 class _MealTileState extends State<MealTile> {
   late final MealType? mealType = widget.mealOptionListEntity?.mealType;
+  late final List<MealEntity>? meals = widget.mealOptionListEntity?.mealOptions;
 
   bool isPast(DateTime date) {
     DateTime today = DateTime.now();
@@ -52,24 +53,22 @@ class _MealTileState extends State<MealTile> {
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             children:
-            widget.mealOptionListEntity?.mealOptions?.map((
-                final MealEntity mealEntity,
-                ) {
-              bool isTypeLogged = widget.loggedMeals.containsKey(
-                mealType,
-              );
-              bool isLogged =
-                  widget.loggedMeals[mealType] == mealEntity.option;
+                meals?.map((final MealEntity mealEntity) {
+                      bool isTypeLogged = widget.loggedMeals.containsKey(
+                        mealType,
+                      );
+                      bool isLogged =
+                          widget.loggedMeals[mealType] == mealEntity.option;
 
-              return ExpandableMealOption(
-                mealType: mealType!,
-                meal: mealEntity,
-                isLogged: isLogged,
-                isTypeLogged: isTypeLogged,
-                isPast: isPast(widget.currentDate),
-              );
-            }).toList()
-            as List<Widget>,
+                      return ExpandableMealOption(
+                        mealType: mealType!,
+                        meal: mealEntity,
+                        isLogged: isLogged,
+                        isTypeLogged: isTypeLogged,
+                        isPast: isPast(widget.currentDate),
+                      );
+                    }).toList()
+                    as List<Widget>,
           ),
         ),
       ),

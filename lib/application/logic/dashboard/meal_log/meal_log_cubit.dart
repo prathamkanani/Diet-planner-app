@@ -11,17 +11,24 @@ class MealLogCubit extends Cubit<MealLogState> {
 
   Map<MealType, MealEntity> _selectedMealType = {};
 
-  void toggleMeal(MealType type, MealEntity mealEntity) {
+  void selectedMeal(MealType type, MealEntity mealEntity) {
     final updated = Map<MealType, MealEntity>.from(_selectedMealType);
 
-    if (updated.containsKey(type) && updated.containsValue(mealEntity)) {
-      updated.remove(type);
-    } else {
-      updated[type] = mealEntity;
-    }
+    updated[type] = mealEntity;
 
     _selectedMealType = updated;
     emit(MealSelectedState(_selectedMealType));
+  }
+
+  void unselectedMeal(MealType type, MealEntity mealEntity) {
+    if(!_selectedMealType.containsKey(type)) return;
+
+    final updated = Map<MealType, MealEntity>.from(_selectedMealType);
+
+    updated.remove(type);
+
+    _selectedMealType = updated;
+    emit(MealLogInitialState(_selectedMealType));
   }
 
   Future<void> logMeal(DateTime date) async {

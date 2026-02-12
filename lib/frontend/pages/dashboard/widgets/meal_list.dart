@@ -10,18 +10,20 @@ class DailyMealList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: dailyMealsEntity.mealOptionListEntity.length,
-      itemBuilder: (BuildContext context, int index) {
-        final MealOptionListEntity meal =
-            dailyMealsEntity.mealOptionListEntity[index];
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        childCount: dailyMealsEntity.mealOptionListEntity.length,
+        (context, index) {
+          final MealOptionListEntity meal =
+              dailyMealsEntity.mealOptionListEntity[index];
 
-        return MealTile(
-          mealOptionListEntity: meal,
-          loggedMeals: dailyMealsEntity.loggedMeal,
-          currentDate: dailyMealsEntity.currentDate,
-        );
-      },
+          return MealTile(
+            mealOptionListEntity: meal,
+            loggedMeals: dailyMealsEntity.loggedMeal,
+            currentDate: dailyMealsEntity.currentDate,
+          );
+        },
+      ),
     );
   }
 }
