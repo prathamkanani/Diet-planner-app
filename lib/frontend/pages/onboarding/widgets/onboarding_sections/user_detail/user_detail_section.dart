@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/eum/gender_enum.dart';
+import '../../../../../../domain/entity/profile_entity.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
 
@@ -14,7 +15,7 @@ class UserDetailSection extends StatefulWidget {
     super.key,
     required this.ageController,
     required this.locationController,
-    required this.selectedGender
+    required this.selectedGender,
   });
 
   @override
@@ -40,16 +41,16 @@ class _UserDetailSectionState extends State<UserDetailSection> {
         crossAxisAlignment: .start,
         children: [
           Text(
-            'Tell us a little bit about yourself',
+            S.of(context).tellUsALittleBitAboutYourself,
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSpacing.h24,
-          Text('Please select a gender', style: textTheme.titleSmall),
+          Text(S.of(context).pleaseSelectAGender, style: textTheme.titleSmall),
           AppSpacing.h08,
           Row(
             children: Gender.values.map((final Gender g) {
               final bool isSelected = gender == g;
-              isSelected? widget.selectedGender(g): null;
+              isSelected ? widget.selectedGender(g) : null;
               return Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(right: (g.index == 0) ? 8.0 : 0.0),
@@ -64,14 +65,17 @@ class _UserDetailSectionState extends State<UserDetailSection> {
             }).toList(),
           ),
           AppSpacing.h16,
-          Text('How old are you?', style: textTheme.titleSmall),
+          Text(S.of(context).howOldAreYou, style: textTheme.titleSmall),
           AppSpacing.h08,
           TextFormField(
             controller: widget.ageController,
             keyboardType: TextInputType.number,
           ),
           AppSpacing.h16,
-          Text('Where do you live? (country)', style: textTheme.titleSmall),
+          Text(
+            S.of(context).whereDoYouLiveCountry,
+            style: textTheme.titleSmall,
+          ),
           AppSpacing.h08,
           TextFormField(
             controller: widget.locationController,

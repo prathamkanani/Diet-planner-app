@@ -7,6 +7,7 @@ import '../../../generated/l10n.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../../config/app_spacing.dart';
+import '../home/home_page.dart';
 import '../onboarding/onboarding_page.dart';
 import 'widgets/login_view.dart';
 
@@ -37,7 +38,10 @@ class _LoginPageState extends State<LoginPage> {
     if (state is AuthAuthenticated) {
       final AppDataService appDataService = locator.get<AppDataService>();
       appDataService.userId = state.authEntity.userId;
-      context.pushAndRemoveUntil(const OnboardingPage());
+      state.isOnboarded
+          ? context.pushAndRemoveUntil(const HomePage())
+          : context.pushAndRemoveUntil(const OnboardingPage());
+      // context.pushAndRemoveUntil(const OnboardingPage());
     }
   }
 
@@ -47,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
     final TextTheme textTheme = TextTheme.of(context);
 
     return Scaffold(
-      backgroundColor: cs.primary,
       body: BlocConsumer<AuthCubit, AuthState>(
         bloc: cubit,
         listener: _listenToAuthState,
@@ -57,11 +60,11 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: .center,
                 children: [
-                  CircularProgressIndicator(color: cs.onPrimary),
+                  CircularProgressIndicator(color: cs.primary),
                   AppSpacing.h16,
                   Text(
                     S.of(context).pleaseWaitWhileWeLogYouIn,
-                    style: textTheme.titleMedium?.copyWith(color: cs.onPrimary),
+                    style: textTheme.titleMedium,
                   ),
                 ],
               ),

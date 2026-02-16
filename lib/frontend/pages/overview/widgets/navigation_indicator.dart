@@ -25,8 +25,8 @@ class NavIndicator extends StatelessWidget {
           height: 8,
           decoration: BoxDecoration(
             color: isActive
-                ? colorScheme.onPrimary
-                : colorScheme.onPrimary.withValues(alpha: 0.4),
+                ? colorScheme.primary
+                : colorScheme.primary.withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(4),
           ),
         );

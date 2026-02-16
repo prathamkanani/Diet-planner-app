@@ -1,3 +1,4 @@
+/// Checks if the entered email is in valid format or not.
 String? emailValidator(String? value) {
   if(value == null || value.isEmpty) {
     return 'Please enter an email.';

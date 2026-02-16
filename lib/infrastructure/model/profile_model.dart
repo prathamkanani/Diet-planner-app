@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../domain/eum/gender_enum.dart';
+import '../../domain/entity/auth_entity.dart';
 import '../../domain/entity/profile_entity.dart';
 
 /// Data-Transfer Object for the profile entity.
@@ -32,24 +32,32 @@ class ProfileModel extends ProfileEntity {
       gender: gender,
       age: int.tryParse(age),
       height: double.tryParse(height),
-      weight: double.tryParse(weight)
+      weight: double.tryParse(weight),
     );
   }
 
   ProfileModel.fromAvatar({required String userId, required String avatar})
     : this(userId: userId, avatarUrl: avatar);
 
-  factory ProfileModel.fromEntity(ProfileEntity entity) {
+  factory ProfileModel.fromAuthEntity(AuthEntity auth, String seed) {
+    return ProfileModel(userId: auth.userId, avatarUrl: seed);
+  }
+
+  factory ProfileModel.fromEntity(
+    ProfileEntity entity, [
+    String? email,
+    String? seed,
+  ]) {
     return ProfileModel(
       userId: entity.userId,
-      avatarUrl: entity.avatarUrl,
+      avatarUrl: seed,
       fullName: entity.fullName,
-      email: entity.email,
+      email: email ?? entity.email,
       mobileNumber: entity.mobileNumber,
       weight: entity.weight,
       height: entity.height,
       age: entity.age,
-      gender: entity.gender
+      gender: entity.gender,
     );
   }
 
@@ -61,6 +69,10 @@ class ProfileModel extends ProfileEntity {
       fullName: json['full_name'] as String?,
       email: json['email'] as String?,
       mobileNumber: json['mobile_number'] as String?,
+      age: json['age'],
+      gender: Gender.values.byName(json['gender']),
+      height: toDouble(json['height']),
+      weight: toDouble(json['weight']),
     );
   }
 

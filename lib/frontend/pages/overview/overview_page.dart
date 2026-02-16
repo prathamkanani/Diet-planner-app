@@ -44,7 +44,7 @@ class _OverviewPageState extends State<OverviewPage> {
     final ColorScheme colorScheme = ColorScheme.of(context);
 
     return Scaffold(
-      backgroundColor: colorScheme.primary,
+      // backgroundColor: colorScheme.primary,
       body: Center(
         child: Column(
           children: <Widget>[
@@ -77,12 +77,12 @@ class _OverviewPageState extends State<OverviewPage> {
                         : context.pushReplacement(const LoginPage());
                   },
                   style: FilledButton.styleFrom(
-                    backgroundColor: colorScheme.onPrimary,
+                    backgroundColor: colorScheme.primary,
                   ),
                   child: Text(
                     S.of(context).next,
                     style: textTheme.titleLarge?.copyWith(
-                      color: colorScheme.primary,
+                      color: colorScheme.onPrimary,
                     ),
                   ),
                 ),

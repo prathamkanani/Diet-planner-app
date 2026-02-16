@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../../domain/entity/dialog_entity.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../../../infrastructure/extension/context_extension.dart';
 
 class CustomAlertDialog extends StatelessWidget {
@@ -19,7 +20,7 @@ class CustomAlertDialog extends StatelessWidget {
       ),
       content: isContent ? Text(dialog.content!) : null,
       actions: [
-        TextButton(onPressed: context.pop, child: const Text('Go back')),
+        TextButton(onPressed: context.pop, child: Text(S.of(context).goBack)),
       ],
     );
   }

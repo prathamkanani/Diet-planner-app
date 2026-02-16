@@ -12,9 +12,9 @@ class AuthCubit extends Cubit<AuthState> {
   /// Gets the current user, if exists.
   void getUser() async {
     try {
-      final authUser = authRepository.getUser();
+      final authUser = await authRepository.getUser();
       if (authUser != null) {
-        return emit(AuthAuthenticated(authUser));
+        return emit(AuthAuthenticated(authUser, authUser.isOnboarded));
       }
       return emit(AuthUnauthenticated());
     } catch (e) {
@@ -28,7 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoading());
       final authUser = await authRepository.signIn();
       if (authUser != null) {
-        emit(AuthAuthenticated(authUser));
+        emit(AuthAuthenticated(authUser, authUser.isOnboarded));
       }
     } catch (e) {
       emit(AuthAuthenticationFailed(message: e.toString()));

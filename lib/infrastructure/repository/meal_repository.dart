@@ -10,10 +10,9 @@ class MealRepositoryImpl implements MealRepository {
 
   @override
   Future<DailyMealsEntity?> fetchExistingMeal(
-    String mealPlanId,
     DateTime currentDate,
   ) async {
-    return await source.fetchExistingMeal(mealPlanId, currentDate);
+    return await source.fetchExistingMeal(currentDate);
   }
 
   @override

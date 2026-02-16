@@ -1,5 +1,6 @@
 // © Meditab Software 2025
 import 'package:flutter/material.dart';
+import '../../../../generated/l10n.dart';
 import '../../../config/app_spacing.dart';
 import '../../../widgets/fade_animation.dart';
 
@@ -19,9 +20,10 @@ class OverviewSectionOne extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 0),
             child: Text(
-              'Welcome, Health Explorer',
+              S.of(context).welcomeHealthExplorer,
               style: textTheme.displayMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .bold,
               ),
             ),
           ),
@@ -29,9 +31,10 @@ class OverviewSectionOne extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 500),
             child: Text(
-              'I am NutriPal.',
+              S.of(context).iAmNutripal,
               style: textTheme.displayMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .bold,
               ),
             ),
           ),
@@ -39,9 +42,10 @@ class OverviewSectionOne extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 1000),
             child: Text(
-              "Your health's new best friend.",
+              S.of(context).yourHealthsNewBestFriend,
               style: textTheme.displayMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .bold,
               ),
             ),
           ),

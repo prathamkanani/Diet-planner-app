@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../generated/l10n.dart';
 import '../../../config/app_assets.dart';
 
 class SignInWithGoogleButton extends StatelessWidget {
@@ -16,8 +17,8 @@ class SignInWithGoogleButton extends StatelessWidget {
       // width: double.infinity,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          backgroundColor: colorScheme.onSecondary,
-          foregroundColor: colorScheme.onPrimary,
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.primary,
           shape: RoundedSuperellipseBorder(
             borderRadius: BorderRadius.circular(13),
           ),
@@ -32,9 +33,9 @@ class SignInWithGoogleButton extends StatelessWidget {
               child: Image.asset(AppAssets.googleLogo, height: 20, width: 20),
             ),
             Text(
-              'Continue with Google',
+              S.of(context).continueWithGoogle,
               style: textTheme.bodyLarge?.copyWith(
-                color: colorScheme.primary,
+                color: colorScheme.onPrimary,
                 fontWeight: .bold,
               ),
             ),

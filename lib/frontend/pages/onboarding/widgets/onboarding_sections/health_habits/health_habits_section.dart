@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/health_habits_entity.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import 'health_habit_chip.dart';
 
@@ -42,25 +43,22 @@ class _HealthHabitsSectionState extends State<HealthHabitsSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Which health habits are most important to you?',
+          S.of(context).whichHealthHabitsAreMostImportantToYou,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         AppSpacing.h16,
-        Text('Recommended health habits', style: textTheme.titleMedium),
+        Text(S.of(context).recommendedHealthHabits, style: textTheme.titleMedium),
         AppSpacing.h08,
         Flexible(
-          child: ListView(
-            padding: EdgeInsets.zero,
+          child: Wrap(
+            spacing: 8,
             children: HealthHabits.values.map((final HealthHabits habit) {
               final bool isSelected = selectedHabits.contains(habit);
               isSelected ? widget.selectedHabit(selectedHabits) : null;
-              return Align(
-                alignment: .centerLeft,
-                child: HealthHabitChip(
-                  habit: habit,
-                  isSelected: isSelected,
-                  onTap: _handleTap,
-                ),
+              return HealthHabitChip(
+                habit: habit,
+                isSelected: isSelected,
+                onTap: _handleTap,
               );
             }).toList(),
           ),

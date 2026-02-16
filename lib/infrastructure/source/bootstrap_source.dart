@@ -1,4 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../application/service/app_data_service.dart';
+import '../app_injector.dart';
 
 abstract interface class BootstrapSource {
   bool isUserAuthenticated();
@@ -8,13 +10,15 @@ abstract interface class BootstrapSource {
 
 class SupabaseBSource implements BootstrapSource {
   final SupabaseClient supabase;
+  final AppDataService appDataService = locator.get();
 
-  const SupabaseBSource(this.supabase);
+  SupabaseBSource(this.supabase);
 
   @override
   bool isUserAuthenticated() {
     final Session? session = supabase.auth.currentSession;
     final String? userId = session?.user.id;
+    appDataService.userId = userId;
     if (userId != null) return true;
     return false;
   }

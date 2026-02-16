@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../application/logic/dashboard/meal_log/meal_log_cubit.dart';
 import '../../../../application/logic/dashboard/meal_log/meal_log_state.dart';
 import '../../../../domain/entity/meal_entity.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
+import 'nutrients_row.dart';
 
 class ExpandableMealOption extends StatelessWidget {
   final MealType mealType;
@@ -33,17 +36,15 @@ class ExpandableMealOption extends StatelessWidget {
         builder: (context) {
           return AlertDialog(
             title: isPast
-                ? const Text('Forgot to log!')
-                : const Text('Logged!'),
+                ? Text(S.of(context).forgotToLog)
+                : Text(S.of(context).logged),
             content: isPast
-                ? const Text('Sorry, cannot log past meals.')
-                : const Text(
-                    'Already logged once. Cannot change or log again!',
-                  ),
+                ? Text(S.of(context).sorryCannotLogPastMeals)
+                : Text(S.of(context).alreadyLoggedOnceCannotChangeOrLogAgain),
             actions: [
               TextButton(
                 onPressed: context.pop,
-                child: Text('Ok', style: textTheme.bodyLarge),
+                child: Text(S.of(context).ok, style: textTheme.bodyLarge),
               ),
             ],
           );
@@ -53,9 +54,8 @@ class ExpandableMealOption extends StatelessWidget {
 
     return BlocBuilder<MealLogCubit, MealLogState>(
       bloc: cubit,
-      // TODO: Stop building it when its loading and build when its logged.
       buildWhen: (_, next) {
-        return next is! MealLoggingState;
+        return !(next is MealLoggingState && next.isLogging);
       },
       builder: (context, state) {
         bool isSelected = false;
@@ -71,38 +71,46 @@ class ExpandableMealOption extends StatelessWidget {
                 ? () => dialogBuilder(context, true)
                 : isTypeLogged
                 ? () => dialogBuilder(context, false)
-                : isSelected
-                ? () => cubit.unselectedMeal(mealType, meal)
-                : () => cubit.selectedMeal(mealType, meal),
-            child: Card(
-              color: cs.secondaryContainer,
-              child: ListTile(
-                title: Text(meal.dish, style: textTheme.bodyMedium),
-                subtitle: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text('Calories ${meal.calorie} kcal'),
-                    Text('Protein ${meal.protein} g'),
-                    Text('Carbs ${meal.carbs} g'),
-                    Text('Fat ${meal.fat} g'),
-                  ],
+                // : isSelected
+                // ? () => cubit.unselectedMeal(mealType, meal)
+                // : () => cubit.selectedMeal(mealType, meal),
+                : () => cubit.changeSelection(mealType, meal),
+            child: Container(
+              margin: const .symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: isTypeLogged
+                    ? cs.primary.withValues(alpha: 0.05)
+                    : isSelected
+                    ? cs.primary.withValues(alpha: 0.3)
+                    : cs.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isSelected ? cs.primary : cs.primaryContainer,
+                  width: 2,
                 ),
+              ),
+              child: ListTile(
+                title: Text(
+                  meal.dish,
+                  style: textTheme.bodyLarge?.copyWith(fontWeight: .bold),
+                ),
+                subtitle: NutrientsRow(mealEntity: meal),
                 trailing: isPast && !isLogged
                     ? Icon(
                         Icons.circle_outlined,
-                        color: cs.primaryContainer.withValues(alpha: 0.3),
+                        color: cs.primaryContainer.withValues(alpha: 0.7),
                       )
                     : isLogged
                     ? Icon(
                         Icons.check_circle,
-                        color: cs.primary.withValues(alpha: 0.3),
+                        color: cs.primary.withValues(alpha: 0.7),
                       )
                     : isSelected
                     ? Icon(Icons.check_circle, color: cs.primary)
                     : Icon(
                         Icons.circle_outlined,
                         color: isTypeLogged
-                            ? cs.primaryContainer.withValues(alpha: 0.3)
+                            ? cs.primaryContainer.withValues(alpha: 0.7)
                             : cs.primaryContainer,
                       ),
               ),

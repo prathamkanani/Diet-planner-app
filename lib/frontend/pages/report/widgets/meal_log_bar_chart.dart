@@ -1,10 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../../domain/entity/daily_meal_log.dart';
+import '../../../../domain/entity/daily_meal_log_entity.dart';
 
 class MealLogBarChart extends StatelessWidget {
-  final List<DailyMealLog> logs;
+  final List<DailyMealLogEntity> logs;
 
   const MealLogBarChart({super.key, required this.logs});
 
@@ -65,7 +65,7 @@ class MealLogBarChart extends StatelessWidget {
     );
   }
 
-  List<BarChartGroupData> buildBarGroups(List<DailyMealLog> logs) {
+  List<BarChartGroupData> buildBarGroups(List<DailyMealLogEntity> logs) {
     return List.generate(logs.length, (index) {
       final log = logs[index];
 

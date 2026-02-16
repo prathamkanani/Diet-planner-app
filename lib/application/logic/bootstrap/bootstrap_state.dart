@@ -2,6 +2,10 @@ sealed class BootstrapState {
   const BootstrapState();
 }
 
+final class BootstrapInitialState extends BootstrapState {
+  const BootstrapInitialState();
+}
+
 final class BootstrapLoadingState extends BootstrapState {
   const BootstrapLoadingState();
 }

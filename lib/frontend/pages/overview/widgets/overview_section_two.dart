@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../generated/l10n.dart';
 import '../../../config/app_assets.dart';
 import '../../../config/app_spacing.dart';
 import '../../../widgets/fade_animation.dart';
@@ -19,9 +20,10 @@ class OverviewSectionTwo extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 0),
             child: Text(
-              'Get regular calorie tracking!',
+              S.of(context).getRegularCalorieTracking,
               style: textTheme.displayMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .bold
               ),
             ),
           ),
@@ -36,9 +38,10 @@ class OverviewSectionTwo extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 500),
             child: Text(
-              'Easily track calories, monitor nutrition, and stay aligned with your health goals.',
+              S.of(context).easilyTrackCaloriesMonitorNutritionAndStayAlignedWithYour,
               style: textTheme.titleLarge?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .w600
               ),
             ),
           ),

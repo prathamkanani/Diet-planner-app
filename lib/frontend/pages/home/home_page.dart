@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../generated/l10n.dart';
 import '../dashboard/dashboard_page.dart';
-import '../report/report_page.dart';
 import '../user_detail/user_detail_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,20 +14,9 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = const [
     DashboardPage(),
-    ReportPage(),
+    // ReportPage(),
     UserDetailPage(),
   ];
-
-  String pageToTitle(int index) {
-    switch (index) {
-      case 1:
-        return S.of(context).report;
-      case 2:
-        return S.of(context).userDetails;
-      default:
-        return S.of(context).dashboard;
-    }
-  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,9 +30,6 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: colorScheme.secondaryContainer,
-      appBar: AppBar(
-        title: Text(pageToTitle(_selectedIndex)),
-      ),
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -59,19 +44,19 @@ class _HomePageState extends State<HomePage> {
         child: BottomNavigationBar(
           elevation: 3,
           items: [
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home_outlined),
+              activeIcon: const Icon(Icons.home),
+              label: S.of(context).home,
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.insights),
-              label: 'Report',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Account',
+            // const BottomNavigationBarItem(
+            //   icon: Icon(Icons.insights),
+            //   label: 'Report',
+            // ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person_outline),
+              activeIcon: const Icon(Icons.person),
+              label: S.of(context).account,
             ),
           ],
           currentIndex: _selectedIndex,

@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 import '../../domain/entity/onboarding_entity.dart';
 import '../../domain/entity/profile_entity.dart';
 import '../model/onboarding_model.dart';
@@ -23,9 +24,16 @@ class OnboardingRemoteSource implements OnboardingSource {
   Future<OnboardingEntity> saveOnboardingDetails(
     OnboardingEntity onboard,
   ) async {
+    String seed = const Uuid().v4();
     final Map<String, dynamic> res = await supabase
         .from('profiles')
-        .insert(ProfileModel.fromEntity(onboard.profileEntity).toJson())
+        .insert(
+          ProfileModel.fromEntity(
+            onboard.profileEntity,
+            user.email,
+            seed,
+          ).toJson(),
+        )
         .select()
         .single();
 
@@ -42,6 +50,7 @@ class OnboardingRemoteSource implements OnboardingSource {
   @override
   Future<String?> generateMealAI(OnboardingEntity onboard) async {
     final onboarding = OnboardingModel.fromEntity(onboard);
+    // ToDo: pass data model instead of raw string;
     return gemini.generateMealAI(onboarding);
   }
 }

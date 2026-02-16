@@ -33,7 +33,10 @@ class MealLogRemoteSource implements MealLogSource {
         'log_date': date.toString(),
         'meal_type': meal.key.name,
         'option': meal.value.option.name,
-        'calories': meal.value.calorie
+        'calories': meal.value.calorie,
+        'carbs': meal.value.carbs,
+        'fats': meal.value.fat,
+        'proteins': meal.value.protein
       };
     }).toList();
 

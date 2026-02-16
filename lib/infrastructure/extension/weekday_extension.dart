@@ -1,6 +1,12 @@
-import '../../domain/eum/weekday.dart';
+/// Represents the days of the week.
+enum Weekday { monday, tuesday, wednesday, thursday, friday, saturday, sunday }
 
+/// TODO: Define getters or data members in the enum itself with itself
+/// with using the advance enums
+
+/// Extensions for providing utilities for [Weekday].
 extension WeekdayMapper on Weekday {
+  /// Maps a weekday to numeric value
   int get value {
     return switch (this) {
       Weekday.monday => 1,
@@ -13,6 +19,7 @@ extension WeekdayMapper on Weekday {
     };
   }
 
+  /// Labels to show a weekday in the UI. (capitalized)
   String get label {
     return name[0].toUpperCase() + name.substring(1);
   }

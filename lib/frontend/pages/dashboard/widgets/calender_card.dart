@@ -2,58 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
 
-class WeekCalendarCard extends StatefulWidget {
+class WeekCalendarCard extends StatelessWidget {
   final DateTime date;
   final ValueChanged<DateTime> onDatePicked;
+  final ScrollController scrollController;
 
   const WeekCalendarCard({
     super.key,
+    required this.scrollController,
     required this.date,
     required this.onDatePicked,
   });
 
   @override
-  State<WeekCalendarCard> createState() => _WeekCalendarCardState();
-}
-
-class _WeekCalendarCardState extends State<WeekCalendarCard> {
-  late DateTime _focusedDay = widget.date;
-  late DateTime? _selectedDay = widget.date;
-
-  @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    final cs = context.cs;
+    return Container(
+      decoration: BoxDecoration(
+        color: cs.secondaryContainer,
+        boxShadow: [
+          BoxShadow(
+            color: cs.shadow.withValues(alpha: 0.05),
+            blurRadius: 5,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: TableCalendar(
           firstDay: DateTime(2000),
           lastDay: DateTime.now(),
-          focusedDay: _focusedDay,
+          focusedDay: date,
           calendarFormat: .week,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
-            widget.onDatePicked(selectedDay);
+          startingDayOfWeek: .monday,
+          selectedDayPredicate: (day) => isSameDay(date, day),
+          onDaySelected: (selectedDay, _) {
+            onDatePicked(selectedDay);
           },
 
-          headerStyle: const HeaderStyle(
-            formatButtonVisible: false
-          ),
+          headerStyle: const HeaderStyle(formatButtonVisible: false),
           onHeaderTapped: (focusDay) async {
             final picked = await showDatePicker(
               context: context,
               firstDate: DateTime(2000),
               lastDate: DateTime.now(),
-              initialDate: _selectedDay
+              initialDate: date,
             );
-            setState(() {
-              picked != null ? _focusedDay = picked : null;
-            });
+            picked != null ? onDatePicked(picked) : null;
           },
           calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, day, focusedDay) {

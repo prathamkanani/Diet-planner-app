@@ -1,8 +1,31 @@
-import '../eum/activity_level_entity.dart';
 import 'health_habits_entity.dart';
-import 'meal_planning.dart';
 import 'profile_entity.dart';
 
+/// Options for a user about meal planning when he/she is being onboarded.
+enum MealPlanning {
+  never("Never"),
+  rarely("Rarely"),
+  occasionally("Occasionally"),
+  frequently("Frequently"),
+  always("Always");
+
+  final String meal;
+
+  const MealPlanning(this.meal);
+}
+
+/// Options for a user about activity level when he/she is being onboarded.
+enum ActivityLevel {
+  low('Not Very Active'),
+  medium('Lightly Active'),
+  high('Very Active');
+
+  final String title;
+
+  const ActivityLevel(this.title);
+}
+
+/// The entity that is created when a user is onboarded.
 class OnboardingEntity {
   final ProfileEntity profileEntity;
 

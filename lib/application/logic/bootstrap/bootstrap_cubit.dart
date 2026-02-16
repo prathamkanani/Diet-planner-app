@@ -7,23 +7,13 @@ import 'bootstrap_state.dart';
 class BootstrapCubit extends Cubit<BootstrapState> {
   final BootstrapRepository repository;
 
-  BootstrapCubit(this.repository) : super(const BootstrapLoadingState());
+  BootstrapCubit(this.repository) : super(const BootstrapInitialState());
 
   final AppDataService appDataService = locator.get();
 
-  // void isUserAuth() async {
-  //   try {
-  //     final isUserAuthenticated = repository.isUserAuthenticated();
-  //     await Future.delayed(const Duration(microseconds: 1));
-  //     isUserAuthenticated
-  //         ? emit(const UserAuthenticatedState())
-  //         : emit(const UserUnauthenticatedState());
-  //   } catch (e) {
-  //     emit(BootstrapErrorState(e));
-  //   }
-  // }
-
+  /// This checks whether a user is onboarded or not, if authenticated.
   Future<void> isOnboardingCompleted() async {
+    emit(const BootstrapLoadingState());
     try {
       final isUserAuthenticated = repository.isUserAuthenticated();
       if(isUserAuthenticated){
@@ -34,7 +24,6 @@ class BootstrapCubit extends Cubit<BootstrapState> {
             : emit(const UserDidNotOnboardState());
         return;
       }
-      await Future.delayed(const Duration(microseconds: 1));
       emit(const UserUnauthenticatedState());
     } catch (e) {
       emit(BootstrapErrorState(e));

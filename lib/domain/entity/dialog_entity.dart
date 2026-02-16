@@ -1,3 +1,4 @@
+/// Different Dialogs to show for different parts of onboarding.
 class DialogEntity {
   final int page;
   final String title;

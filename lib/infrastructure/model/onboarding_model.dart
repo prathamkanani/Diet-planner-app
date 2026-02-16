@@ -1,7 +1,5 @@
 import '../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../domain/eum/activity_level_entity.dart';
 import '../../domain/entity/health_habits_entity.dart';
-import '../../domain/entity/meal_planning.dart';
 import '../../domain/entity/onboarding_entity.dart';
 import '../../domain/entity/profile_entity.dart';
 import '../app_injector.dart';

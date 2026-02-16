@@ -9,13 +9,13 @@ class ProfileRepositoryImpl implements ProfileRepository {
   ProfileRepositoryImpl(this.source);
 
   @override
-  Future<void> saveUserProfile(ProfileEntity profile, String seed) async {
-    await source.saveProfile(profile, seed);
+  Future<void> saveUserProfile(ProfileEntity profile) async {
+    await source.saveProfile(profile);
   }
 
   @override
-  Future<void> editUserProfile(ProfileEntity profile) async {
-    await source.editProfile(profile);
+  Future<ProfileEntity> editUserProfile(ProfileEntity profile) async {
+    return await source.editProfile(profile);
   }
 
   @override

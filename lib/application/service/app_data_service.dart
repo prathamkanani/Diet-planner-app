@@ -38,7 +38,4 @@ abstract class AppDataService {
   String? breakfastLogId;
   String? lunchLogId;
   String? dinnerLogId;
-
-  /// Total calories for a day
-  late final int totalCalories;
 }

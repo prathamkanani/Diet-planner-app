@@ -12,7 +12,7 @@ class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(this.source);
 
   @override
-  AuthEntity? getUser() {
+  Future<AuthEntity?> getUser() {
     return source.getUser();
   }
 

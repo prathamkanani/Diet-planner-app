@@ -1,7 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../application/service/app_data_service.dart';
 import '../../application/service/auth_service.dart';
 import '../../domain/entity/auth_entity.dart';
 import '../../domain/entity/session_entity.dart';
+import '../app_injector.dart';
 
 // Defines contracts for authentication operations.
 abstract interface class AuthDataSource {
@@ -9,7 +11,7 @@ abstract interface class AuthDataSource {
 
   Future<void> signOut(FederatedAuthType type);
 
-  AuthEntity? getUser();
+  Future<AuthEntity?> getUser();
 }
 
 class SupabaseAuthSource implements AuthDataSource {
@@ -18,9 +20,11 @@ class SupabaseAuthSource implements AuthDataSource {
 
   SupabaseAuthSource(this.supabase, this.authService);
 
+  final AppDataService appDataService = locator.get();
+
   /// Gets user from supabase current session.
   @override
-  AuthEntity? getUser() {
+  Future<AuthEntity?> getUser() async {
     final Session? session = supabase.auth.currentSession;
     if (session == null) return null;
     return AuthEntity(userId: session.user.id);
@@ -41,7 +45,19 @@ class SupabaseAuthSource implements AuthDataSource {
     // Get the current user.
     final User currentUser = result.user!;
 
-    // Converts supabase's user to profile entity.
+    final response = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+
+    // appDataService.profile = ProfileEntity(userId: currentUser.id);
+
+    if (response?['id'] != null) {
+      return AuthEntity(userId: currentUser.id, isOnboarded: true);
+    }
+
+    // Converts supabase's user to auth entity.
     return AuthEntity(userId: currentUser.id);
   }
 

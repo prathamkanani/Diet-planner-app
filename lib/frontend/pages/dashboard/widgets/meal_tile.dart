@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../domain/entity/meal_entity.dart';
 import '../../../../domain/entity/meal_option_list_entity.dart';
+import '../../../../infrastructure/utils/helpers.dart';
+import '../../../config/app_color_palette.dart';
 import 'expandable_meal_option.dart';
 
 class MealTile extends StatefulWidget {
@@ -23,7 +25,11 @@ class _MealTileState extends State<MealTile> {
   late final MealType? mealType = widget.mealOptionListEntity?.mealType;
   late final List<MealEntity>? meals = widget.mealOptionListEntity?.mealOptions;
 
-  bool isPast(DateTime date) {
+  bool _isSameMealType() {
+    return mealType == fromTime(widget.currentDate);
+  }
+
+  bool _isPast(DateTime date) {
     DateTime today = DateTime.now();
     DateTime todayDate = DateTime(today.year, today.month, today.day);
     DateTime dateOnly = DateTime(date.year, date.month, date.day);
@@ -32,21 +38,18 @@ class _MealTileState extends State<MealTile> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = ColorScheme.of(context);
-
     return Padding(
       padding: const .only(bottom: 16.0),
       child: Material(
-        elevation: 3.0,
-        shadowColor: colorScheme.shadow,
         shape: RoundedSuperellipseBorder(
           borderRadius: BorderRadius.circular(12),
         ),
         child: ClipRRect(
           borderRadius: BorderRadiusGeometry.circular(12),
           child: ExpansionTile(
-            backgroundColor: colorScheme.surface,
-            collapsedBackgroundColor: colorScheme.surface,
+            splashColor: AppColorPalette.transparent,
+            // TODO: according to time, expand it.
+            initiallyExpanded: _isSameMealType(),
             childrenPadding: const .symmetric(horizontal: 16, vertical: 8),
             title: Text(
               mealType?.mealType ?? '',
@@ -65,7 +68,7 @@ class _MealTileState extends State<MealTile> {
                         meal: mealEntity,
                         isLogged: isLogged,
                         isTypeLogged: isTypeLogged,
-                        isPast: isPast(widget.currentDate),
+                        isPast: _isPast(widget.currentDate),
                       );
                     }).toList()
                     as List<Widget>,

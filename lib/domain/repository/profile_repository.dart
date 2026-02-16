@@ -6,8 +6,8 @@ abstract interface class ProfileRepository {
   Future<ProfileEntity> getUserProfile(String userId);
 
   /// Saves the user profile to the database
-  Future<void> saveUserProfile(ProfileEntity profile, String seed);
+  Future<void> saveUserProfile(ProfileEntity profile);
 
   /// Enables editing of the user profile
-  Future<void> editUserProfile(ProfileEntity profile);
+  Future<ProfileEntity> editUserProfile(ProfileEntity profile);
 }

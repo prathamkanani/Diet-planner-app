@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 
 class MoreAboutUserSection extends StatelessWidget {
@@ -20,15 +21,15 @@ class MoreAboutUserSection extends StatelessWidget {
         crossAxisAlignment: .start,
         children: [
           Text(
-            'Just a few more questions',
+            S.of(context).justAFewMoreQuestions,
             style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSpacing.h24,
-          Text('How tall are you? (in cm)', style: textTheme.titleSmall),
+          Text(S.of(context).howTallAreYouInCm, style: textTheme.titleSmall),
           AppSpacing.h08,
           TextFormField(controller: heightController, keyboardType: .number),
           AppSpacing.h16,
-          Text('How much do you weigh? (in kg)', style: textTheme.titleSmall),
+          Text(S.of(context).howMuchDoYouWeighInKg, style: textTheme.titleSmall),
           AppSpacing.h08,
           TextFormField(controller: weightController, keyboardType: .number),
         ],

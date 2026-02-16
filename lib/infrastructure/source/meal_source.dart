@@ -8,7 +8,6 @@ import '../app_injector.dart';
 
 abstract interface class MealSource {
   Future<DailyMealsEntity?> fetchExistingMeal(
-    String mealPlanId,
     DateTime currentDate,
   );
 
@@ -25,7 +24,6 @@ class MealRemoteSource implements MealSource {
 
   @override
   Future<DailyMealsEntity?> fetchExistingMeal(
-    String mealPlanId,
     DateTime currentDate,
   ) async {
     final res = await supabase
@@ -40,11 +38,12 @@ class MealRemoteSource implements MealSource {
           .from('meal_plan_days')
           .select()
           .eq('day', currentDate.weekday)
+          .eq('meal_plan_id', res['id'])
           .maybeSingle();
       // Generated logs for that day, if any.
       final mealLogs = await supabase
           .from('meal_logs')
-          .select('meal_type, option, calories')
+          .select('meal_type, option, calories, carbs, fats, proteins')
           .eq('meal_id', response?['id']);
       return DailyMealsModel.fromJson(currentDate, response, mealLogs);
     }

@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/logic/dashboard/meal_load/meal_cubit.dart';
 import '../../../application/logic/dashboard/meal_log/meal_log_cubit.dart';
 import '../../../application/service/app_data_service.dart';
+import '../../../generated/l10n.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
+import '../../config/app_color_palette.dart';
 import '../../config/app_spacing.dart';
 import 'widgets/dashboard_date.dart';
 import 'widgets/dashboard_view.dart';
@@ -32,17 +34,14 @@ class _DashboardState extends State<DashboardPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final isNewUser = appDataService.isNewUser;
       if (isNewUser != null && isNewUser) {
-        await mealLoadingCubit.saveGeneratedMealPlan(appDataService.jsonList);
-        await mealLoadingCubit.fetchExistingMealPlan(
-          appDataService.mealPlanId!,
-          DateTime.now(),
-        );
+        // ToDo: never make api calls in ui.
+        // ToDo: Move the api calls in their respective source and cubits.
+        // ToDo: Do not make async calls in the UI.
+         mealLoadingCubit.saveGeneratedMealPlan(appDataService.jsonList);
+         mealLoadingCubit.fetchExistingMealPlan(DateTime.now());
         return;
       }
-      mealLoadingCubit.fetchExistingMealPlan(
-        appDataService.mealPlanId!,
-        DateTime.now(),
-      );
+      mealLoadingCubit.fetchExistingMealPlan(DateTime.now());
     });
   }
 
@@ -65,17 +64,19 @@ class _DashboardState extends State<DashboardPage> {
       ],
       child: Scaffold(
         backgroundColor: cs.secondaryContainer,
-        body: const CustomScrollView(
+        body: CustomScrollView(
+          controller: scrollController,
           slivers: [
-            SliverPadding(
-              padding: .all(16),
-              sliver: SliverToBoxAdapter(child: DashboardDate()),
+            SliverAppBar(
+              title: Text(S.of(context).dashboard),
+              centerTitle: true,
+              surfaceTintColor: AppColorPalette.transparent,
             ),
-            SliverPadding(
-              padding: .symmetric(horizontal: 16),
-              sliver: SliverToBoxAdapter(child: AppSpacing.h16),
+            PinnedHeaderSliver(
+              child: DashboardDate(scrollController: scrollController),
             ),
-            DashboardView(),
+            const SliverToBoxAdapter(child: AppSpacing.h16),
+            const DashboardView(),
           ],
         ),
         floatingActionButtonLocation: .centerFloat,

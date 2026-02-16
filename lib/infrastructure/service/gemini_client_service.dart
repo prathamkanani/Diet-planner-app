@@ -42,7 +42,7 @@ class GeminiClientService {
     - Follow the provided JSON schema strictly
     - Output valid JSON only
     - Do not include explanations, markdown, or extra text
-  '''),
+    '''),
       generationConfig: GenerationConfig(
         responseMimeType: 'application/json',
         responseSchema: generateMealPlanSchema,
@@ -56,29 +56,6 @@ class GeminiClientService {
 
     return response.text;
   }
-
-  final mealItemSchema = Schema(
-    SchemaType.object,
-    properties: {
-      'option': Schema.enumString(
-        enumValues: ['A', 'B'],
-        description: 'Meal Options',
-      ),
-      'name': Schema(SchemaType.string),
-      'calories': Schema(SchemaType.number),
-      'protein_g': Schema(SchemaType.number),
-      'carbs_g': Schema(SchemaType.number),
-      'fat_g': Schema(SchemaType.number),
-    },
-    requiredProperties: [
-      'option',
-      'name',
-      'calories',
-      'protein_g',
-      'carbs_g',
-      'fat_g',
-    ],
-  );
 
   late final generateMealPlanSchema = Schema(
     SchemaType.array,
@@ -102,5 +79,28 @@ class GeminiClientService {
       },
       requiredProperties: ['day', 'meals'],
     ),
+  );
+
+  final mealItemSchema = Schema(
+    SchemaType.object,
+    properties: {
+      'option': Schema.enumString(
+        enumValues: ['A', 'B'],
+        description: 'Meal Options',
+      ),
+      'name': Schema(SchemaType.string),
+      'calories': Schema(SchemaType.number),
+      'protein_g': Schema(SchemaType.number),
+      'carbs_g': Schema(SchemaType.number),
+      'fat_g': Schema(SchemaType.number),
+    },
+    requiredProperties: [
+      'option',
+      'name',
+      'calories',
+      'protein_g',
+      'carbs_g',
+      'fat_g',
+    ],
   );
 }

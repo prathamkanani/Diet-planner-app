@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../generated/l10n.dart';
 import '../../../config/app_assets.dart';
 import '../../../config/app_spacing.dart';
 import '../../../widgets/fade_animation.dart';
@@ -19,9 +20,10 @@ class OverviewSectionThree extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 0),
             child: Text(
-              'Make daily meal logs!',
+              S.of(context).makeDailyMealLogs,
               style: textTheme.displayMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .bold,
               ),
             ),
           ),
@@ -36,9 +38,12 @@ class OverviewSectionThree extends StatelessWidget {
           FadingAnimation(
             delay: const Duration(milliseconds: 500),
             child: Text(
-              'Log meals, understand your intake, and build healthier habits—one day at a time.',
+              S
+                  .of(context)
+                  .logMealsUnderstandYourIntakeAndBuildHealthierHabitsoneDay,
               style: textTheme.titleLarge?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
+                fontWeight: .w600,
               ),
             ),
           ),

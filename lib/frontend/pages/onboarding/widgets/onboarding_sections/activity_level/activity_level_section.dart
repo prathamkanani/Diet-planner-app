@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/eum/activity_level_entity.dart';
+import '../../../../../../domain/entity/onboarding_entity.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
 
@@ -37,11 +38,11 @@ class _ActivityLevelSectionState extends State<ActivityLevelSection> {
       crossAxisAlignment: .start,
       children: [
         Text(
-          'What is your baseline activity level?',
+          S.of(context).whatIsYourBaselineActivityLevel,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         AppSpacing.h24,
-        Text('Choose what describes you best:', style: textTheme.titleMedium),
+        Text(S.of(context).chooseWhatDescribesYouBest, style: textTheme.titleMedium),
         AppSpacing.h16,
         Flexible(
           child: ListView(
@@ -50,17 +51,17 @@ class _ActivityLevelSectionState extends State<ActivityLevelSection> {
               final bool isSelected = activityLevel == activity;
               isSelected ? widget.selectedActivity(activity) : null;
               final String title = switch (activity) {
-                ActivityLevel.low => 'Not Very Active',
-                ActivityLevel.medium => 'Lightly Active',
-                ActivityLevel.high => 'Very Active',
+                ActivityLevel.low => S.of(context).notVeryActive,
+                ActivityLevel.medium => S.of(context).lightlyActive,
+                ActivityLevel.high => S.of(context).veryActive,
               };
               final String subtitle = switch (activity) {
                 ActivityLevel.low =>
-                  "Spend most of the day sitting (e.g., desk job).",
+                  S.of(context).spendMostOfTheDaySittingEgDeskJob,
                 ActivityLevel.high =>
-                  "Spend a good part of the day doing heavy physical activity (e.g., bike messenger, carpenter).",
+                  S.of(context).spendAGoodPartOfTheDayDoingHeavyPhysical,
                 ActivityLevel.medium =>
-                  "Spend a good part of the day on your feet (e.g., teacher, salesperson).",
+                  S.of(context).spendAGoodPartOfTheDayOnYourFeet,
               };
               return CheckCircleContainer<ActivityLevel>(
                 title: title,

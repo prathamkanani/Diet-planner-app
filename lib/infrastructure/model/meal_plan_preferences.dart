@@ -1,4 +1,4 @@
-import '../../domain/eum/activity_level_entity.dart';
+import '../../domain/entity/onboarding_entity.dart';
 
 class MealPlanPreferences {
   final String country;

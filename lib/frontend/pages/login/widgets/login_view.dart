@@ -34,7 +34,7 @@ class LoginView extends StatelessWidget {
             Text(
               S.of(context).nutripal,
               style: textTheme.displaySmall?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
                 fontWeight: .bold,
               ),
             ),
@@ -42,16 +42,16 @@ class LoginView extends StatelessWidget {
             Text(
               S.of(context).healthyEatingMadeEasy,
               style: textTheme.titleMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
                 fontWeight: .bold,
               ),
             ),
             AppSpacing.h24,
             Text(
-              'Sign in to securely save your data, personalize your experience, and track your progress',
+              S.of(context).signInToSecurelySaveYourData,
               textAlign: .center,
               style: textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -65,15 +65,15 @@ class LoginView extends StatelessWidget {
             Text(
               S.of(context).byContinuingYouAgreeToOur,
               style: textTheme.titleSmall?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
               ),
             ),
             Text(
               S.of(context).privacyPolicy,
               style: textTheme.titleSmall?.copyWith(
-                color: colorScheme.onPrimary,
+                color: colorScheme.primary,
                 decoration: TextDecoration.underline,
-                decorationColor: colorScheme.onPrimary,
+                decorationColor: colorScheme.primary,
               ),
             ),
           ],

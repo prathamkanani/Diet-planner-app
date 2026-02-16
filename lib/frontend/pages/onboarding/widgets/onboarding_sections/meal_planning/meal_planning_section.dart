@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/entity/meal_planning.dart';
+import '../../../../../../domain/entity/onboarding_entity.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import 'check_circle_container.dart';
 
@@ -43,7 +44,7 @@ class _MealPlanningSectionState extends State<MealPlanningSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'How often do you plan your meals in advance?',
+          S.of(context).howOftenDoYouPlanYourMealsInAdvance,
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         AppSpacing.h24,

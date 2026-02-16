@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Practice for future use-case.
 class PageNavigationAnimation<T> extends PageRouteBuilder<T> {
   final Duration duration;
 

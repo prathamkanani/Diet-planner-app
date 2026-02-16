@@ -1,4 +1,3 @@
-
 import '../../../domain/entity/auth_entity.dart';
 
 /// Base state for the [AuthCubit]
@@ -15,8 +14,9 @@ final class AuthUnauthenticated extends AuthState {}
 /// * [authEntity] : The authenticated profile [AuthEntity].
 final class AuthAuthenticated extends AuthState {
   final AuthEntity authEntity;
+  final bool isOnboarded;
 
-  AuthAuthenticated(this.authEntity);
+  AuthAuthenticated(this.authEntity, this.isOnboarded);
 }
 
 /// State when a user authentication fails.

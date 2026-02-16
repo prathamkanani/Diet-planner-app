@@ -3,7 +3,7 @@ import '../entity/auth_entity.dart';
 /// Defines contracts for authentication.
 abstract interface class AuthRepository {
   /// Gets user details from the current session.
-  AuthEntity? getUser();
+  Future<AuthEntity?> getUser();
 
   /// Lets the user sign in.
   Future<AuthEntity?> signIn();

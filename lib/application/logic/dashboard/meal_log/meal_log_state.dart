@@ -23,10 +23,9 @@ final class MealLoggingState extends MealLogState {
 }
 
 final class MealLogSuccessState extends MealLogState {
-  final int caloriesLogged;
   final Map<MealType, MealEntity> selectedMeals;
 
-  const MealLogSuccessState(this.selectedMeals, this.caloriesLogged);
+  const MealLogSuccessState(this.selectedMeals);
 }
 
 final class MealLogErrorState extends MealLogState {

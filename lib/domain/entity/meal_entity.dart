@@ -1,3 +1,4 @@
+/// Different types of meals that exist.
 enum MealType {
   breakfast('Breakfast'),
   lunch('Lunch'),
@@ -8,8 +9,22 @@ enum MealType {
   const MealType(this.mealType);
 }
 
-enum MealOption { A, B}
+/// Different types of nutrient used in the app.
+enum Nutrient {
+  calories('Calories'),
+  carbs('Carbs'),
+  protein('Protein'),
+  fat('Fat');
 
+  final String nutrientType;
+
+  const Nutrient(this.nutrientType);
+}
+
+/// Two options that will be shown for a specific meal type.
+enum MealOption { A, B }
+
+/// The meal that is shown to the user for selecting and logging.
 class MealEntity {
   final MealOption option;
 

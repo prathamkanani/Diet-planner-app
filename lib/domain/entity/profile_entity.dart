@@ -1,4 +1,11 @@
-import '../eum/gender_enum.dart';
+enum Gender {
+  male("Male"),
+  female("Female");
+
+  final String gender;
+
+  const Gender(this.gender);
+}
 
 /// Represents basic user information
 class ProfileEntity {
@@ -20,12 +27,16 @@ class ProfileEntity {
   /// Mobile Number of the user.
   final String? mobileNumber;
 
+  /// Weight of the user.
   final double? weight;
 
+  /// Height of the user.
   final double? height;
 
+  /// Gender of the user.
   final Gender? gender;
 
+  /// Age of the user.
   final int? age;
 
   /// Created an immutable instance of [ProfileEntity].
@@ -39,6 +50,35 @@ class ProfileEntity {
     this.weight,
     this.height,
     this.gender,
-    this.age
+    this.age,
   });
+
+  static ProfileEntity empty() => ProfileEntity(userId: '');
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProfileEntity &&
+        other.userId == userId &&
+        other.fullName == fullName &&
+        other.email == email &&
+        other.mobileNumber == mobileNumber &&
+        other.age == age &&
+        other.gender == gender &&
+        other.height == height &&
+        other.weight == weight &&
+        other.avatarUrl == avatarUrl;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    userId,
+    fullName,
+    email,
+    mobileNumber,
+    age,
+    gender,
+    height,
+    weight,
+    avatarUrl,
+  );
 }

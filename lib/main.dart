@@ -1,10 +1,12 @@
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'application/service/app_data_service.dart';
 import 'env.dart';
 import 'frontend/config/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'frontend/pages/bootstrap/bootstrap_page.dart';
+import 'frontend/pages/home/home_page.dart';
 import 'generated/l10n.dart';
 import 'infrastructure/app_injector.dart';
 import 'infrastructure/source/supabase_init.dart';
@@ -25,11 +27,13 @@ void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   locator.registerSingleton(preferences);
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final AppDataService appDataService = locator.get();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,9 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const BootstrapPage(),
+      home: appDataService.userId != null
+          ? const HomePage()
+          : const BootstrapPage(),
     );
   }
 }

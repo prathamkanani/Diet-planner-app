@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../../config/app_spacing.dart';
 
@@ -10,6 +11,11 @@ class SetupPage extends StatefulWidget {
 }
 
 class _SetupPageState extends State<SetupPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
@@ -23,11 +29,12 @@ class _SetupPageState extends State<SetupPage> {
           child: Column(
             mainAxisAlignment: .center,
             children: [
-              const CircularProgressIndicator(),
+              CircularProgressIndicator(color: cs.primary),
               AppSpacing.h16,
               Text(
-                'Wait while the meal plan is generated...',
+                S.of(context).waitWhileTheMealPlanIsGenerated,
                 style: textTheme.titleMedium,
+                textAlign: .center,
               ),
             ],
           ),
