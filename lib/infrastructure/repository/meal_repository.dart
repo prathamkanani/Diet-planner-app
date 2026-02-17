@@ -1,7 +1,6 @@
 import '../../domain/entity/daily_meals_entity.dart';
 import '../../domain/repository/meal_repository.dart';
 import '../source/meal_source.dart';
-import '../utils/types.dart';
 
 class MealRepositoryImpl implements MealRepository {
   final MealSource source;
@@ -13,10 +12,5 @@ class MealRepositoryImpl implements MealRepository {
     DateTime currentDate,
   ) async {
     return await source.fetchExistingMeal(currentDate);
-  }
-
-  @override
-  Future<void> saveGeneratedMealPlan(JsonList? jsonList) async {
-    await source.saveGeneratedPlan(jsonList);
   }
 }

@@ -6,8 +6,6 @@ import '../model/profile_model.dart';
 abstract interface class ProfileSource {
   Future<void> saveProfile(ProfileEntity userProfile);
 
-  Future<ProfileEntity> editProfile(ProfileEntity userProfile);
-
   Future<ProfileEntity> getUserProfile(String userId);
 }
 
@@ -34,17 +32,6 @@ class ProfileRemoteDataSource implements ProfileSource {
         .from('profiles')
         .select()
         .eq('user_id', userId)
-        .single();
-    return ProfileModel.fromJson(response);
-  }
-
-  /// Update the data to profile table.
-  @override
-  Future<ProfileEntity> editProfile(ProfileEntity userProfile) async {
-    final response = await supabase
-        .from('profiles')
-        .update(ProfileModel.fromEntity(userProfile).toJson())
-        .eq('user_id', user.id)
         .single();
     return ProfileModel.fromJson(response);
   }

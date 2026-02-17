@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/repository/bootstrap_repository.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../service/app_data_service.dart';

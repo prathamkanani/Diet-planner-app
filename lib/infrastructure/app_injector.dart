@@ -2,8 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../application/logic/auth/auth_cubit.dart';
 import '../application/logic/bootstrap/bootstrap_cubit.dart';
-import '../application/logic/dashboard/meal_load/meal_cubit.dart';
-import '../application/logic/dashboard/meal_log/meal_log_cubit.dart';
+import '../application/logic/meal_load/meal_cubit.dart';
+import '../application/logic/meal_log/meal_log_cubit.dart';
 import '../application/logic/onboarding/onboarding_cubit.dart';
 import '../application/logic/profile/profile_cubit.dart';
 import '../application/service/app_data_service.dart';
@@ -88,7 +88,10 @@ class DependencyInjector implements AppInjector {
       () => ProfileRepositoryImpl(locator.get()),
     );
     locator.registerFactory<ProfileCubit>(
-      () => ProfileCubit(repository: locator.get()),
+      () => ProfileCubit(
+        repository: locator.get(),
+        authRepository: locator.get(),
+      ),
     );
 
     // Registering Onboarding Dependencies
@@ -119,7 +122,11 @@ class DependencyInjector implements AppInjector {
       () => MealLoggerRepositoryImpl(locator.get()),
     );
     locator.registerFactory<MealLogCubit>(
-      () => MealLogCubit(repository: locator.get()),
+      () => MealLogCubit(
+        mealRepository: locator.get(),
+        mealLoggerRepository: locator.get(),
+        mealLoadingCubit: locator.get()
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../application/logic/dashboard/meal_load/meal_cubit.dart';
-import '../../../../application/logic/dashboard/meal_load/meal_state.dart';
+import '../../../../application/logic/meal_load/meal_cubit.dart';
+import '../../../../application/logic/meal_load/meal_state.dart';
 import '../../../config/app_spacing.dart';
 import 'calender_card.dart';
 

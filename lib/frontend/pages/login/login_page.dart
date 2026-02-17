@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../application/logic/auth/auth_state.dart';
-import '../../../application/service/app_data_service.dart';
 import '../../../generated/l10n.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
@@ -36,8 +35,6 @@ class _LoginPageState extends State<LoginPage> {
   /// Navigating to the User Profile page
   void _listenToAuthState(BuildContext context, final AuthState state) {
     if (state is AuthAuthenticated) {
-      final AppDataService appDataService = locator.get<AppDataService>();
-      appDataService.userId = state.authEntity.userId;
       state.isOnboarded
           ? context.pushAndRemoveUntil(const HomePage())
           : context.pushAndRemoveUntil(const OnboardingPage());

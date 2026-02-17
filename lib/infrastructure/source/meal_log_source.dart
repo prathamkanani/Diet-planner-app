@@ -36,7 +36,7 @@ class MealLogRemoteSource implements MealLogSource {
         'calories': meal.value.calorie,
         'carbs': meal.value.carbs,
         'fats': meal.value.fat,
-        'proteins': meal.value.protein
+        'proteins': meal.value.protein,
       };
     }).toList();
 

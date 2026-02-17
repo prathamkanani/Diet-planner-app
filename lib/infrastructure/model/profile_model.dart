@@ -50,7 +50,7 @@ class ProfileModel extends ProfileEntity {
   ]) {
     return ProfileModel(
       userId: entity.userId,
-      avatarUrl: seed,
+      avatarUrl: seed ?? entity.avatarUrl,
       fullName: entity.fullName,
       email: email ?? entity.email,
       mobileNumber: entity.mobileNumber,

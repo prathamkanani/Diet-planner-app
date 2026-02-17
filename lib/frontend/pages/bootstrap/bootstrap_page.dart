@@ -59,7 +59,6 @@ class _BootstrapPageState extends State<BootstrapPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                // mainAxisAlignment: .center,
                 children: [
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.3),
                   Text(

@@ -1,5 +1,4 @@
 import '../../domain/entity/meal_entity.dart';
-import '../extension/weekday_extension.dart';
 
 /// To check whether a certain day's meal is within the
 /// generated plan or a new plan needs to be generated.
@@ -10,15 +9,6 @@ bool isWithinPlan({
   final planStartDate = startDate.add(const Duration(days: 28));
   return !currentDate.isBefore(startDate) &&
       !currentDate.isAfter(planStartDate);
-}
-
-///
-int weekdayLabelToInt(String label) {
-  final weekDay = Weekday.values.firstWhere(
-    (e) => e.label.toLowerCase() == label.toLowerCase(),
-  );
-
-  return weekDay.value;
 }
 
 MealType fromTime(DateTime date) {

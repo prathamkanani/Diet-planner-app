@@ -3,15 +3,12 @@ import '../../application/service/app_data_service.dart';
 import '../../domain/entity/daily_meals_entity.dart';
 import '../model/daily_meals_model.dart';
 import '../utils/helpers.dart';
-import '../utils/types.dart';
 import '../app_injector.dart';
 
 abstract interface class MealSource {
   Future<DailyMealsEntity?> fetchExistingMeal(
     DateTime currentDate,
   );
-
-  Future<void> saveGeneratedPlan(JsonList? jsonList);
 }
 
 class MealRemoteSource implements MealSource {
@@ -48,30 +45,5 @@ class MealRemoteSource implements MealSource {
       return DailyMealsModel.fromJson(currentDate, response, mealLogs);
     }
     return null;
-  }
-
-  @override
-  Future<void> saveGeneratedPlan(JsonList? jsonList) async {
-    final res = await supabase
-        .from('meal_plan')
-        .insert({
-          'user_id': appDataService.userId,
-          'plan_start': appDataService.planStartDate.toString(),
-        })
-        .select()
-        .single();
-
-    final String mealPlanId = res['id'];
-    appDataService.mealPlanId = mealPlanId;
-
-    final daysPayload = jsonList?.map((day) {
-      return {
-        'meal_plan_id': appDataService.mealPlanId,
-        'day': weekdayLabelToInt(day['day']),
-        'meal': day['meals'],
-      };
-    }).toList();
-
-    await supabase.from('meal_plan_days').insert(daysPayload!);
   }
 }

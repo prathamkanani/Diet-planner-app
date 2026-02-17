@@ -22,12 +22,15 @@ class UserAvatar extends StatelessWidget {
       children: [
         BlocBuilder<ProfileCubit, ProfileState>(
           bloc: profileCubit,
-          // buildWhen: (previous, current) {
-          //   return current is ProfileEditState;
-          // },
           builder: (BuildContext context, ProfileState state) {
-            String avatarSeed = state.profile.avatarUrl ?? '';
-            return AvatarPlus(avatarSeed, height: 100, width: 100);
+            if(state is ProfileSavedState) {
+              String avatarSeed = state.profile.avatarUrl ?? '';
+              return AvatarPlus(avatarSeed, height: 100, width: 100);
+            } else if(state is ProfileEditState) {
+              String avatarSeed = state.profile.avatarUrl ?? '';
+              return AvatarPlus(avatarSeed, height: 100, width: 100);
+            }
+            return const SizedBox.shrink();
           },
         ),
         Positioned(

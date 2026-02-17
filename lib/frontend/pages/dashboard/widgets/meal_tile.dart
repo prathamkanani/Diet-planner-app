@@ -48,7 +48,6 @@ class _MealTileState extends State<MealTile> {
           borderRadius: BorderRadiusGeometry.circular(12),
           child: ExpansionTile(
             splashColor: AppColorPalette.transparent,
-            // TODO: according to time, expand it.
             initiallyExpanded: _isSameMealType(),
             childrenPadding: const .symmetric(horizontal: 16, vertical: 8),
             title: Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../application/logic/dashboard/meal_load/meal_cubit.dart';
-import '../../../../application/logic/dashboard/meal_load/meal_state.dart';
+import '../../../../application/logic/meal_load/meal_cubit.dart';
+import '../../../../application/logic/meal_load/meal_state.dart';
 import '../../../../generated/l10n.dart';
 import 'meal_loaded_dashboard.dart';
 
@@ -18,7 +18,9 @@ class DashboardView extends StatelessWidget {
           MealLoadingState() => const SliverFillRemaining(
             child: Center(child: CircularProgressIndicator()),
           ),
-          MealLoadedState() => MealLoadedDashboard(mealState: state),
+          MealLoadedState() => MealLoadedDashboard(
+            dailyMealsEntity: state.dailyMealList,
+          ),
           MealNotFoundState() => SliverFillRemaining(
             child: Center(child: Text(S.of(context).oopsNoDataFound)),
           ),

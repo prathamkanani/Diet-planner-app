@@ -23,6 +23,18 @@ final class AppDataServiceImpl extends AppDataService {
     }
   }
 
+  /// Setter for checking active or non-active user.
+  @override
+  set isUserLoggedIn(bool value) {
+    prefs.setBool('isUserLoggedIn', value);
+  }
+
+  /// Getter for checking active or non-active user.
+  @override
+  bool get isUserLoggedIn {
+    return prefs.getBool('isUserLoggedIn') ?? false;
+  }
+
   /// Getter for mealPlanId
   @override
   String? get mealPlanId {

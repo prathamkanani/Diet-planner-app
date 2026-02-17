@@ -13,6 +13,9 @@ abstract class AppDataService {
   /// Unique identifier of the authenticated user.
   String? userId;
 
+  /// Checks if user has active session or not.
+  bool isUserLoggedIn = false;
+
   /// Profile of the authenticated user.
   ProfileEntity? profile;
 

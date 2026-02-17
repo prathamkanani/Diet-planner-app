@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../application/logic/dashboard/meal_log/meal_log_cubit.dart';
-import '../../../../application/logic/dashboard/meal_log/meal_log_state.dart';
+import '../../../../application/logic/meal_log/meal_log_cubit.dart';
+import '../../../../application/logic/meal_log/meal_log_state.dart';
 import '../../../../domain/entity/meal_entity.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
@@ -54,9 +53,9 @@ class ExpandableMealOption extends StatelessWidget {
 
     return BlocBuilder<MealLogCubit, MealLogState>(
       bloc: cubit,
-      buildWhen: (_, next) {
-        return !(next is MealLoggingState && next.isLogging);
-      },
+      // buildWhen: (_, next) {
+      //   return !(next is MealLoggingState && next.isLogging);
+      // },
       builder: (context, state) {
         bool isSelected = false;
         if (state is MealSelectedState) {
@@ -71,15 +70,14 @@ class ExpandableMealOption extends StatelessWidget {
                 ? () => dialogBuilder(context, true)
                 : isTypeLogged
                 ? () => dialogBuilder(context, false)
-                // : isSelected
-                // ? () => cubit.unselectedMeal(mealType, meal)
-                // : () => cubit.selectedMeal(mealType, meal),
-                : () => cubit.changeSelection(mealType, meal),
+                : isSelected
+                ? () => cubit.unselectMeal(mealType)
+                : () => cubit.selectMeal(mealType, meal),
             child: Container(
               margin: const .symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: isTypeLogged
-                    ? cs.primary.withValues(alpha: 0.05)
+                    ? cs.primary.withValues(alpha: 0.3)
                     : isSelected
                     ? cs.primary.withValues(alpha: 0.3)
                     : cs.surface,

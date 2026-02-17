@@ -14,11 +14,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<ProfileEntity> editUserProfile(ProfileEntity profile) async {
-    return await source.editProfile(profile);
-  }
-
-  @override
   Future<ProfileEntity> getUserProfile(String userId) async {
     final userProfile = await source.getUserProfile(userId);
     return userProfile;

@@ -2,28 +2,34 @@ import '../../../domain/entity/profile_entity.dart';
 
 /// Base state for Profile [Cubit]
 sealed class ProfileState {
-  final ProfileEntity profile;
-
-  const ProfileState(this.profile);
+  const ProfileState();
 }
 
 /// Initial loading profile state.
 final class ProfileLoadingState extends ProfileState {
-  ProfileLoadingState() : super(ProfileEntity.empty());
+  const ProfileLoadingState();
 }
 
 /// Profile edit state.
 final class ProfileEditState extends ProfileState {
-  const ProfileEditState(super.profile);
+  final ProfileEntity profile;
+
+  const ProfileEditState(this.profile);
 }
 
 final class ProfileSavedState extends ProfileState {
-  const ProfileSavedState(super.profile);
+  final ProfileEntity profile;
+
+  const ProfileSavedState(this.profile);
+}
+
+final class ProfileLogOutState extends ProfileState {
+  const ProfileLogOutState();
 }
 
 /// Error state.
 final class ProfileErrorState extends ProfileState {
   final Object? message;
 
-  ProfileErrorState(this.message) : super(ProfileEntity.empty());
+  ProfileErrorState(this.message);
 }

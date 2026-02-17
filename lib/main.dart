@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'frontend/pages/bootstrap/bootstrap_page.dart';
 import 'frontend/pages/home/home_page.dart';
+import 'frontend/pages/login/login_page.dart';
 import 'generated/l10n.dart';
 import 'infrastructure/app_injector.dart';
 import 'infrastructure/source/supabase_init.dart';
@@ -46,7 +47,9 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       home: appDataService.userId != null
-          ? const HomePage()
+          ? appDataService.isUserLoggedIn
+                ? const HomePage()
+                : const LoginPage()
           : const BootstrapPage(),
     );
   }

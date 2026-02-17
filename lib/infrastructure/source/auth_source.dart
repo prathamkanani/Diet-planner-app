@@ -52,6 +52,8 @@ class SupabaseAuthSource implements AuthDataSource {
         .maybeSingle();
 
     // appDataService.profile = ProfileEntity(userId: currentUser.id);
+    appDataService.userId = currentUser.id;
+    appDataService.isUserLoggedIn = true;
 
     if (response?['id'] != null) {
       return AuthEntity(userId: currentUser.id, isOnboarded: true);
@@ -66,5 +68,6 @@ class SupabaseAuthSource implements AuthDataSource {
   Future<void> signOut(FederatedAuthType type) async {
     await supabase.auth.signOut();
     await authService.signOut(type);
+    appDataService.isUserLoggedIn = false;
   }
 }

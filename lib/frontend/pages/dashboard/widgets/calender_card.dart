@@ -41,7 +41,10 @@ class WeekCalendarCard extends StatelessWidget {
             onDatePicked(selectedDay);
           },
 
-          headerStyle: const HeaderStyle(formatButtonVisible: false),
+          headerStyle: const HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+          ),
           onHeaderTapped: (focusDay) async {
             final picked = await showDatePicker(
               context: context,

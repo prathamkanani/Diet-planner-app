@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/entity/health_habits_entity.dart';
 import '../../../domain/entity/onboarding_entity.dart';
@@ -53,14 +52,20 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   Future<void> generateMealPlan(OnboardingEntity onboard) async {
     try {
       emit(const OnboardingPromptState(true));
-      appDataService.planStartDate = DateTime.now();
-      final response = await repository.generateMeal(onboard);
-      if (response != null) {
-        // ToDo: use dart models to pass the data
-        appDataService.jsonList = JsonList.from(jsonDecode(response));
-        emit(OnboardingLoadedState(onboard));
-      }
+      final JsonList jsonList = await repository.generateMeal(onboard);
+      await saveGeneratedMealPlan(jsonList);
+      emit(OnboardingLoadedState(onboard));
       emit(const OnboardingPromptState(false));
+    } catch (e) {
+      emit(OnboardingErrorState(e));
+    }
+  }
+
+  /// To save the meal plan generated for the first
+  /// time or when the old plan is expired.
+  Future<void> saveGeneratedMealPlan(JsonList jsonList) async {
+    try {
+      await repository.saveGeneratedMeal(jsonList);
     } catch (e) {
       emit(OnboardingErrorState(e));
     }

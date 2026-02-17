@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/formatters/phone_formatter.dart';
+import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../application/logic/profile/profile_cubit.dart';
 import '../../../application/logic/profile/profile_state.dart';
 import '../../../application/service/app_data_service.dart';
@@ -93,10 +94,22 @@ class _UserDetailPageState extends State<UserDetailPage> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
+    ProfileEntity? profile;
 
     return Scaffold(
       backgroundColor: cs.secondaryContainer,
-      appBar: AppBar(title: Text(S.of(context).userProfile), centerTitle: true),
+      appBar: AppBar(
+        title: Text(S.of(context).userProfile),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              locator.get<AuthCubit>().signOut();
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -106,172 +119,329 @@ class _UserDetailPageState extends State<UserDetailPage> {
               initialProfile(state);
             },
             builder: (context, state) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    UserAvatar(
-                      profileCubit: profileCubit,
-                      profileEntity: state.profile,
-                    ),
-                    AppSpacing.h16,
-
-                    // Full Name Text Field
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).fullName),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: fullNameController,
-                      onChanged: (_) => onChange(),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => nameValidator(value),
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourFullName,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+              if (state is ProfileSavedState) {
+                profile = state.profile;
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      UserAvatar(
+                        profileCubit: profileCubit,
+                        profileEntity: state.profile,
                       ),
-                    ),
-                    AppSpacing.h16,
+                      AppSpacing.h16,
 
-                    // Email Text Field
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).email),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: emailController,
-                      onChanged: (_) => onChange(),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => emailValidator(value),
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourEmail,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+                      // Full Name Text Field
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).fullName),
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    AppSpacing.h16,
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: fullNameController,
+                        onChanged: (_) => onChange(),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => nameValidator(value),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourFullName,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
 
-                    // Mobile Number Text Field
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).mobileNumber),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: mobileNumController,
-                      onChanged: (_) => onChange(),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourMobileNumber,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+                      // Email Text Field
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).email),
                       ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        PhoneInputFormatter(),
-                      ],
-                    ),
-                    AppSpacing.h16,
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: emailController,
+                        onChanged: (_) => onChange(),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => emailValidator(value),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourEmail,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      AppSpacing.h16,
 
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).age),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: ageController,
-                      onChanged: (_) => onChange(),
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourAge,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+                      // Mobile Number Text Field
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).mobileNumber),
                       ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    AppSpacing.h16,
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: mobileNumController,
+                        onChanged: (_) => onChange(),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourMobileNumber,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          PhoneInputFormatter(),
+                        ],
+                      ),
+                      AppSpacing.h16,
 
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).gender),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: genderController,
-                      onChanged: (_) => onChange(),
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourGender,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).age),
                       ),
-                    ),
-                    AppSpacing.h16,
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: ageController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourAge,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      AppSpacing.h16,
 
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).height),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: heightController,
-                      onChanged: (_) => onChange(),
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourHeight,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).gender),
                       ),
-                    ),
-                    AppSpacing.h16,
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: genderController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourGender,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
 
-                    Align(
-                      alignment: AlignmentGeometry.centerLeft,
-                      child: Text(S.of(context).weight),
-                    ),
-                    AppSpacing.h04,
-                    TextFormField(
-                      controller: weightController,
-                      onChanged: (_) => onChange(),
-                      decoration: InputDecoration(
-                        hintText: S.of(context).enterYourWeight,
-                        contentPadding: .zero,
-                        fillColor: cs.secondaryContainer,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: const UnderlineInputBorder(),
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).height),
                       ),
-                    ),
-                    AppSpacing.h16,
-                    BlocBuilder<ProfileCubit, ProfileState>(
-                      bloc: profileCubit,
-                      // buildWhen: (_, next) => next is ProfileEditState,
-                      builder: (context, state) {
-                        if(state is ProfileEditState){
-                          return FilledButton(
-                            onPressed: () {
-                              profileCubit.saveProfile(profile: state.profile);
-                            },
-                            child: Text(S.of(context).saveProfile),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                  ],
-                ),
-              );
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: heightController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourHeight,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
+
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).weight),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: weightController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourWeight,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
+                    ],
+                  ),
+                );
+              } else if (state is ProfileEditState) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      UserAvatar(
+                        profileCubit: profileCubit,
+                        profileEntity: state.profile,
+                      ),
+                      AppSpacing.h16,
+
+                      // Full Name Text Field
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).fullName),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: fullNameController,
+                        onChanged: (_) => onChange(),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => nameValidator(value),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourFullName,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
+
+                      // Email Text Field
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).email),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: emailController,
+                        onChanged: (_) => onChange(),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => emailValidator(value),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourEmail,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      AppSpacing.h16,
+
+                      // Mobile Number Text Field
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).mobileNumber),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: mobileNumController,
+                        onChanged: (_) => onChange(),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourMobileNumber,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          PhoneInputFormatter(),
+                        ],
+                      ),
+                      AppSpacing.h16,
+
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).age),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: ageController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourAge,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      AppSpacing.h16,
+
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).gender),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: genderController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourGender,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
+
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).height),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: heightController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourHeight,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
+
+                      Align(
+                        alignment: AlignmentGeometry.centerLeft,
+                        child: Text(S.of(context).weight),
+                      ),
+                      AppSpacing.h04,
+                      TextFormField(
+                        controller: weightController,
+                        onChanged: (_) => onChange(),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).enterYourWeight,
+                          contentPadding: .zero,
+                          fillColor: cs.secondaryContainer,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: const UnderlineInputBorder(),
+                        ),
+                      ),
+                      AppSpacing.h16,
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        bloc: profileCubit,
+                        builder: (context, state) {
+                          if (state is ProfileEditState) {
+                            return FilledButton(
+                              onPressed: () {
+                                profileCubit.saveProfile(
+                                  profile: profile!,
+                                );
+                              },
+                              child: Text(S.of(context).saveProfile),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
             },
           ),
         ),

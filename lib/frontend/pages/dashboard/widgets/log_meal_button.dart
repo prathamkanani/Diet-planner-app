@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../application/logic/dashboard/meal_load/meal_cubit.dart';
-import '../../../../application/logic/dashboard/meal_log/meal_log_cubit.dart';
-import '../../../../application/logic/dashboard/meal_log/meal_log_state.dart';
+import '../../../../application/logic/meal_log/meal_log_cubit.dart';
+import '../../../../application/logic/meal_log/meal_log_state.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
 
@@ -33,7 +32,7 @@ class LogMealButton extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: FilledButton(
-                onPressed: () => mealLogCubit.logMeal(DateTime.now()),
+                onPressed: () => mealLogCubit.logMeals(),
                 child: Center(
                   child: BlocConsumer<MealLogCubit, MealLogState>(
                     bloc: mealLogCubit,
@@ -44,9 +43,6 @@ class LogMealButton extends StatelessWidget {
                             content: Text(S.of(context).mealLoggedSuccessfully),
                             duration: const Duration(milliseconds: 500),
                           ),
-                        );
-                        context.read<MealLoadingCubit>().fetchExistingMealPlan(
-                          DateTime.now(),
                         );
                       }
 

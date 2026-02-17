@@ -1,14 +1,17 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import '../../../domain/entity/profile_entity.dart';
+import '../../../domain/repository/auth_repository.dart';
 import '../../../domain/repository/profile_repository.dart';
 import 'profile_state.dart';
 
 /// The [Cubit] that is responsible for user profile operations.
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepository repository;
+  final AuthRepository authRepository;
 
-  ProfileCubit({required this.repository}) : super(ProfileLoadingState());
+  ProfileCubit({required this.repository, required this.authRepository})
+    : super(const ProfileLoadingState());
 
   ProfileEntity? _savedProfile;
 
@@ -36,10 +39,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   /// It saves the user profile.
-  Future<void> saveProfile({
-    required ProfileEntity profile,
-  }) async {
-    emit(ProfileLoadingState());
+  Future<void> saveProfile({required ProfileEntity profile}) async {
+    emit(const ProfileLoadingState());
     try {
       await repository.saveUserProfile(profile);
       _savedProfile = profile;
@@ -57,5 +58,14 @@ class ProfileCubit extends Cubit<ProfileState> {
         ProfileEntity(userId: profile.userId, avatarUrl: avatarSeed),
       ),
     );
+  }
+
+  Future<void> logOut() async {
+    try {
+      await authRepository.signOut();
+      emit(const ProfileLogOutState());
+    } catch (e) {
+      emit(ProfileErrorState(e));
+    }
   }
 }

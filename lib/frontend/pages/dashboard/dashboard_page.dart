@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../application/logic/dashboard/meal_load/meal_cubit.dart';
-import '../../../application/logic/dashboard/meal_log/meal_log_cubit.dart';
+import '../../../application/logic/meal_load/meal_cubit.dart';
+import '../../../application/logic/meal_log/meal_log_cubit.dart';
 import '../../../application/service/app_data_service.dart';
 import '../../../generated/l10n.dart';
 import '../../../infrastructure/app_injector.dart';
@@ -28,21 +28,9 @@ class _DashboardState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    mealLoadingCubit = locator.get();
+    mealLoadingCubit = locator.get()..fetchExistingMealPlan(DateTime.now());
     mealLogCubit = locator.get();
     scrollController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final isNewUser = appDataService.isNewUser;
-      if (isNewUser != null && isNewUser) {
-        // ToDo: never make api calls in ui.
-        // ToDo: Move the api calls in their respective source and cubits.
-        // ToDo: Do not make async calls in the UI.
-         mealLoadingCubit.saveGeneratedMealPlan(appDataService.jsonList);
-         mealLoadingCubit.fetchExistingMealPlan(DateTime.now());
-        return;
-      }
-      mealLoadingCubit.fetchExistingMealPlan(DateTime.now());
-    });
   }
 
   @override
@@ -59,8 +47,8 @@ class _DashboardState extends State<DashboardPage> {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: mealLoadingCubit),
         BlocProvider.value(value: mealLogCubit),
+        BlocProvider.value(value: mealLoadingCubit),
       ],
       child: Scaffold(
         backgroundColor: cs.secondaryContainer,
@@ -72,6 +60,7 @@ class _DashboardState extends State<DashboardPage> {
               centerTitle: true,
               surfaceTintColor: AppColorPalette.transparent,
             ),
+            // Todo: How to get state data here?
             PinnedHeaderSliver(
               child: DashboardDate(scrollController: scrollController),
             ),

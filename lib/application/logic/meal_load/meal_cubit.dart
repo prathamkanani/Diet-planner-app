@@ -1,9 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../domain/entity/daily_meals_entity.dart';
-import '../../../../domain/repository/meal_repository.dart';
-import '../../../../infrastructure/app_injector.dart';
-import '../../../../infrastructure/utils/types.dart';
-import '../../../service/app_data_service.dart';
+import '../../../domain/entity/daily_meals_entity.dart';
+import '../../../domain/repository/meal_repository.dart';
+import '../../../infrastructure/app_injector.dart';
+import '../../service/app_data_service.dart';
 import 'meal_state.dart';
 
 class MealLoadingCubit extends Cubit<MealState> {
@@ -21,6 +20,10 @@ class MealLoadingCubit extends Cubit<MealState> {
 
   DateTime get selectedDate => _selectedDate;
 
+  void loadAfterMealLogging(DailyMealsEntity dailyMealsEntity) {
+    emit(MealLoadedState(dailyMealList: dailyMealsEntity));
+  }
+
   /// To fetch a meal for a certain day from the existing meal plan
   Future<void> fetchExistingMealPlan(DateTime day) async {
     try {
@@ -30,16 +33,6 @@ class MealLoadingCubit extends Cubit<MealState> {
         return;
       }
       emit(const MealNotFoundState());
-    } catch (e) {
-      emit(MealErrorState(e));
-    }
-  }
-
-  /// To save the meal plan generated for the first time or when the old plan is expired.
-  Future<void> saveGeneratedMealPlan(JsonList? jsonList) async {
-    try {
-      await repository.saveGeneratedMealPlan(jsonList);
-      emit(const MealLoadingState());
     } catch (e) {
       emit(MealErrorState(e));
     }

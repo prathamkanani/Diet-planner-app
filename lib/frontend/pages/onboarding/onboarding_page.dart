@@ -96,10 +96,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       mealPlanning: cubit.mealPlan!,
       activityLevel: cubit.activityLevel!,
     );
-
-    appDataService.profile = profile;
-    appDataService.isNewUser = true;
-    await cubit.saveOnboardingDetails(onboard);
+    cubit.saveOnboardingDetails(onboard);
     cubit.generateMealPlan(onboard);
   }
 
