@@ -1,14 +1,18 @@
 import '../../domain/entity/meal_entity.dart';
 
+DateTime dateOnly(DateTime d) => DateTime(d.year, d.month, d.day);
+
 /// To check whether a certain day's meal is within the
 /// generated plan or a new plan needs to be generated.
 bool isWithinPlan({
   required DateTime startDate,
   required DateTime currentDate,
 }) {
-  final planStartDate = startDate.add(const Duration(days: 28));
-  return !currentDate.isBefore(startDate) &&
-      !currentDate.isAfter(planStartDate);
+  final startDateOnly = dateOnly(startDate);
+  final currentDateOnly = dateOnly(currentDate);
+  final planStartDate = startDateOnly.add(const Duration(days: 28));
+  return !currentDateOnly.isBefore(startDateOnly) &&
+      !currentDateOnly.isAfter(planStartDate);
 }
 
 MealType fromTime(DateTime date) {

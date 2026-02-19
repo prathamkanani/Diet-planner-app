@@ -76,8 +76,10 @@ class ExpandableMealOption extends StatelessWidget {
             child: Container(
               margin: const .symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: isTypeLogged
+                color: isTypeLogged && isLogged
                     ? cs.primary.withValues(alpha: 0.3)
+                    : isTypeLogged && !isLogged ?
+                    cs.primaryContainer.withValues(alpha: 0.5)
                     : isSelected
                     ? cs.primary.withValues(alpha: 0.3)
                     : cs.surface,

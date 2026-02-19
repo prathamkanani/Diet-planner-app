@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/entity/onboarding_entity.dart';
+import '../../../../../../domain/entity/user_preferences.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
@@ -22,11 +22,10 @@ class ActivityLevelSection extends StatefulWidget {
 
 class _ActivityLevelSectionState extends State<ActivityLevelSection> {
   late final OnboardingCubit cubit = context.read<OnboardingCubit>();
-  late ActivityLevel? activityLevel = cubit.activityLevel;
 
   void _handleTap(ActivityLevel activity) {
     setState(() {
-      activityLevel = (activityLevel == activity) ? null : activity;
+      cubit.activityLevel = (cubit.activityLevel == activity) ? null : activity;
     });
   }
 
@@ -42,13 +41,16 @@ class _ActivityLevelSectionState extends State<ActivityLevelSection> {
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         AppSpacing.h24,
-        Text(S.of(context).chooseWhatDescribesYouBest, style: textTheme.titleMedium),
+        Text(
+          S.of(context).chooseWhatDescribesYouBest,
+          style: textTheme.titleMedium,
+        ),
         AppSpacing.h16,
         Flexible(
           child: ListView(
             padding: EdgeInsets.zero,
             children: ActivityLevel.values.map((activity) {
-              final bool isSelected = activityLevel == activity;
+              final bool isSelected = cubit.activityLevel == activity;
               isSelected ? widget.selectedActivity(activity) : null;
               final String title = switch (activity) {
                 ActivityLevel.low => S.of(context).notVeryActive,

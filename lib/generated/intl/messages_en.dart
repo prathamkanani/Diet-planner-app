@@ -122,11 +122,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "mobileNumber": MessageLookupByLibrary.simpleMessage("Mobile number"),
     "next": MessageLookupByLibrary.simpleMessage("Next"),
+    "nonVegetarianSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Includes plant foods along with meat, poultry, fish, eggs, and dairy.",
+    ),
     "notVeryActive": MessageLookupByLibrary.simpleMessage("Not Very Active"),
     "nutripal": MessageLookupByLibrary.simpleMessage("NutriPal"),
     "ok": MessageLookupByLibrary.simpleMessage("Ok"),
     "oopsNoDataFound": MessageLookupByLibrary.simpleMessage(
       "Oops, No data found!",
+    ),
+    "pescatarianSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Excludes meat and poultry, but includes fish, seafood, and often dairy and eggs.",
     ),
     "pleaseSelectAGender": MessageLookupByLibrary.simpleMessage(
       "Please select a gender",
@@ -136,6 +142,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "preferredFirstName": MessageLookupByLibrary.simpleMessage(
       "Preferred first name",
+    ),
+    "primaryDietPreference": MessageLookupByLibrary.simpleMessage(
+      "What is your primary diet preference?",
     ),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "protein": MessageLookupByLibrary.simpleMessage("Protein"),
@@ -176,6 +185,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tryForFree": MessageLookupByLibrary.simpleMessage("Try for free!"),
     "userDetails": MessageLookupByLibrary.simpleMessage("User Details"),
     "userProfile": MessageLookupByLibrary.simpleMessage("User Profile"),
+    "veganSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Excludes all animal products, including meat, fish, dairy, eggs, and honey. Fully plant-based.",
+    ),
+    "vegetarianSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Excludes meat, poultry, and fish. Includes plant-based foods and may include dairy and eggs.",
+    ),
     "veryActive": MessageLookupByLibrary.simpleMessage("Very Active"),
     "waitWhileTheMealPlanIsGenerated": MessageLookupByLibrary.simpleMessage(
       "Wait while the meal plan is generated...",

@@ -28,7 +28,8 @@ class _DashboardState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    mealLoadingCubit = locator.get()..fetchExistingMealPlan(DateTime.now());
+    mealLoadingCubit = locator.get()
+      ..checkForNewPlan(appDataService.planStartDate!, DateTime.now());
     mealLogCubit = locator.get();
     scrollController = ScrollController();
   }
@@ -50,26 +51,33 @@ class _DashboardState extends State<DashboardPage> {
         BlocProvider.value(value: mealLogCubit),
         BlocProvider.value(value: mealLoadingCubit),
       ],
-      child: Scaffold(
-        backgroundColor: cs.secondaryContainer,
-        body: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            SliverAppBar(
-              title: Text(S.of(context).dashboard),
-              centerTitle: true,
-              surfaceTintColor: AppColorPalette.transparent,
-            ),
-            // Todo: How to get state data here?
-            PinnedHeaderSliver(
-              child: DashboardDate(scrollController: scrollController),
-            ),
-            const SliverToBoxAdapter(child: AppSpacing.h16),
-            const DashboardView(),
-          ],
+      child: GestureDetector(
+        behavior: .translucent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+        child: Scaffold(
+          backgroundColor: cs.secondaryContainer,
+          body: CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverAppBar(
+                title: Text(S.of(context).dashboard),
+                centerTitle: true,
+                surfaceTintColor: AppColorPalette.transparent,
+              ),
+              // Todo: How to get state data here?
+              PinnedHeaderSliver(
+                child: DashboardDate(scrollController: scrollController),
+              ),
+              const SliverToBoxAdapter(child: AppSpacing.h16),
+              const DashboardView(),
+            ],
+          ),
+          floatingActionButtonLocation: .centerFloat,
+          floatingActionButton: const LogMealButton(),
         ),
-        floatingActionButtonLocation: .centerFloat,
-        floatingActionButton: const LogMealButton(),
       ),
     );
   }

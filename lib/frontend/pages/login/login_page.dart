@@ -46,6 +46,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
     final TextTheme textTheme = TextTheme.of(context);
+    final Size size = MediaQuery.sizeOf(context);
+    final double shortestSide = size.shortestSide;
+    final double logoSize = (shortestSide * 0.22).clamp(120, 180).toDouble();
 
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
@@ -69,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
             AuthAuthenticated() => const Center(
               child: CircularProgressIndicator(),
             ),
-            AuthUnauthenticated() => LoginView(cubit: cubit),
+            AuthUnauthenticated() => LoginView(cubit: cubit, size: logoSize),
             AuthAuthenticationFailed() => AlertDialog(
               title: Text(S.of(context).loginFailed),
               content: Text(S.of(context).sorryUnableToLogIn),

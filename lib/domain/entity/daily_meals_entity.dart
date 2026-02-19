@@ -3,6 +3,19 @@ import 'meal_option_list_entity.dart';
 
 /// Shows the entire meal plan for the current day.
 class DailyMealsEntity {
+  /// The meal list for all the [MealType].
+  final List<MealOptionListEntity> mealOptionListEntity;
+
+  /// The entity that stores updated values after logging of meal.
+  final MealLoggerEntity mealLoggerEntity;
+
+  const DailyMealsEntity({
+    required this.mealLoggerEntity,
+    required this.mealOptionListEntity,
+  });
+}
+
+class MealLoggerEntity {
   /// Target calories to be achieved by the user.
   final int targetCalories;
 
@@ -30,13 +43,13 @@ class DailyMealsEntity {
   /// The current/today date for showing the meals for the day.
   final DateTime currentDate;
 
-  /// The meal list for all the [MealType].
-  final List<MealOptionListEntity> mealOptionListEntity;
+  /// The date for knowing whether meal plan exists or needs to be generated.
+  final DateTime mealPlanStartDate;
 
   /// The meal that is logged by the user.
   final Map<MealType, MealOption> loggedMeal;
 
-  const DailyMealsEntity({
+  const MealLoggerEntity({
     required this.targetCalories,
     required this.consumedCalories,
     required this.targetFats,
@@ -45,8 +58,8 @@ class DailyMealsEntity {
     required this.consumedProtein,
     required this.targetCarbs,
     required this.consumedCarbs,
+    required this.mealPlanStartDate,
     required this.currentDate,
     required this.loggedMeal,
-    required this.mealOptionListEntity,
   });
 }

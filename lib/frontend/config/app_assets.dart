@@ -1,5 +1,5 @@
 final class AppAssets {
-  static const String appLogo = "assets/logo/app_logo.png";
+  static const String appLogo = "assets/icons/app_icon.png";
   static const String googleLogo = "assets/icons/google.png";
   static const String welcomeImage = "assets/images/welcome_screen.png";
   static const String breakfast = "assets/meals/breakfast/breakfast_logo.png";

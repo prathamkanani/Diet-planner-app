@@ -10,9 +10,9 @@ final class MealLogInitialState extends MealLogState {
 }
 
 final class MealLoggingState extends MealLogState {
-  final bool isLogging;
+  // final bool isLogging;
 
-  const MealLoggingState(this.isLogging);
+  const MealLoggingState();
 }
 
 final class MealSelectedState extends MealLogState {
@@ -25,6 +25,12 @@ final class MealUnselectedState extends MealLogState {
   final Map<MealType, MealEntity> selectedMeals;
 
   const MealUnselectedState(this.selectedMeals);
+}
+
+final class MealUndoAvailableState extends MealLogState {
+  final DailyMealsEntity meals;
+
+  const MealUndoAvailableState(this.meals);
 }
 
 final class MealLogSuccessState extends MealLogState {

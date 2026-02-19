@@ -14,19 +14,38 @@ class LogMealButton extends StatelessWidget {
     final TextTheme textTheme = TextTheme.of(context);
     final MealLogCubit mealLogCubit = context.read<MealLogCubit>();
 
-    return BlocBuilder<MealLogCubit, MealLogState>(
+    return BlocConsumer<MealLogCubit, MealLogState>(
       bloc: mealLogCubit,
-      buildWhen: (prev, next) =>
-          // Upon selection of a meal to log
-          prev is MealLogInitialState ||
-          // Upon unselection of a meal
-          (prev is MealSelectedState && next is MealLogInitialState) ||
-          // Once the meal is logged in.
-          (prev is MealLogSuccessState && next is MealLoggingState) ||
-          // After one meal logging, selecting the other meal.
-          (prev is MealLoggingState && next is MealSelectedState),
+      listener: (context, state) {
+        if (state is MealUndoAvailableState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).mealLoggedSuccessfully),
+              action: SnackBarAction(
+                label: 'UNDO',
+                onPressed: () {
+                  mealLogCubit.didPressUndo();
+                },
+              ),
+              duration: const Duration(seconds: 10),
+              behavior: .floating,
+            ),
+          );
+        } else if(state is MealLogSuccessState) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        }
+
+        if (state is MealLogErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(S.of(context).failedToLog),
+              duration: const Duration(milliseconds: 500),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
-        if (state is MealSelectedState) {
+        if (state is MealSelectedState || state is MealLoggingState) {
           return SizedBox(
             height: 44,
             child: Padding(
@@ -34,41 +53,15 @@ class LogMealButton extends StatelessWidget {
               child: FilledButton(
                 onPressed: () => mealLogCubit.logMeals(),
                 child: Center(
-                  child: BlocConsumer<MealLogCubit, MealLogState>(
-                    bloc: mealLogCubit,
-                    listener: (context, state) {
-                      if (state is MealLogSuccessState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(S.of(context).mealLoggedSuccessfully),
-                            duration: const Duration(milliseconds: 500),
+                  child: (state is MealLoggingState)
+                      ? CircularProgressIndicator(color: cs.onPrimary)
+                      : Text(
+                          S.of(context).logMeal,
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: cs.onPrimary,
+                            fontWeight: .w600,
                           ),
-                        );
-                      }
-
-                      if (state is MealLogErrorState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(S.of(context).failedToLog),
-                            duration: const Duration(milliseconds: 500),
-                          ),
-                        );
-                      }
-                    },
-                    buildWhen: (_, next) => next is MealLoggingState,
-                    builder: (context, state) {
-                      if (state is MealLoggingState && state.isLogging) {
-                        return CircularProgressIndicator(color: cs.onPrimary);
-                      }
-                      return Text(
-                        S.of(context).logMeal,
-                        style: textTheme.bodyLarge?.copyWith(
-                          color: cs.onPrimary,
-                          fontWeight: .w600,
                         ),
-                      );
-                    },
-                  ),
                 ),
               ),
             ),

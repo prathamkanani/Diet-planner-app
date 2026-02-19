@@ -1,14 +1,15 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../application/service/app_data_service.dart';
 import '../../domain/entity/daily_meals_entity.dart';
+import '../../domain/entity/user_preferences.dart';
 import '../model/daily_meals_model.dart';
 import '../utils/helpers.dart';
 import '../app_injector.dart';
 
 abstract interface class MealSource {
-  Future<DailyMealsEntity?> fetchExistingMeal(
-    DateTime currentDate,
-  );
+  Future<DailyMealsEntity?> fetchExistingMeal(DateTime currentDate);
+
+  Future<UserPreferences> getUserPreferences(String userId);
 }
 
 class MealRemoteSource implements MealSource {
@@ -20,9 +21,7 @@ class MealRemoteSource implements MealSource {
   MealRemoteSource(this.supabase);
 
   @override
-  Future<DailyMealsEntity?> fetchExistingMeal(
-    DateTime currentDate,
-  ) async {
+  Future<DailyMealsEntity?> fetchExistingMeal(DateTime currentDate) async {
     final res = await supabase
         .from('meal_plan')
         .select()
@@ -42,8 +41,19 @@ class MealRemoteSource implements MealSource {
           .from('meal_logs')
           .select('meal_type, option, calories, carbs, fats, proteins')
           .eq('meal_id', response?['id']);
-      return DailyMealsModel.fromJson(currentDate, response, mealLogs);
+      return DailyMealsModel.fromJson(
+        currentDate,
+        planStartDate,
+        response,
+        mealLogs,
+      );
     }
     return null;
+  }
+
+  @override
+  Future<UserPreferences> getUserPreferences(String userId) {
+    // TODO: implement getUserPreferences
+    throw UnimplementedError();
   }
 }

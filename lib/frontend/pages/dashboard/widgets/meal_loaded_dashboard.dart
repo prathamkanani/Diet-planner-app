@@ -15,9 +15,14 @@ import 'meal_option_list.dart';
 import 'meal_tab_bar.dart';
 
 class MealLoadedDashboard extends StatefulWidget {
-  final DailyMealsEntity dailyMealsEntity;
+  final MealLoggerEntity mealLoggerEntity;
+  final List<MealOptionListEntity> meals;
 
-  const MealLoadedDashboard({super.key, required this.dailyMealsEntity});
+  const MealLoadedDashboard({
+    super.key,
+    required this.mealLoggerEntity,
+    required this.meals,
+  });
 
   @override
   State<MealLoadedDashboard> createState() => _MealLoadedDashboardState();
@@ -26,12 +31,15 @@ class MealLoadedDashboard extends StatefulWidget {
 class _MealLoadedDashboardState extends State<MealLoadedDashboard>
     with TickerProviderStateMixin {
   late final TabController tabController;
-  late final DailyMealsEntity dailyMealEntity = widget.dailyMealsEntity;
+  int count = 0;
 
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      return setTab();
+    });
   }
 
   @override
@@ -40,16 +48,21 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
     super.dispose();
   }
 
-  void checkMealType(MealType mealType) {
-    if (mealType == fromTime(dailyMealEntity.currentDate) &&
-        mealType == .breakfast) {
-      tabController.animateTo(0);
-    } else if (mealType == fromTime(dailyMealEntity.currentDate) &&
-        mealType == .lunch) {
-      tabController.animateTo(1);
-    } else if (mealType == fromTime(dailyMealEntity.currentDate)) {
-      tabController.animateTo(2);
-    }
+  void setTab() {
+    // final DateTime currentDate = widget.mealLoggerEntity.currentDate;
+    // if (mealType == fromTime(currentDate) && mealType == .breakfast) {
+    //   tabController.animateTo(0);
+    // } else if (mealType == fromTime(currentDate) && mealType == .lunch) {
+    //   tabController.animateTo(1);
+    // } else if (mealType == fromTime(currentDate)) {
+    //   tabController.animateTo(2);
+    // }
+    final DateTime currentDate = widget.mealLoggerEntity.currentDate;
+    return switch (fromTime(currentDate)) {
+      MealType.breakfast => tabController.animateTo(0),
+      MealType.lunch => tabController.animateTo(1),
+      MealType.dinner => tabController.animateTo(2),
+    };
   }
 
   @override
@@ -62,16 +75,17 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
         BlocBuilder<MealLogCubit, MealLogState>(
           bloc: mealLogCubit,
           builder: (context, state) {
-            return IndicatorCard(dailyMealsEntity: dailyMealEntity);
+            return IndicatorCard(mealLoggerEntity: widget.mealLoggerEntity);
           },
         ),
         const SliverToBoxAdapter(child: AppSpacing.h16),
-        BlocBuilder(
+        BlocBuilder<MealLogCubit, MealLogState>(
           bloc: mealLogCubit,
           buildWhen: (prev, next) {
             return next is MealLogInitialState;
           },
           builder: (context, state) {
+            print(count);
             return SliverMainAxisGroup(
               slivers: [
                 SliverPersistentHeader(
@@ -83,32 +97,28 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
                 SliverFillRemaining(
                   child: TabBarView(
                     controller: tabController,
-                    children:
-                        dailyMealEntity.mealOptionListEntity.map((
-                              final MealOptionListEntity mealOption,
-                            ) {
-                              final MealType mealType = mealOption.mealType;
-                              checkMealType(mealType);
-                              return Column(
-                                mainAxisSize: .min,
-                                mainAxisAlignment: .start,
-                                children: [
-                                  Text(
-                                    mealOption.mealType.mealType,
-                                    style: textTheme.titleLarge,
-                                  ),
-                                  AppSpacing.h16,
-                                  Expanded(
-                                    child: MealOptionList(
-                                      loggedMeals: dailyMealEntity.loggedMeal,
-                                      mealOptionListEntity: mealOption,
-                                      currentDate: dailyMealEntity.currentDate,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }).toList()
-                            as List<Widget>,
+                    children: widget.meals.map((final mealOption) {
+                      // final MealType mealType = mealOption.mealType;
+                      // checkMealType(mealType);
+                      return Column(
+                        mainAxisSize: .min,
+                        mainAxisAlignment: .start,
+                        children: [
+                          Text(
+                            mealOption.mealType.mealType,
+                            style: textTheme.titleLarge,
+                          ),
+                          AppSpacing.h16,
+                          Expanded(
+                            child: MealOptionList(
+                              loggedMeals: widget.mealLoggerEntity.loggedMeal,
+                              mealOptionListEntity: mealOption,
+                              currentDate: widget.mealLoggerEntity.currentDate,
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
@@ -121,9 +131,9 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
 }
 
 class IndicatorCard extends StatelessWidget {
-  const IndicatorCard({super.key, required this.dailyMealsEntity});
+  const IndicatorCard({super.key, required this.mealLoggerEntity});
 
-  final DailyMealsEntity dailyMealsEntity;
+  final MealLoggerEntity mealLoggerEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +142,9 @@ class IndicatorCard extends StatelessWidget {
         padding: const .all(16),
         child: Column(
           children: [
-            CalorieProgressIndicator(dailyMealsEntity: dailyMealsEntity),
+            CalorieProgressIndicator(mealLoggerEntity: mealLoggerEntity),
             AppSpacing.h16,
-            MacroProgress(entity: dailyMealsEntity),
+            MacroProgress(entity: mealLoggerEntity),
           ],
         ),
       ),
@@ -143,9 +153,9 @@ class IndicatorCard extends StatelessWidget {
 }
 
 class CalorieProgressIndicator extends StatelessWidget {
-  final DailyMealsEntity dailyMealsEntity;
+  final MealLoggerEntity mealLoggerEntity;
 
-  const CalorieProgressIndicator({super.key, required this.dailyMealsEntity});
+  const CalorieProgressIndicator({super.key, required this.mealLoggerEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +166,8 @@ class CalorieProgressIndicator extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: CustomProgressIndicator(
-          target: dailyMealsEntity.targetCalories,
-          consumed: dailyMealsEntity.consumedCalories,
+          target: mealLoggerEntity.targetCalories,
+          consumed: mealLoggerEntity.consumedCalories,
           subtitle: S.of(context).kcalLeft,
           color: cs.primary,
           isCalorieIndicator: true,

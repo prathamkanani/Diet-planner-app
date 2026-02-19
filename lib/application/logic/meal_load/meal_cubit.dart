@@ -1,27 +1,74 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entity/daily_meals_entity.dart';
+import '../../../domain/entity/user_preferences.dart';
 import '../../../domain/repository/meal_repository.dart';
+import '../../../domain/repository/onboarding_repository.dart';
 import '../../../infrastructure/app_injector.dart';
+import '../../../infrastructure/utils/helpers.dart';
+import '../../../infrastructure/utils/types.dart';
 import '../../service/app_data_service.dart';
 import 'meal_state.dart';
 
 class MealLoadingCubit extends Cubit<MealState> {
   final MealRepository repository;
+  final OnboardingRepository onboardingRepository;
 
-  MealLoadingCubit(this.repository)
-    : _selectedDate = DateTime.now(),
+  MealLoadingCubit(this.repository, this.onboardingRepository)
+    : selectedDate = DateTime.now(),
       super(const MealLoadingState());
 
   /// Getting user id to know first time meal generation or not.
   final AppDataService appDataService = locator.get();
 
   /// Storing selected date.
-  DateTime _selectedDate;
+  DateTime selectedDate;
 
-  DateTime get selectedDate => _selectedDate;
+  /// This checks whether a meal plan exists for a day or do we need
+  /// to create another plan starting from today.
+  void checkForNewPlan(DateTime mealPlanDate, DateTime currentDate) {
+    if (isWithinPlan(startDate: mealPlanDate, currentDate: currentDate)) {
+      fetchExistingMealPlan(currentDate);
+      return;
+    }
+    fetchUserPreferencesAndGenerateNewPlan(appDataService.userId!, currentDate);
+  }
 
-  void loadAfterMealLogging(DailyMealsEntity dailyMealsEntity) {
-    emit(MealLoadedState(dailyMealList: dailyMealsEntity));
+  /// This generates another plan for user based on selected user preferences.
+  Future<void> fetchUserPreferencesAndGenerateNewPlan(
+    String userId,
+    DateTime date,
+  ) async {
+    try {
+      final UserPreferences userPref = await repository.getUserPreferences(
+        userId,
+      );
+
+      final JsonList jsonList = await onboardingRepository.generateMeal(
+        userPref,
+        date,
+      );
+
+      await onboardingRepository.saveGeneratedMeal(jsonList, date);
+
+      fetchExistingMealPlan(date);
+    } catch (e) {
+      MealErrorState(e);
+    }
+  }
+
+  /// To fetch updated meals after user logs them.
+  Future<void> loadAfterMealLogging() async {
+    final DailyMealsEntity? updatedMeals = await repository.fetchExistingMeal(
+      selectedDate,
+    );
+    if (state is MealLoadedState) {
+      emit(
+        MealLoadedState(
+          meals: updatedMeals!.mealOptionListEntity,
+          mealLoggerEntity: updatedMeals.mealLoggerEntity,
+        ),
+      );
+    }
   }
 
   /// To fetch a meal for a certain day from the existing meal plan
@@ -29,7 +76,12 @@ class MealLoadingCubit extends Cubit<MealState> {
     try {
       final DailyMealsEntity? ml = await repository.fetchExistingMeal(day);
       if (ml != null) {
-        emit(MealLoadedState(dailyMealList: ml));
+        emit(
+          MealLoadedState(
+            mealLoggerEntity: ml.mealLoggerEntity,
+            meals: ml.mealOptionListEntity,
+          ),
+        );
         return;
       }
       emit(const MealNotFoundState());
@@ -40,32 +92,16 @@ class MealLoadingCubit extends Cubit<MealState> {
 
   /// When the date is changed to look at previous meals or logs.
   Future<void> changedDate(DateTime date) async {
-    _selectedDate = date;
+    if(isToday(date)) return;
+
+    selectedDate = date;
     emit(const MealLoadingState());
 
     try {
-      final DailyMealsEntity? mealList = await repository.fetchExistingMeal(
-        date,
-      );
-      if (mealList == null) {
-        emit(const MealNotFoundState());
-      } else {
-        emit(MealLoadedState(dailyMealList: mealList));
-      }
+      checkForNewPlan(appDataService.planStartDate!, date);
     } catch (e) {
       emit(MealErrorState(e));
     }
-  }
-
-  /// Helper function for going to the previous day.
-  void previousDay() {
-    changedDate(_selectedDate.subtract(const Duration(days: 1)));
-  }
-
-  /// Helper function for going to the next day.
-  void nextDay() {
-    if (isToday(_selectedDate)) return;
-    changedDate(_selectedDate.add(const Duration(days: 1)));
   }
 
   /// Helper function to check whether selected date is today or not.

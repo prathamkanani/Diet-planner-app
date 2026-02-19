@@ -5,6 +5,11 @@ import '../app_injector.dart';
 
 abstract interface class MealLogSource {
   Future<void> logMeal(Map<MealType, MealEntity> logMeals, DateTime date);
+
+  Future<void> deleteLoggedMeal(
+    Map<MealType, MealEntity> logMeals,
+    DateTime date,
+  );
 }
 
 class MealLogRemoteSource implements MealLogSource {
@@ -19,9 +24,17 @@ class MealLogRemoteSource implements MealLogSource {
     Map<MealType, MealEntity> logMeals,
     DateTime date,
   ) async {
+    final response = await supabase
+        .from('meal_plan')
+        .select('id')
+        .eq('plan_start', appDataService.planStartDate!)
+        .single();
+    final String mealPlanId = response['id'];
+
     final res = await supabase
         .from('meal_plan_days')
         .select('id')
+        .eq('meal_plan_id', mealPlanId)
         .eq('day', date.weekday)
         .single();
 
@@ -41,5 +54,33 @@ class MealLogRemoteSource implements MealLogSource {
     }).toList();
 
     await supabase.from('meal_logs').insert(mealLog);
+  }
+
+  @override
+  Future<void> deleteLoggedMeal(
+    Map<MealType, MealEntity> logMeals,
+    DateTime date,
+  ) async {
+    final response = await supabase
+        .from('meal_plan')
+        .select('id')
+        .eq('plan_start', appDataService.planStartDate!)
+        .single();
+    final String mealPlanId = response['id'];
+
+    final res = await supabase
+        .from('meal_plan_days')
+        .select('id')
+        .eq('meal_plan_id', mealPlanId)
+        .eq('day', date.weekday)
+        .single();
+
+    final String mealId = res['id'];
+
+    await supabase
+        .from('meal_logs')
+        .delete()
+        .eq('meal_id', mealId)
+        .inFilter('meal_type', logMeals.keys.map((t) => t.name).toList());
   }
 }

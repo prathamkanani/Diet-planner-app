@@ -81,5 +81,10 @@
   "enterYourHeight": "Enter your height",
   "weight": "Weight",
   "enterYourWeight": "Enter your weight",
-  "saveProfile": "Save Profile"
+  "saveProfile": "Save Profile",
+  "primaryDietPreference": "What is your primary diet preference?",
+  "vegetarianSubtitle": "Excludes meat, poultry, and fish. Includes plant-based foods and may include dairy and eggs.",
+  "nonVegetarianSubtitle": "Includes plant foods along with meat, poultry, fish, eggs, and dairy.",
+  "veganSubtitle": "Excludes all animal products, including meat, fish, dairy, eggs, and honey. Fully plant-based.",
+  "pescatarianSubtitle": "Excludes meat and poultry, but includes fish, seafood, and often dairy and eggs."
 }

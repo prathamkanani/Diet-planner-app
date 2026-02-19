@@ -8,8 +8,9 @@ import 'google_signin.dart';
 
 class LoginView extends StatelessWidget {
   final AuthCubit cubit;
+  final double size;
 
-  const LoginView({super.key, required this.cubit});
+  const LoginView({super.key, required this.cubit, required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,10 @@ class LoginView extends StatelessWidget {
             const Spacer(),
             Image.asset(
               AppAssets.appLogo,
-              height: 200,
-              width: 200,
+              height: size,
+              width: size,
               fit: .cover,
             ),
-            const Spacer(),
             Text(
               S.of(context).nutripal,
               style: textTheme.displaySmall?.copyWith(
@@ -38,7 +38,6 @@ class LoginView extends StatelessWidget {
                 fontWeight: .bold,
               ),
             ),
-            AppSpacing.h08,
             Text(
               S.of(context).healthyEatingMadeEasy,
               style: textTheme.titleMedium?.copyWith(

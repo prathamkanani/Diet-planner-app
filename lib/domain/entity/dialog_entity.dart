@@ -4,11 +4,7 @@ class DialogEntity {
   final String title;
   final String? content;
 
-  const DialogEntity({
-    required this.page,
-    required this.title,
-    this.content,
-  });
+  const DialogEntity({required this.page, required this.title, this.content});
 }
 
 final List<DialogEntity> dialogs = [
@@ -31,10 +27,10 @@ final List<DialogEntity> dialogs = [
   ),
   const DialogEntity(
     page: 4,
-    title: "Please enter all the fields.",
+    title: "What's your meal preference?",
+    content:
+        "Please enter your meal preference. We'll use this to personalize your plan",
   ),
-  const DialogEntity(
-    page: 5,
-    title: "Please enter all the fields.",
-  ),
+  const DialogEntity(page: 5, title: "Please enter all the fields."),
+  const DialogEntity(page: 6, title: "Please enter all the fields."),
 ];

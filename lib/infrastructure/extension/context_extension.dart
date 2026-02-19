@@ -94,4 +94,19 @@ extension ContextExtension on BuildContext {
   ColorScheme get cs {
     return ColorScheme.of(this);
   }
+
+  /// Shorthand getter to apply TextTheme to any widget.
+  ///
+  /// Example:
+  /// ```dart
+  /// @override
+  /// Widget build(final BuildContext context) {
+  ///   return SomeUI(
+  ///     text: tt.titleMedium;
+  ///   );
+  /// }
+  /// ```
+  TextTheme get th {
+    return TextTheme.of(this);
+  }
 }

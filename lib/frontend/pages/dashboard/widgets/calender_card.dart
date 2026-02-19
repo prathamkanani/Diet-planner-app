@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../../../application/service/app_data_service.dart';
+import '../../../../infrastructure/app_injector.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
 
 class WeekCalendarCard extends StatelessWidget {
@@ -7,12 +9,14 @@ class WeekCalendarCard extends StatelessWidget {
   final ValueChanged<DateTime> onDatePicked;
   final ScrollController scrollController;
 
-  const WeekCalendarCard({
+  WeekCalendarCard({
     super.key,
     required this.scrollController,
     required this.date,
     required this.onDatePicked,
   });
+
+  final AppDataService appDataService = locator.get();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class WeekCalendarCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: TableCalendar(
-          firstDay: DateTime(2000),
+          firstDay: appDataService.planStartDate!,
           lastDay: DateTime.now(),
           focusedDay: date,
           calendarFormat: .week,

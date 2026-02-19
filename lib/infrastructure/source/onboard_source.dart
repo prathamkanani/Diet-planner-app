@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/entity/onboarding_entity.dart';
 import '../../domain/entity/profile_entity.dart';
+import '../../domain/entity/user_preferences.dart';
 import '../extension/weekday_extension.dart';
 import '../model/onboarding_model.dart';
 import '../model/profile_model.dart';
@@ -12,9 +13,9 @@ import '../utils/types.dart';
 abstract interface class OnboardingSource {
   Future<OnboardingEntity> saveOnboardingDetails(OnboardingEntity onboard);
 
-  Future<JsonList> generateMealAI(OnboardingEntity onboard);
+  Future<JsonList> generateMealAI(UserPreferences userPrefs, DateTime date);
 
-  Future<void> saveGeneratedPlan(JsonList jsonList);
+  Future<void> saveGeneratedPlan(JsonList jsonList, DateTime date);
 }
 
 class OnboardingRemoteSource implements OnboardingSource {
@@ -53,17 +54,19 @@ class OnboardingRemoteSource implements OnboardingSource {
   }
 
   @override
-  Future<JsonList> generateMealAI(OnboardingEntity onboard) async {
-    final onboarding = OnboardingModel.fromEntity(onboard);
-    final responseFromAI = await gemini.generateMealAI(onboarding);
+  Future<JsonList> generateMealAI(
+    UserPreferences userPrefs,
+    DateTime date,
+  ) async {
+    final responseFromAI = await gemini.generateMealAI(userPrefs);
     return JsonList.from(jsonDecode(responseFromAI ?? ''));
   }
 
   @override
-  Future<void> saveGeneratedPlan(JsonList jsonList) async {
+  Future<void> saveGeneratedPlan(JsonList jsonList, DateTime date) async {
     final res = await supabase
         .from('meal_plan')
-        .insert({'user_id': user.id, 'plan_start': DateTime.now().toString()})
+        .insert({'user_id': user.id, 'plan_start': date.toString()})
         .select()
         .single();
 

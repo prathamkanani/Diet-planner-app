@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/entity/onboarding_entity.dart';
+import '../../../../../../domain/entity/user_preferences.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import 'check_circle_container.dart';
@@ -17,6 +17,7 @@ import 'check_circle_container.dart';
 /// always
 class MealPlanningSection extends StatefulWidget {
   final void Function(MealPlanning) advanceMealPlanning;
+
   const MealPlanningSection({super.key, required this.advanceMealPlanning});
 
   @override
@@ -28,10 +29,6 @@ class _MealPlanningSectionState extends State<MealPlanningSection> {
 
   void _handleTap(MealPlanning meal) {
     setState(() {
-      if(cubit.mealPlan == null) {
-        cubit.mealPlan = meal;
-        return;
-      }
       cubit.mealPlan = (cubit.mealPlan == meal) ? null : meal;
     });
   }
@@ -53,7 +50,7 @@ class _MealPlanningSectionState extends State<MealPlanningSection> {
             padding: EdgeInsets.zero,
             children: MealPlanning.values.map((meal) {
               bool isSelected = cubit.mealPlan == meal;
-              isSelected? widget.advanceMealPlanning(cubit.mealPlan!) : null;
+              isSelected ? widget.advanceMealPlanning(cubit.mealPlan!) : null;
               return CheckCircleContainer<MealPlanning>(
                 title: meal.meal,
                 isSelected: isSelected,

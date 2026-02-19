@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/entity/health_habits_entity.dart';
 import '../../../domain/entity/onboarding_entity.dart';
+import '../../../domain/entity/user_preferences.dart';
 import '../../../domain/repository/onboarding_repository.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/utils/types.dart';
@@ -15,20 +16,20 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit({required this.repository})
     : super(const OnboardingLoadingState());
 
-  /// Health Habits
+  /// Selected Health Habits
   List<HealthHabits> healthHabits = [];
 
-  /// Meal planning
+  /// Selected Meal planning
   MealPlanning? mealPlan;
 
-  /// Gender
+  /// Selected Gender
   Gender? gender;
 
-  /// Activity Level
+  /// Selected Activity Level
   ActivityLevel? activityLevel;
 
-  /// A stream subscriber that subscribes a stream of AI response.
-  StreamSubscription<String>? promptSubscriber;
+  /// Selected Meal Preference
+  MealPreferences? mealPref;
 
   /// Temporary string storage of AI generated meal.
   final buffer = StringBuffer();
@@ -48,12 +49,16 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     }
   }
 
+  // TODO: To generate and save plan after user has onboarded and old meal plan has expired.
   /// This generates a new plan for the first time or when old plan is expired.
-  Future<void> generateMealPlan(OnboardingEntity onboard) async {
+  Future<void> generateMealPlan(OnboardingEntity onboard, DateTime date) async {
     try {
       emit(const OnboardingPromptState(true));
-      final JsonList jsonList = await repository.generateMeal(onboard);
-      await saveGeneratedMealPlan(jsonList);
+      final JsonList jsonList = await repository.generateMeal(
+        onboard.userPreferences,
+        date,
+      );
+      await saveGeneratedMealPlan(jsonList, date);
       emit(OnboardingLoadedState(onboard));
       emit(const OnboardingPromptState(false));
     } catch (e) {
@@ -61,11 +66,10 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     }
   }
 
-  /// To save the meal plan generated for the first
-  /// time or when the old plan is expired.
-  Future<void> saveGeneratedMealPlan(JsonList jsonList) async {
+  /// To save the meal plan generated.
+  Future<void> saveGeneratedMealPlan(JsonList jsonList, DateTime date) async {
     try {
-      await repository.saveGeneratedMeal(jsonList);
+      await repository.saveGeneratedMeal(jsonList, date);
     } catch (e) {
       emit(OnboardingErrorState(e));
     }
