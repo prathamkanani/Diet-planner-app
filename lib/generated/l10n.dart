@@ -773,6 +773,56 @@ class S {
       args: [],
     );
   }
+
+  /// `What is your primary diet preference?`
+  String get primaryDietPreference {
+    return Intl.message(
+      'What is your primary diet preference?',
+      name: 'primaryDietPreference',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Excludes meat, poultry, and fish. Includes plant-based foods and may include dairy and eggs.`
+  String get vegetarianSubtitle {
+    return Intl.message(
+      'Excludes meat, poultry, and fish. Includes plant-based foods and may include dairy and eggs.',
+      name: 'vegetarianSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Includes plant foods along with meat, poultry, fish, eggs, and dairy.`
+  String get nonVegetarianSubtitle {
+    return Intl.message(
+      'Includes plant foods along with meat, poultry, fish, eggs, and dairy.',
+      name: 'nonVegetarianSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Excludes all animal products, including meat, fish, dairy, eggs, and honey. Fully plant-based.`
+  String get veganSubtitle {
+    return Intl.message(
+      'Excludes all animal products, including meat, fish, dairy, eggs, and honey. Fully plant-based.',
+      name: 'veganSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Excludes meat and poultry, but includes fish, seafood, and often dairy and eggs.`
+  String get pescatarianSubtitle {
+    return Intl.message(
+      'Excludes meat and poultry, but includes fish, seafood, and often dairy and eggs.',
+      name: 'pescatarianSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

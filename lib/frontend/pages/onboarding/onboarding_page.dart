@@ -7,6 +7,7 @@ import '../../../domain/entity/dialog_entity.dart';
 import '../../../domain/entity/health_habits_entity.dart';
 import '../../../domain/entity/onboarding_entity.dart';
 import '../../../domain/entity/profile_entity.dart';
+import '../../../domain/entity/user_preferences.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../../../infrastructure/model/profile_model.dart';
@@ -14,6 +15,7 @@ import '../../config/app_spacing.dart';
 import '../home/home_page.dart';
 import '../setup/setup_page.dart';
 import 'widgets/bottom_action_bar.dart';
+import 'widgets/onboarding_sections/meal_preference/meal_preference.dart';
 import 'widgets/pageview_indicator.dart';
 import 'widgets/onboarding_sections/activity_level/activity_level_section.dart';
 import 'widgets/onboarding_sections/health_habits/health_habits_section.dart';
@@ -22,6 +24,16 @@ import 'widgets/onboarding_sections/more_about/more_about_user_section.dart';
 import 'widgets/onboarding_sections/user_detail/user_detail_section.dart';
 import 'widgets/onboarding_sections/username_section/username_section.dart';
 import 'widgets/onboarding_sections/widgets/alert_dialog.dart';
+
+enum OnboardingSection {
+  usernameSection,
+  healthHabitsSection,
+  mealPlanningSection,
+  activityLevelSection,
+  mealPreferenceSection,
+  userDetailSection,
+  moreAboutUserSection,
+}
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -39,13 +51,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
       locationController,
       heightController,
       weightController;
-
-  int _currentPage = 0;
+  // late final ValueNotifier<int> _currentPage;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    // _currentPage = ValueNotifier(0);
+    // _pageController.addListener(() {
+    //   if (!_pageController.hasClients) return;
+    //
+    //   final page = _pageController.page?.round() ?? 0;
+    //   if (_currentPage.value != page) _currentPage.value = page;
+    // });
     ageController = TextEditingController();
     locationController = TextEditingController();
     userNameController = TextEditingController();
@@ -57,6 +75,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   void dispose() {
     _pageController.dispose();
+    // _currentPage.dispose();
     userNameController.dispose();
     ageController.dispose();
     locationController.dispose();
@@ -67,6 +86,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   void _goBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
     _pageController.previousPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -74,6 +94,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   void _goToNextPage() {
+    FocusManager.instance.primaryFocus?.unfocus();
     _pageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -90,30 +111,37 @@ class _OnboardingPageState extends State<OnboardingPage> {
       weight: weightController.text,
     );
     final OnboardingEntity onboard = OnboardingEntity(
-      country: locationController.text,
       profileEntity: profile,
-      healthHabits: cubit.healthHabits,
-      mealPlanning: cubit.mealPlan!,
-      activityLevel: cubit.activityLevel!,
+      userPreferences: UserPreferences(
+        healthHabits: cubit.healthHabits,
+        mealPlanning: cubit.mealPlan!,
+        activityLevel: cubit.activityLevel!,
+        mealPref: cubit.mealPref!,
+        country: locationController.text,
+      ),
     );
     cubit.saveOnboardingDetails(onboard);
-    cubit.generateMealPlan(onboard);
+    cubit.generateMealPlan(onboard, DateTime.now());
+    appDataService.planStartDate = DateTime.now();
   }
 
   void _next(BuildContext context) {
-    if ((userNameController.text.isEmpty && _currentPage == 0) ||
-        (cubit.mealPlan == null && _currentPage == 2) ||
-        (cubit.activityLevel == null && _currentPage == 3) ||
+    // final page = _currentPage.value;
+    final page = (_pageController.page ?? 0).toDouble();
+    if ((userNameController.text.isEmpty && page == 0) ||
+        (cubit.mealPlan == null && page == 2) ||
+        (cubit.activityLevel == null && page == 3) ||
+        (cubit.mealPref == null && page == 4) ||
         (ageController.text.isEmpty &&
             locationController.text.isEmpty &&
             cubit.gender == null &&
-            _currentPage == 4) ||
+            page == 5) ||
         (heightController.text.isEmpty &&
             weightController.text.isEmpty &&
-            _currentPage == 5)) {
-      dialogBuilder(context, _currentPage);
+            page == 6)) {
+      dialogBuilder(context, page.toInt());
     } else {
-      _currentPage == 5 ? _storeOnboardingEntity() : _goToNextPage();
+      page == 6 ? _storeOnboardingEntity() : _goToNextPage();
     }
   }
 
@@ -126,14 +154,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         }).toList()[page];
       },
     );
-  }
-
-  /// To update page and its current index.
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentPage = index;
-    });
-    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   @override
@@ -157,47 +177,73 @@ class _OnboardingPageState extends State<OnboardingPage> {
         body: Column(
           children: [
             SizedBox(height: MediaQuery.sizeOf(context).height * 0.06),
-            PageviewIndicator(count: 6, currentPage: _currentPage),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: PageviewIndicator(
+                count: OnboardingSection.values.length,
+                controller: _pageController,
+              ),
+            ),
             AppSpacing.h16,
             Expanded(
               child: BlocProvider.value(
                 value: cubit,
-                child: PageView(
+                child: PageView.builder(
                   controller: _pageController,
                   physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: _onPageChanged,
-                  children:
-                      <Widget>[
-                        UsernameSection(controller: userNameController),
+                  itemCount: OnboardingSection.values.length,
+                  itemBuilder: (_, final int index) {
+                    final OnboardingSection type = .values[index];
+                    final Widget section = switch (type) {
+                      OnboardingSection.usernameSection => UsernameSection(
+                        controller: userNameController,
+                      ),
+
+                      OnboardingSection.healthHabitsSection =>
                         HealthHabitsSection(
                           selectedHabit: (List<HealthHabits> h) {
                             cubit.healthHabits = h;
                           },
                         ),
+
+                      OnboardingSection.mealPlanningSection =>
                         MealPlanningSection(
                           advanceMealPlanning: (MealPlanning m) {
                             cubit.mealPlan = m;
                           },
                         ),
+
+                      OnboardingSection.activityLevelSection =>
                         ActivityLevelSection(
                           selectedActivity: (ActivityLevel a) {
                             cubit.activityLevel = a;
                           },
                         ),
-                        UserDetailSection(
-                          ageController: ageController,
-                          locationController: locationController,
-                          selectedGender: (Gender g) {
-                            cubit.gender = g;
+
+                      OnboardingSection.mealPreferenceSection =>
+                        MealPreferenceView(
+                          selectedMealPref: (MealPreferences m) {
+                            cubit.mealPref = m;
                           },
                         ),
+
+                      OnboardingSection.userDetailSection => UserDetailSection(
+                        ageController: ageController,
+                        locationController: locationController,
+                        selectedGender: (Gender g) {
+                          cubit.gender = g;
+                        },
+                      ),
+
+                      OnboardingSection.moreAboutUserSection =>
                         MoreAboutUserSection(
                           heightController: heightController,
                           weightController: weightController,
                         ),
-                      ].map((widget) {
-                        return Padding(padding: const .all(16), child: widget);
-                      }).toList(),
+                    };
+
+                    return Padding(padding: const .all(16), child: section);
+                  },
                 ),
               ),
             ),

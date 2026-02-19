@@ -1,4 +1,5 @@
 import '../../../../domain/entity/daily_meals_entity.dart';
+import '../../../domain/entity/meal_option_list_entity.dart';
 
 sealed class MealState {
   const MealState();
@@ -9,9 +10,10 @@ final class MealLoadingState extends MealState {
 }
 
 final class MealLoadedState extends MealState {
-  final DailyMealsEntity dailyMealList;
+  final MealLoggerEntity mealLoggerEntity;
+  final List<MealOptionListEntity> meals;
 
-  const MealLoadedState({required this.dailyMealList});
+  const MealLoadedState({required this.mealLoggerEntity, required this.meals});
 }
 
 final class MealNotFoundState extends MealState {

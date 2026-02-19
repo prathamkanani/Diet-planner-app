@@ -1,3 +1,4 @@
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../application/logic/auth/auth_cubit.dart';
@@ -15,6 +16,7 @@ import '../domain/repository/meal_logger_repository.dart';
 import '../domain/repository/meal_repository.dart';
 import '../domain/repository/onboarding_repository.dart';
 import '../domain/repository/profile_repository.dart';
+import '../env.dart';
 import 'repository/auth_repository.dart';
 import 'repository/bootstrap_repository.dart';
 import 'repository/meal_repository.dart';
@@ -30,6 +32,7 @@ import 'source/meal_source.dart';
 import 'source/meal_log_source.dart';
 import 'source/onboard_source.dart';
 import 'source/profile_source.dart';
+import 'source/supabase_init.dart';
 
 /// Global instance for locator
 final Locator locator = LocatorImpl();
@@ -44,6 +47,13 @@ abstract interface class AppInjector {
 class DependencyInjector implements AppInjector {
   @override
   Future<void> init() async {
+    // Initialise supabase.
+    await SupabaseConfig.initializeSupabase();
+
+    // Initialise gemini.
+    Gemini.init(apiKey: geminiKey);
+
+    // Initialise shared preference.
     final sharedPref = await SharedPreferences.getInstance();
 
     locator.registerSingleton(Supabase.instance.client);
@@ -111,7 +121,7 @@ class DependencyInjector implements AppInjector {
       () => MealRepositoryImpl(locator.get()),
     );
     locator.registerFactory<MealLoadingCubit>(
-      () => MealLoadingCubit(locator.get()),
+      () => MealLoadingCubit(locator.get(), locator.get()),
     );
 
     // Registering Meal Logging Dependencies
@@ -125,7 +135,6 @@ class DependencyInjector implements AppInjector {
       () => MealLogCubit(
         mealRepository: locator.get(),
         mealLoggerRepository: locator.get(),
-        mealLoadingCubit: locator.get()
       ),
     );
   }

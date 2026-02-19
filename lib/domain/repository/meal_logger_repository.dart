@@ -5,4 +5,9 @@ abstract interface class MealLoggerRepository {
   /// It logs a meal for a particular day to keep track of
   /// whether user is correctly following the meal plan or not.
   Future<void> logMeal(Map<MealType, MealEntity> logMeals, DateTime date);
+
+  Future<void> deleteLoggedMeal(
+    Map<MealType, MealEntity> loggedMeals,
+    DateTime date,
+  );
 }

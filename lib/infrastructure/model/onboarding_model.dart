@@ -2,15 +2,14 @@ import '../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../domain/entity/health_habits_entity.dart';
 import '../../domain/entity/onboarding_entity.dart';
 import '../../domain/entity/profile_entity.dart';
+import '../../domain/entity/user_preferences.dart';
 import '../app_injector.dart';
+import 'user_pref_model.dart';
 
 class OnboardingModel extends OnboardingEntity {
   OnboardingModel({
-    required super.country,
     required super.profileEntity,
-    required super.healthHabits,
-    required super.mealPlanning,
-    required super.activityLevel,
+    required super.userPreferences,
   });
 
   static List<String> habitsToString(List<HealthHabits> healthHabits) {
@@ -30,11 +29,8 @@ class OnboardingModel extends OnboardingEntity {
 
   factory OnboardingModel.fromEntity(OnboardingEntity entity) {
     return OnboardingModel(
-      country: entity.country,
       profileEntity: entity.profileEntity,
-      healthHabits: entity.healthHabits,
-      mealPlanning: entity.mealPlanning,
-      activityLevel: entity.activityLevel,
+      userPreferences: entity.userPreferences,
     );
   }
 
@@ -43,21 +39,18 @@ class OnboardingModel extends OnboardingEntity {
     ProfileEntity? profile,
   ) {
     return OnboardingModel(
-      country: json['country'] as String,
       profileEntity: profile!,
-      healthHabits: habitsFromString(json['health_habit']),
-      mealPlanning: MealPlanning.values.byName(json['meal_planning'] as String),
-      activityLevel: ActivityLevel.values.byName(json['activity'] as String),
+      userPreferences: UserPrefModel.fromJson(json),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'user_id': profileEntity.userId,
-      'health_habit': habitsToString(healthHabits),
-      'meal_planning': mealPlanning.name,
-      'activity': activityLevel.name,
-      'country': country,
+      'health_habit': habitsToString(userPreferences.healthHabits),
+      'meal_planning': userPreferences.mealPlanning.name,
+      'activity': userPreferences.activityLevel.name,
+      'country': userPreferences.country,
     };
   }
 }

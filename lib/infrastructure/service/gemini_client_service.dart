@@ -1,12 +1,12 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
+import '../../domain/entity/user_preferences.dart';
 import '../../env.dart';
 import '../model/meal_plan_preferences.dart';
-import '../model/onboarding_model.dart';
 
 class GeminiClientService {
   GeminiClientService();
 
-  Future<String?> generateMealAI(OnboardingModel onboard) async {
+  Future<String?> generateMealAI(UserPreferences userPreferences) async {
     final geminiModel = GenerativeModel(
       model: 'gemini-2.5-flash',
       apiKey: geminiKey,
@@ -14,15 +14,34 @@ class GeminiClientService {
     You are a certified nutritionist AI.
 
     USER PROFILE:
-    - Country: ${onboard.country}
-    - Activity level: ${onboard.activityLevel.name}
-    - Daily calorie target: 2000
+    - Country: ${userPreferences.country}
+    - Activity level: ${userPreferences.activityLevel.title}
+    - Meal Preference: ${userPreferences.mealPref.label}
+    - Daily calorie target: Research what is average calorie target according 
+      to the provided data and consider that value.
+      
+     DIETARY PREFERENCE RULES (STRICT):
+    - vegetarian: 
+      - Allowed: plant-based foods, dairy, eggs
+      - Forbidden: meat, poultry, fish, seafood
+    - non_vegetarian:
+      - Allowed: all foods including meat, poultry, fish, eggs, dairy
+    - vegan:
+      - Allowed: plant-based foods only
+      - Forbidden: all animal products including meat, poultry, fish, dairy, eggs, honey
+    - pescatarian:
+      - Allowed: plant-based foods, fish, seafood, dairy, eggs
+      - Forbidden: meat and poultry
+    
+    IMPORTANT:
+    - Do NOT include any forbidden ingredients based on the selected meal preference
+    - If a meal violates the preference, the entire response is invalid
     
     DIET RULES:
-    ${MealPlanPreferences.activityInstructions(onboard.activityLevel)}
+    ${MealPlanPreferences.activityInstructions(userPreferences.activityLevel)}
     
     INGREDIENT RULES:
-    ${MealPlanPreferences.countryInstructions(onboard.country)}
+    ${MealPlanPreferences.countryInstructions(userPreferences.country)}
     
     MEAL PLAN RULES:
     - Generate a 7-day meal plan starting from today

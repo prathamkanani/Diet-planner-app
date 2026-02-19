@@ -19,12 +19,11 @@ class DailyMealList extends StatelessWidget {
 
           return MealTile(
             mealOptionListEntity: meal,
-            loggedMeals: dailyMealsEntity.loggedMeal,
-            currentDate: dailyMealsEntity.currentDate,
+            loggedMeals: dailyMealsEntity.mealLoggerEntity.loggedMeal,
+            currentDate: dailyMealsEntity.mealLoggerEntity.currentDate,
           );
         },
       ),
     );
   }
 }
-

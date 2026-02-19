@@ -23,6 +23,19 @@ final class AppDataServiceImpl extends AppDataService {
     }
   }
 
+  @override
+  set planStartDate(final DateTime? date) {
+    if (date != null) {
+      prefs.setString('plan_start_date', date.toIso8601String());
+    }
+  }
+
+  @override
+  DateTime? get planStartDate {
+    final String? dateIso = prefs.getString("plan_start_date");
+    return DateTime.tryParse(dateIso ?? '');
+  }
+
   /// Setter for checking active or non-active user.
   @override
   set isUserLoggedIn(bool value) {
@@ -46,12 +59,12 @@ final class AppDataServiceImpl extends AppDataService {
   set mealPlanId(final String? mealPlanId) {
     final currentId = prefs.getString("meal_plan_id");
 
-    if(mealPlanId == null) {
+    if (mealPlanId == null) {
       prefs.remove("meal_plan_id");
       return;
     }
 
-    if(mealPlanId != currentId) {
+    if (mealPlanId != currentId) {
       prefs.setString("meal_plan_id", mealPlanId);
     }
   }

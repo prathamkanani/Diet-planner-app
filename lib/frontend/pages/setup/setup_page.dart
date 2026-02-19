@@ -3,18 +3,8 @@ import '../../../generated/l10n.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../../config/app_spacing.dart';
 
-class SetupPage extends StatefulWidget {
+class SetupPage extends StatelessWidget {
   const SetupPage({super.key});
-
-  @override
-  State<SetupPage> createState() => _SetupPageState();
-}
-
-class _SetupPageState extends State<SetupPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

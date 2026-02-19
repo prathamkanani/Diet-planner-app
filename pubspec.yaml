@@ -48,6 +48,7 @@ dependencies:
   flutter_gemini: ^3.0.0
   google_generative_ai: ^0.4.7
   table_calendar: ^3.2.0
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -77,10 +78,10 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/icons/
-    - assets/logo/
     - assets/images/
     - assets/meals/breakfast/
     - assets/meals/lunch/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -125,3 +126,10 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"

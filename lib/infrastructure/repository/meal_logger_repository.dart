@@ -14,4 +14,12 @@ class MealLoggerRepositoryImpl implements MealLoggerRepository {
   ) async {
     await source.logMeal(logMeals, date);
   }
+
+  @override
+  Future<void> deleteLoggedMeal(
+    Map<MealType, MealEntity> loggedMeals,
+    DateTime date,
+  ) async {
+    await source.deleteLoggedMeal(loggedMeals, date);
+  }
 }

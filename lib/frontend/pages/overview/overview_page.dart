@@ -3,10 +3,12 @@ import '../../../generated/l10n.dart';
 import '../../../infrastructure/extension/context_extension.dart';
 import '../../config/app_spacing.dart';
 import '../login/login_page.dart';
-import 'widgets/navigation_indicator.dart';
 import 'widgets/overview_section_one.dart';
 import 'widgets/overview_section_three.dart';
 import 'widgets/overview_section_two.dart';
+import 'widgets/custom_indicator.dart';
+
+enum OverviewPageType { section1, section2, section3 }
 
 class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
@@ -16,26 +18,31 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage> {
-  late PageController _pageViewController;
-  int currentPage = 0;
+  late final PageController _controller;
 
   @override
   void initState() {
     super.initState();
-    _pageViewController = PageController();
+    _controller = PageController();
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
-    _pageViewController.dispose();
   }
 
   void _goToNextPage() {
-    _pageViewController.nextPage(
+    _controller.nextPage(
       duration: const Duration(milliseconds: 800),
       curve: Curves.decelerate,
     );
+  }
+
+  void onTap() {
+    (_controller.page?.toInt() ?? 0) < OverviewPageType.values.length - 1
+        ? _goToNextPage()
+        : context.pushReplacement(const LoginPage());
   }
 
   @override
@@ -44,25 +51,24 @@ class _OverviewPageState extends State<OverviewPage> {
     final ColorScheme colorScheme = ColorScheme.of(context);
 
     return Scaffold(
-      // backgroundColor: colorScheme.primary,
       body: Center(
         child: Column(
           children: <Widget>[
             Expanded(
-              child: PageView(
-                controller: _pageViewController,
+              child: PageView.builder(
+                controller: _controller,
                 physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (index) {
-                  setState(() => currentPage = index);
+                itemCount: OverviewPageType.values.length,
+                itemBuilder: (_, final int index) {
+                  final OverviewPageType type = .values[index];
+                  final Widget section = switch (type) {
+                    .section1 => const OverviewSectionOne(),
+                    .section2 => const OverviewSectionTwo(),
+                    .section3 => const OverviewSectionThree(),
+                  };
+
+                  return Padding(padding: const .all(48), child: section);
                 },
-                children:
-                    <Widget>[
-                      const OverviewSectionOne(),
-                      const OverviewSectionTwo(),
-                      const OverviewSectionThree(),
-                    ].map((widget) {
-                      return Padding(padding: const .all(48), child: widget);
-                    }).toList(),
               ),
             ),
             AppSpacing.h16,
@@ -71,11 +77,7 @@ class _OverviewPageState extends State<OverviewPage> {
               child: SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () {
-                    currentPage < 2
-                        ? _goToNextPage()
-                        : context.pushReplacement(const LoginPage());
-                  },
+                  onPressed: onTap,
                   style: FilledButton.styleFrom(
                     backgroundColor: colorScheme.primary,
                   ),
@@ -93,7 +95,10 @@ class _OverviewPageState extends State<OverviewPage> {
               padding: .only(
                 bottom: MediaQuery.viewPaddingOf(context).bottom + 20,
               ),
-              child: NavIndicator(count: 3, currentPage: currentPage),
+              child: CustomSmoothIndicator(
+                controller: _controller,
+                count: OverviewPageType.values.length,
+              ),
             ),
           ],
         ),

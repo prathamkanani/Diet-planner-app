@@ -28,7 +28,9 @@ class CheckCircleContainer<T> extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: colorScheme.surface,
+          color: isSelected
+              ? colorScheme.primary.withValues(alpha: 0.3)
+              : colorScheme.surface,
           border: BoxBorder.all(
             color: isSelected
                 ? colorScheme.primary

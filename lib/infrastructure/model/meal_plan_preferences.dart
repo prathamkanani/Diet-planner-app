@@ -1,4 +1,4 @@
-import '../../domain/entity/onboarding_entity.dart';
+import '../../domain/entity/user_preferences.dart';
 
 class MealPlanPreferences {
   final String country;

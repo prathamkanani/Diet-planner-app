@@ -6,7 +6,7 @@ import '../../../config/app_spacing.dart';
 import 'custom_progress_indicator.dart';
 
 class MacroProgress extends StatelessWidget {
-  final DailyMealsEntity entity;
+  final MealLoggerEntity entity;
 
   const MacroProgress({super.key, required this.entity});
 

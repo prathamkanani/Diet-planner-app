@@ -8,37 +8,20 @@ import 'meal_option_list_model.dart';
 /// Data-Transfer Object for [DailyMealsEntity].
 class DailyMealsModel extends DailyMealsEntity {
   DailyMealsModel({
-    required super.currentDate,
+    required super.mealLoggerEntity,
     required super.mealOptionListEntity,
-    required super.loggedMeal,
-    required super.targetCalories,
-    required super.consumedCalories,
-    required super.targetFats,
-    required super.consumedFats,
-    required super.targetProtein,
-    required super.consumedProtein,
-    required super.targetCarbs,
-    required super.consumedCarbs,
   });
 
   factory DailyMealsModel.fromEntity(DailyMealsEntity entity) {
     return DailyMealsModel(
-      currentDate: entity.currentDate,
+      mealLoggerEntity: entity.mealLoggerEntity,
       mealOptionListEntity: entity.mealOptionListEntity,
-      loggedMeal: entity.loggedMeal,
-      targetCalories: entity.targetCalories,
-      consumedCalories: entity.consumedCalories,
-      targetFats: entity.targetFats,
-      consumedFats: entity.consumedFats,
-      targetProtein: entity.targetProtein,
-      consumedProtein: entity.consumedProtein,
-      targetCarbs: entity.targetCarbs,
-      consumedCarbs: entity.consumedCarbs,
     );
   }
 
   factory DailyMealsModel.fromJson(
     DateTime todayDate,
+    DateTime mealPlanDate,
     Map<String, dynamic>? json,
     List<Map<String, dynamic>> mealLogs,
   ) {
@@ -115,17 +98,20 @@ class DailyMealsModel extends DailyMealsEntity {
     }
 
     return DailyMealsModel(
-      currentDate: todayDate,
+      mealLoggerEntity: MealLoggerEntity(
+        currentDate: todayDate,
+        mealPlanStartDate: mealPlanDate,
+        loggedMeal: loggedMeals,
+        targetCalories: maxCalorie,
+        consumedCalories: currentCalories.toInt(),
+        targetFats: maxFats,
+        consumedFats: currentFats.toInt(),
+        targetProtein: maxProteins,
+        consumedProtein: currentProteins.toInt(),
+        targetCarbs: maxCarbs,
+        consumedCarbs: currentCarbs.toInt(),
+      ),
       mealOptionListEntity: result,
-      loggedMeal: loggedMeals,
-      targetCalories: maxCalorie,
-      consumedCalories: currentCalories.toInt(),
-      targetFats: maxFats,
-      consumedFats: currentFats.toInt(),
-      targetProtein: maxProteins,
-      consumedProtein: currentProteins.toInt(),
-      targetCarbs: maxCarbs,
-      consumedCarbs: currentCarbs.toInt(),
     );
   }
 
