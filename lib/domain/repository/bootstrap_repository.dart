@@ -1,8 +1,8 @@
 /// Defines contract for bootstrap logic.
 abstract interface class BootstrapRepository {
   /// Checks whether a user is authenticated or not.
-  bool isUserAuthenticated();
+  bool fetchAuthStatus();
 
   /// Checks whether an authenticated user has been onboarded or not.
-  Future<bool> isOnboardingCompleted();
+  Future<bool> fetchOnboardingStatus();
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../application/logic/auth/auth_state.dart';
 import '../../../generated/l10n.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
+import '../../app/router/route_paths.dart';
 import '../../config/app_spacing.dart';
-import '../home/home_page.dart';
-import '../onboarding/onboarding_page.dart';
+import '../error/error_page.dart';
 import 'widgets/login_view.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,29 +33,17 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  /// Navigating to the User Profile page
-  void _listenToAuthState(BuildContext context, final AuthState state) {
-    if (state is AuthAuthenticated) {
-      state.isOnboarded
-          ? context.pushAndRemoveUntil(const HomePage())
-          : context.pushAndRemoveUntil(const OnboardingPage());
-      // context.pushAndRemoveUntil(const OnboardingPage());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
-    final TextTheme textTheme = TextTheme.of(context);
-    final Size size = MediaQuery.sizeOf(context);
-    final double shortestSide = size.shortestSide;
-    final double logoSize = (shortestSide * 0.22).clamp(120, 180).toDouble();
+    final TextTheme th = context.th;
+    final double logoSize = context.getLogoSize;
 
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         bloc: cubit,
         listener: _listenToAuthState,
-        builder: (context, state) {
+        builder: (_, state) {
           return switch (state) {
             AuthLoading() => Center(
               child: Column(
@@ -64,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   AppSpacing.h16,
                   Text(
                     S.of(context).pleaseWaitWhileWeLogYouIn,
-                    style: textTheme.titleMedium,
+                    style: th.titleMedium,
                   ),
                 ],
               ),
@@ -73,19 +62,22 @@ class _LoginPageState extends State<LoginPage> {
               child: CircularProgressIndicator(),
             ),
             AuthUnauthenticated() => LoginView(cubit: cubit, size: logoSize),
-            AuthAuthenticationFailed() => AlertDialog(
-              title: Text(S.of(context).loginFailed),
-              content: Text(S.of(context).sorryUnableToLogIn),
-              actions: [
-                TextButton(
-                  onPressed: cubit.getUser,
-                  child: Text(S.of(context).tryAgain),
-                ),
-              ],
-            ),
+            AuthAuthenticationFailed() => GenericErrorPage(error: state.error),
           };
         },
       ),
     );
   }
+
+  //region Custom Methods
+  /// Navigating to the User Profile page
+  void _listenToAuthState(BuildContext context, final AuthState state) {
+    if (state is AuthAuthenticated) {
+      state.isOnboarded
+          ? context.go(RoutePaths.home)
+          : context.go(RoutePaths.onboarding);
+    }
+  }
+
+  //endregion
 }

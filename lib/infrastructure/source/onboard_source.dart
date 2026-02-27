@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
+import '../../application/service/app_data_service.dart';
 import '../../domain/entity/onboarding_entity.dart';
 import '../../domain/entity/profile_entity.dart';
 import '../../domain/entity/user_preferences.dart';
-import '../extension/weekday_extension.dart';
+import '../app_injector.dart';
+import '../extension/weekday.dart';
 import '../model/onboarding_model.dart';
 import '../model/profile_model.dart';
 import '../service/gemini_client_service.dart';
@@ -25,6 +27,7 @@ class OnboardingRemoteSource implements OnboardingSource {
   OnboardingRemoteSource(this.supabase, this.gemini);
 
   late final User user = supabase.auth.currentUser!;
+  final AppDataService appDataService = locator.get();
 
   @override
   Future<OnboardingEntity> saveOnboardingDetails(
@@ -35,9 +38,9 @@ class OnboardingRemoteSource implements OnboardingSource {
         .from('profiles')
         .insert(
           ProfileModel.fromEntity(
-            onboard.profileEntity,
-            user.email,
-            seed,
+            entity: onboard.profileEntity,
+            email: user.email,
+            seed: seed,
           ).toJson(),
         )
         .select()
@@ -74,6 +77,7 @@ class OnboardingRemoteSource implements OnboardingSource {
 
     final daysPayload = jsonList.map((day) {
       return {
+        'user_id': appDataService.userId,
         'meal_plan_id': mealPlanId,
         'day': Weekday.values.byName(day['day'].toString().toLowerCase()).value,
         'meal': day['meals'],

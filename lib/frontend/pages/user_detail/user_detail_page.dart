@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../../application/formatters/phone_formatter.dart';
 import '../../../application/logic/auth/auth_cubit.dart';
 import '../../../application/logic/profile/profile_cubit.dart';
@@ -12,6 +14,7 @@ import '../../../domain/entity/profile_entity.dart';
 import '../../../generated/l10n.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
+import '../../app/router/route_paths.dart';
 import '../../config/app_spacing.dart';
 import 'widgets/user_avatar.dart';
 
@@ -32,6 +35,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
       genderController,
       heightController,
       weightController;
+  ProfileEntity? profile;
 
   @override
   void initState() {
@@ -59,42 +63,9 @@ class _UserDetailPageState extends State<UserDetailPage> {
     super.dispose();
   }
 
-  void initialProfile(ProfileState state) {
-    if (state is ProfileSavedState) {
-      fullNameController.text = state.profile.fullName ?? '';
-
-      emailController.text = state.profile.email ?? '';
-
-      mobileNumController.text = state.profile.mobileNumber ?? '';
-
-      ageController.text = state.profile.age.toString();
-
-      genderController.text = state.profile.gender?.gender ?? '';
-
-      heightController.text = state.profile.height.toString();
-      weightController.text = state.profile.weight.toString();
-    }
-  }
-
-  void onChange() {
-    final updatedProfile = ProfileEntity(
-      userId: appDataService.userId!,
-      fullName: fullNameController.text,
-      email: emailController.text,
-      mobileNumber: mobileNumController.text,
-      age: int.tryParse(ageController.text),
-      height: double.tryParse(heightController.text),
-      weight: double.tryParse(weightController.text),
-      gender: Gender.values.byName(genderController.text.toLowerCase()),
-    );
-
-    profileCubit.onProfileChanged(profile: updatedProfile);
-  }
-
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
-    ProfileEntity? profile;
 
     return Scaffold(
       backgroundColor: cs.secondaryContainer,
@@ -105,6 +76,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
           IconButton(
             onPressed: () {
               locator.get<AuthCubit>().signOut();
+              context.go(RoutePaths.login);
             },
             icon: const Icon(Icons.logout),
           ),
@@ -119,14 +91,31 @@ class _UserDetailPageState extends State<UserDetailPage> {
               initialProfile(state);
             },
             builder: (context, state) {
+              Widget? saveButton;
+              String? avatarUrl;
+
               if (state is ProfileSavedState) {
                 profile = state.profile;
+                avatarUrl = profile?.avatarUrl;
+              }
+
+              if (state is ProfileEditState) {
+                avatarUrl = state.profile.avatarUrl;
+                saveButton = FilledButton(
+                  onPressed: () {
+                    profileCubit.saveProfile(profile: state.profile);
+                  },
+                  child: Text(S.of(context).saveProfile),
+                );
+              }
+
+              if (state is ProfileSavedState || state is ProfileEditState) {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
                       UserAvatar(
                         profileCubit: profileCubit,
-                        profileEntity: state.profile,
+                        profileEntity: profile!,
                       ),
                       AppSpacing.h16,
 
@@ -138,7 +127,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: fullNameController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) => nameValidator(value),
                         decoration: InputDecoration(
@@ -159,7 +148,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: emailController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) => emailValidator(value),
                         decoration: InputDecoration(
@@ -181,7 +170,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: mobileNumController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: S.of(context).enterYourMobileNumber,
@@ -204,7 +193,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: ageController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         decoration: InputDecoration(
                           hintText: S.of(context).enterYourAge,
                           contentPadding: .zero,
@@ -223,7 +212,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: genderController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         decoration: InputDecoration(
                           hintText: S.of(context).enterYourGender,
                           contentPadding: .zero,
@@ -241,7 +230,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: heightController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         decoration: InputDecoration(
                           hintText: S.of(context).enterYourHeight,
                           contentPadding: .zero,
@@ -259,7 +248,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       AppSpacing.h04,
                       TextFormField(
                         controller: weightController,
-                        onChanged: (_) => onChange(),
+                        onChanged: (_) => onChange(avatarUrl),
                         decoration: InputDecoration(
                           hintText: S.of(context).enterYourWeight,
                           contentPadding: .zero,
@@ -269,177 +258,13 @@ class _UserDetailPageState extends State<UserDetailPage> {
                         ),
                       ),
                       AppSpacing.h16,
+                      ?saveButton,
                     ],
                   ),
                 );
-              } else if (state is ProfileEditState) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      UserAvatar(
-                        profileCubit: profileCubit,
-                        profileEntity: state.profile,
-                      ),
-                      AppSpacing.h16,
-
-                      // Full Name Text Field
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).fullName),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: fullNameController,
-                        onChanged: (_) => onChange(),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) => nameValidator(value),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourFullName,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                      ),
-                      AppSpacing.h16,
-
-                      // Email Text Field
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).email),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: emailController,
-                        onChanged: (_) => onChange(),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (value) => emailValidator(value),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourEmail,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      AppSpacing.h16,
-
-                      // Mobile Number Text Field
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).mobileNumber),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: mobileNumController,
-                        onChanged: (_) => onChange(),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourMobileNumber,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          PhoneInputFormatter(),
-                        ],
-                      ),
-                      AppSpacing.h16,
-
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).age),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: ageController,
-                        onChanged: (_) => onChange(),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourAge,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.number,
-                      ),
-                      AppSpacing.h16,
-
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).gender),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: genderController,
-                        onChanged: (_) => onChange(),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourGender,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                      ),
-                      AppSpacing.h16,
-
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).height),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: heightController,
-                        onChanged: (_) => onChange(),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourHeight,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                      ),
-                      AppSpacing.h16,
-
-                      Align(
-                        alignment: AlignmentGeometry.centerLeft,
-                        child: Text(S.of(context).weight),
-                      ),
-                      AppSpacing.h04,
-                      TextFormField(
-                        controller: weightController,
-                        onChanged: (_) => onChange(),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).enterYourWeight,
-                          contentPadding: .zero,
-                          fillColor: cs.secondaryContainer,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                      ),
-                      AppSpacing.h16,
-                      BlocBuilder<ProfileCubit, ProfileState>(
-                        bloc: profileCubit,
-                        builder: (context, state) {
-                          if (state is ProfileEditState) {
-                            return FilledButton(
-                              onPressed: () {
-                                profileCubit.saveProfile(
-                                  profile: profile!,
-                                );
-                              },
-                              child: Text(S.of(context).saveProfile),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ],
-                  ),
-                );
+              }
+              if (state is ProfileLoadingState) {
+                return const Center(child: CircularProgressIndicator());
               }
               return const SizedBox.shrink();
             },
@@ -448,4 +273,42 @@ class _UserDetailPageState extends State<UserDetailPage> {
       ),
     );
   }
+
+  //region Custom Methods
+  void initialProfile(ProfileState state) {
+    if (state is ProfileSavedState) {
+      final profile = state.profile;
+
+      fullNameController.text = profile.fullName ?? '';
+
+      emailController.text = profile.email ?? '';
+
+      mobileNumController.text = profile.mobileNumber ?? '';
+
+      ageController.text = profile.age.toString();
+
+      genderController.text = Intl.message(profile.gender?.name ?? '');
+
+      heightController.text = profile.height.toString();
+      weightController.text = profile.weight.toString();
+    }
+  }
+
+  void onChange(String? avatarUrl) {
+    final updatedProfile = ProfileEntity(
+      userId: appDataService.userId!,
+      avatarUrl: avatarUrl,
+      fullName: fullNameController.text,
+      email: emailController.text,
+      mobileNumber: mobileNumController.text,
+      age: int.tryParse(ageController.text),
+      height: double.tryParse(heightController.text),
+      weight: double.tryParse(weightController.text),
+      gender: Gender.values.byName(genderController.text.toLowerCase()),
+    );
+
+    profileCubit.onProfileChanged(profile: updatedProfile);
+  }
+
+  //endregion
 }

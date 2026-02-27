@@ -10,8 +10,6 @@ final class MealLogInitialState extends MealLogState {
 }
 
 final class MealLoggingState extends MealLogState {
-  // final bool isLogging;
-
   const MealLoggingState();
 }
 

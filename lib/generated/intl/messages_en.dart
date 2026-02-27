@@ -23,14 +23,23 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "account": MessageLookupByLibrary.simpleMessage("Account"),
+    "activityLevelDialogContent": MessageLookupByLibrary.simpleMessage(
+      "Please enter your best guess. We\'ll use this to personalize your plan",
+    ),
+    "activityLevelDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "What\'s your activity level?",
+    ),
     "age": MessageLookupByLibrary.simpleMessage("Age"),
     "alreadyLoggedOnceCannotChangeOrLogAgain":
         MessageLookupByLibrary.simpleMessage(
           "Already logged once. Cannot change or log again!",
         ),
+    "always": MessageLookupByLibrary.simpleMessage("Always"),
+    "breakfast": MessageLookupByLibrary.simpleMessage("Breakfast"),
     "byContinuingYouAgreeToOur": MessageLookupByLibrary.simpleMessage(
       "By continuing you agree to our",
     ),
+    "calories": MessageLookupByLibrary.simpleMessage("Calories"),
     "carbs": MessageLookupByLibrary.simpleMessage("Carbs"),
     "chooseWhatDescribesYouBest": MessageLookupByLibrary.simpleMessage(
       "Choose what describes you best:",
@@ -39,10 +48,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Continue with Google",
     ),
     "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+    "dinner": MessageLookupByLibrary.simpleMessage("Dinner"),
     "easilyTrackCaloriesMonitorNutritionAndStayAlignedWithYour":
         MessageLookupByLibrary.simpleMessage(
           "Easily track calories, monitor nutrition, and stay aligned with your health goals.",
         ),
+    "eatABalancedDiet": MessageLookupByLibrary.simpleMessage(
+      "Eat a balanced diet",
+    ),
+    "eatMindfully": MessageLookupByLibrary.simpleMessage("Eat mindfully"),
+    "eatMoreFiber": MessageLookupByLibrary.simpleMessage("Eat more fiber"),
+    "eatMoreFruit": MessageLookupByLibrary.simpleMessage("Eat more fruit"),
+    "eatMoreProtein": MessageLookupByLibrary.simpleMessage("Eat more protein"),
+    "eatMoreVegetable": MessageLookupByLibrary.simpleMessage(
+      "Eat more vegetable",
+    ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "enterYourAge": MessageLookupByLibrary.simpleMessage("Enter your age"),
     "enterYourEmail": MessageLookupByLibrary.simpleMessage("Enter your email"),
@@ -61,19 +81,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterYourWeight": MessageLookupByLibrary.simpleMessage(
       "Enter your weight",
     ),
-    "entitytargetcarbsG": MessageLookupByLibrary.simpleMessage(
-      "/\${entity.targetCarbs} g",
-    ),
-    "entitytargetfatsG": MessageLookupByLibrary.simpleMessage(
-      "/\${entity.targetFats} g",
-    ),
     "failedToLog": MessageLookupByLibrary.simpleMessage("Failed to log!"),
     "fat": MessageLookupByLibrary.simpleMessage("Fat"),
+    "female": MessageLookupByLibrary.simpleMessage("Female"),
     "firstWhatCanWeCallYou": MessageLookupByLibrary.simpleMessage(
       "First, what can we call you?",
     ),
     "forgotToLog": MessageLookupByLibrary.simpleMessage("Forgot to log!"),
+    "frequently": MessageLookupByLibrary.simpleMessage("Frequently"),
+    "friday": MessageLookupByLibrary.simpleMessage("Friday"),
     "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
+    "fullNameDialogContent": MessageLookupByLibrary.simpleMessage(
+      "We\'ll use it to make your experience more personal",
+    ),
+    "fullNameDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "What\'s your preferred name?",
+    ),
+    "g": MessageLookupByLibrary.simpleMessage("g"),
     "gender": MessageLookupByLibrary.simpleMessage("Gender"),
     "getRegularCalorieTracking": MessageLookupByLibrary.simpleMessage(
       "Get regular calorie tracking!",
@@ -86,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Healthy eating made easy.",
     ),
     "height": MessageLookupByLibrary.simpleMessage("Height"),
+    "high": MessageLookupByLibrary.simpleMessage("Very Active"),
     "home": MessageLookupByLibrary.simpleMessage("Home"),
     "howMuchDoYouWeighInKg": MessageLookupByLibrary.simpleMessage(
       "How much do you weigh? (in kg)",
@@ -97,19 +122,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "howTallAreYouInCm": MessageLookupByLibrary.simpleMessage(
       "How tall are you? (in cm)",
     ),
+    "iAmNotSure": MessageLookupByLibrary.simpleMessage("I\'m not sure"),
     "iAmNutripal": MessageLookupByLibrary.simpleMessage("I am NutriPal."),
     "justAFewMoreQuestions": MessageLookupByLibrary.simpleMessage(
       "Just a few more questions",
     ),
+    "kcal": MessageLookupByLibrary.simpleMessage("kcal"),
     "kcalLeft": MessageLookupByLibrary.simpleMessage("kcal left"),
     "lightlyActive": MessageLookupByLibrary.simpleMessage("Lightly Active"),
     "logMeal": MessageLookupByLibrary.simpleMessage("Log Meal!"),
-    "logMealsUnderstandYourIntakeAndBuildHealthierHabitsoneDay":
+    "logMealsUnderstandYourIntakeAndBuildHealthierHabitsOneDay":
         MessageLookupByLibrary.simpleMessage(
           "Log meals, understand your intake, and build healthier habits—one day at a time.",
         ),
     "logged": MessageLookupByLibrary.simpleMessage("Logged!"),
     "loginFailed": MessageLookupByLibrary.simpleMessage("Login Failed"),
+    "low": MessageLookupByLibrary.simpleMessage("Not Very Active"),
+    "lunch": MessageLookupByLibrary.simpleMessage("Lunch"),
     "makeDailyMealLogs": MessageLookupByLibrary.simpleMessage(
       "Make daily meal logs!",
     ),
@@ -117,20 +146,43 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Make your diet more enjoyable and track your diet with NutriPal",
         ),
+    "male": MessageLookupByLibrary.simpleMessage("Male"),
     "mealLoggedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Meal logged successfully!",
     ),
+    "mealPlanDialogContent": MessageLookupByLibrary.simpleMessage(
+      "This helps us shape the right program for you",
+    ),
+    "mealPlanDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Let us know how often you plan meal",
+    ),
+    "mealPrefDialogContent": MessageLookupByLibrary.simpleMessage(
+      "Please enter your meal preference. We\'ll use this to personalize your plan",
+    ),
+    "mealPrefDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "What\'s your meal preference?",
+    ),
+    "mealsLogged": MessageLookupByLibrary.simpleMessage("Meals Logged"),
+    "medium": MessageLookupByLibrary.simpleMessage("Lightly Active"),
     "mobileNumber": MessageLookupByLibrary.simpleMessage("Mobile number"),
+    "monday": MessageLookupByLibrary.simpleMessage("Monday"),
+    "never": MessageLookupByLibrary.simpleMessage("Never"),
     "next": MessageLookupByLibrary.simpleMessage("Next"),
+    "nonVegetarian": MessageLookupByLibrary.simpleMessage("Non Vegetarian"),
     "nonVegetarianSubtitle": MessageLookupByLibrary.simpleMessage(
       "Includes plant foods along with meat, poultry, fish, eggs, and dairy.",
     ),
     "notVeryActive": MessageLookupByLibrary.simpleMessage("Not Very Active"),
+    "numberOfMealsLogged": MessageLookupByLibrary.simpleMessage(
+      "Number of meals logged for the week",
+    ),
     "nutripal": MessageLookupByLibrary.simpleMessage("NutriPal"),
+    "occasionally": MessageLookupByLibrary.simpleMessage("Occasionally"),
     "ok": MessageLookupByLibrary.simpleMessage("Ok"),
     "oopsNoDataFound": MessageLookupByLibrary.simpleMessage(
       "Oops, No data found!",
     ),
+    "pescatarian": MessageLookupByLibrary.simpleMessage("Pescatarian"),
     "pescatarianSubtitle": MessageLookupByLibrary.simpleMessage(
       "Excludes meat and poultry, but includes fish, seafood, and often dairy and eggs.",
     ),
@@ -148,13 +200,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "protein": MessageLookupByLibrary.simpleMessage("Protein"),
+    "rarely": MessageLookupByLibrary.simpleMessage("Rarely"),
     "recommendedHealthHabits": MessageLookupByLibrary.simpleMessage(
       "Recommended health habits",
     ),
     "report": MessageLookupByLibrary.simpleMessage("Report"),
+    "saturday": MessageLookupByLibrary.simpleMessage("Saturday"),
     "saveProfile": MessageLookupByLibrary.simpleMessage("Save Profile"),
     "selectAllThatApply": MessageLookupByLibrary.simpleMessage(
       "Select all that apply.",
+    ),
+    "selectAnyOneOptionToLog": MessageLookupByLibrary.simpleMessage(
+      "Select any one option to log.",
     ),
     "signInToSecurelySaveYourData": MessageLookupByLibrary.simpleMessage(
       "Sign in to securely save your data, personalize your experience, and track your progress",
@@ -175,19 +232,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "spendMostOfTheDaySittingEgDeskJob": MessageLookupByLibrary.simpleMessage(
       "Spend most of the day sitting (e.g., desk job).",
     ),
-    "targetproteinG": MessageLookupByLibrary.simpleMessage(
-      "/\${entity.targetProtein} g",
-    ),
+    "sunday": MessageLookupByLibrary.simpleMessage("Sunday"),
     "tellUsALittleBitAboutYourself": MessageLookupByLibrary.simpleMessage(
       "Tell us a little bit about yourself",
     ),
+    "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
     "tryForFree": MessageLookupByLibrary.simpleMessage("Try for free!"),
+    "tuesday": MessageLookupByLibrary.simpleMessage("Tuesday"),
+    "undo": MessageLookupByLibrary.simpleMessage("UNDO"),
+    "userDetailDialogTitle": MessageLookupByLibrary.simpleMessage(
+      "Please enter all the fields.",
+    ),
     "userDetails": MessageLookupByLibrary.simpleMessage("User Details"),
     "userProfile": MessageLookupByLibrary.simpleMessage("User Profile"),
+    "vegan": MessageLookupByLibrary.simpleMessage("Vegan"),
     "veganSubtitle": MessageLookupByLibrary.simpleMessage(
       "Excludes all animal products, including meat, fish, dairy, eggs, and honey. Fully plant-based.",
     ),
+    "vegetarian": MessageLookupByLibrary.simpleMessage("Vegetarian"),
     "vegetarianSubtitle": MessageLookupByLibrary.simpleMessage(
       "Excludes meat, poultry, and fish. Includes plant-based foods and may include dairy and eggs.",
     ),
@@ -195,12 +258,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "waitWhileTheMealPlanIsGenerated": MessageLookupByLibrary.simpleMessage(
       "Wait while the meal plan is generated...",
     ),
-    "weCouldntSignYouIn": MessageLookupByLibrary.simpleMessage(
+    "weCouldNotSignYouIn": MessageLookupByLibrary.simpleMessage(
       "We couldn’t sign you in. Please check your internet connection or try again.",
     ),
     "wedLikeToGetToKnowYou": MessageLookupByLibrary.simpleMessage(
       "We\'d like to get to know you.",
     ),
+    "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
     "weight": MessageLookupByLibrary.simpleMessage("Weight"),
     "welcomeHealthExplorer": MessageLookupByLibrary.simpleMessage(
       "Welcome, Health Explorer",

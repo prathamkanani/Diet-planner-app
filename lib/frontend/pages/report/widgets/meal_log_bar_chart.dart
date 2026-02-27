@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../domain/entity/daily_meal_log_entity.dart';
+import '../../../../generated/l10n.dart';
 
 class MealLogBarChart extends StatelessWidget {
   final List<DailyMealLogEntity> logs;
@@ -23,9 +24,12 @@ class MealLogBarChart extends StatelessWidget {
 
           titlesData: FlTitlesData(
             leftTitles: AxisTitles(
-              axisNameWidget: const RotatedBox(
+              axisNameWidget: RotatedBox(
                 quarterTurns: 4,
-                child: Text('Meals Logged', style: TextStyle(fontSize: 12)),
+                child: Text(
+                  S.of(context).mealsLogged,
+                  style: const TextStyle(fontSize: 12),
+                ),
               ),
               sideTitles: SideTitles(
                 showTitles: true,
@@ -76,6 +80,12 @@ class MealLogBarChart extends StatelessWidget {
             toY: log.mealsLogged.toDouble(),
             color: logToColor(log.mealsLogged),
             width: 12,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: .zero,
+              bottomRight: .zero,
+              topLeft: .zero,
+              topRight: .zero,
+            ),
           ),
         ],
       );
@@ -83,7 +93,7 @@ class MealLogBarChart extends StatelessWidget {
   }
 
   Color logToColor(int meal) {
-    switch(meal) {
+    switch (meal) {
       case 3:
         return Colors.green.shade800;
       case 2:

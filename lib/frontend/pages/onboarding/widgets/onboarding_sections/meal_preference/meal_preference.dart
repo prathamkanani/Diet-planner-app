@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/user_preferences.dart';
 import '../../../../../../generated/l10n.dart';
@@ -43,18 +44,16 @@ class _MealPreferenceViewState extends State<MealPreferenceView> {
               final bool isSelected = cubit.mealPref == meal;
               isSelected ? widget.selectedMealPref(meal) : null;
               final String title = switch (meal) {
-                MealPreferences.vegetarian => meal.label,
-                MealPreferences.nonVegetarian => meal.label,
-                MealPreferences.vegan => meal.label,
-                MealPreferences.pescatarian => meal.label,
+                MealPreferences.vegetarian => Intl.message(meal.name),
+                MealPreferences.nonVegetarian => Intl.message(meal.name),
+                MealPreferences.vegan => Intl.message(meal.name),
+                MealPreferences.pescatarian => Intl.message(meal.name),
               };
               final String subtitle = switch (meal) {
-                MealPreferences.vegetarian =>
-                  S.of(context).vegetarianSubtitle,
+                MealPreferences.vegetarian => S.of(context).vegetarianSubtitle,
                 MealPreferences.nonVegetarian =>
                   S.of(context).nonVegetarianSubtitle,
-                MealPreferences.vegan =>
-                  S.of(context).veganSubtitle,
+                MealPreferences.vegan => S.of(context).veganSubtitle,
                 MealPreferences.pescatarian =>
                   S.of(context).pescatarianSubtitle,
               };

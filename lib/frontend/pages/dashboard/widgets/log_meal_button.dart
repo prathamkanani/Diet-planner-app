@@ -4,6 +4,7 @@ import '../../../../application/logic/meal_log/meal_log_cubit.dart';
 import '../../../../application/logic/meal_log/meal_log_state.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
+import '../../../config/app_spacing.dart';
 
 class LogMealButton extends StatelessWidget {
   const LogMealButton({super.key});
@@ -22,16 +23,15 @@ class LogMealButton extends StatelessWidget {
             SnackBar(
               content: Text(S.of(context).mealLoggedSuccessfully),
               action: SnackBarAction(
-                label: 'UNDO',
+                label: S.of(context).undo,
                 onPressed: () {
-                  mealLogCubit.didPressUndo();
+                  mealLogCubit.onUndo();
                 },
               ),
-              duration: const Duration(seconds: 10),
               behavior: .floating,
             ),
           );
-        } else if(state is MealLogSuccessState) {
+        } else if (state is MealLogSuccessState) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
         }
 
@@ -44,30 +44,34 @@ class LogMealButton extends StatelessWidget {
           );
         }
       },
+      buildWhen: (prev, next) {
+        return !(prev is MealSelectedState && next is MealSelectedState);
+      },
       builder: (context, state) {
-        if (state is MealSelectedState || state is MealLoggingState) {
-          return SizedBox(
-            height: 44,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: FilledButton(
-                onPressed: () => mealLogCubit.logMeals(),
-                child: Center(
-                  child: (state is MealLoggingState)
-                      ? CircularProgressIndicator(color: cs.onPrimary)
-                      : Text(
-                          S.of(context).logMeal,
-                          style: textTheme.bodyLarge?.copyWith(
-                            color: cs.onPrimary,
-                            fontWeight: .w600,
-                          ),
-                        ),
+        Widget? loader;
+        if (state is MealLoggingState) {
+          loader = CircularProgressIndicator(color: cs.onPrimary);
+        } else if (state is! MealSelectedState) {
+          return const SizedBox.shrink();
+        }
+        return FilledButton(
+          onPressed: () => mealLogCubit.logMeals(),
+          style: FilledButton.styleFrom(fixedSize: const Size.fromHeight(44)),
+          child: Row(
+            mainAxisSize: .min,
+            children: [
+              ?loader,
+              AppSpacing.w08,
+              Text(
+                S.of(context).logMeal,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: cs.onPrimary,
+                  fontWeight: .w600,
                 ),
               ),
-            ),
-          );
-        }
-        return const SizedBox.shrink();
+            ],
+          ),
+        );
       },
     );
   }

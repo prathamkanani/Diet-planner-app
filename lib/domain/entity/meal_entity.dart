@@ -1,25 +1,8 @@
 /// Different types of meals that exist.
-enum MealType {
-  breakfast('Breakfast'),
-  lunch('Lunch'),
-  dinner('Dinner');
-
-  final String mealType;
-
-  const MealType(this.mealType);
-}
+enum MealType { breakfast, lunch, dinner }
 
 /// Different types of nutrient used in the app.
-enum Nutrient {
-  calories('Calories'),
-  carbs('Carbs'),
-  protein('Protein'),
-  fat('Fat');
-
-  final String nutrientType;
-
-  const Nutrient(this.nutrientType);
-}
+enum Nutrient { calories, carbs, protein, fat }
 
 /// Two options that will be shown for a specific meal type.
 enum MealOption { A, B }

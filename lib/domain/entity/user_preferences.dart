@@ -1,40 +1,24 @@
-import 'health_habits_entity.dart';
+/// Options for a user about meal planning.
+enum MealPlanning { never, rarely, occasionally, frequently, always }
 
-/// Options for a user about meal planning when he/she is being onboarded.
-enum MealPlanning {
-  never("Never"),
-  rarely("Rarely"),
-  occasionally("Occasionally"),
-  frequently("Frequently"),
-  always("Always");
+/// Options for a user about activity level.
+enum ActivityLevel { low, medium, high }
 
-  final String meal;
+/// Options for a user to choose meal preference.
+enum MealPreferences { vegetarian, nonVegetarian, vegan, pescatarian }
 
-  const MealPlanning(this.meal);
+/// Health Habits Enum that contains all the types of health habits.
+enum HealthHabits {
+  eatMindfully,
+  eatABalancedDiet,
+  eatMoreProtein,
+  eatMoreFiber,
+  eatMoreFruit,
+  eatMoreVegetable,
+  iAmNotSure,
 }
 
-/// Options for a user about activity level when he/she is being onboarded.
-enum ActivityLevel {
-  low('Not Very Active'),
-  medium('Lightly Active'),
-  high('Very Active');
-
-  final String title;
-
-  const ActivityLevel(this.title);
-}
-
-enum MealPreferences {
-  vegetarian("Vegetarian"),
-  nonVegetarian("Non Vegetarian"),
-  vegan("Vegan"),
-  pescatarian("Pescatarian");
-
-  final String label;
-
-  const MealPreferences(this.label);
-}
-
+/// Preferences asked to the users for generating personalized meal plan.
 class UserPreferences {
   final List<HealthHabits> healthHabits;
 

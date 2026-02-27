@@ -1,13 +1,19 @@
 import '../../../domain/entity/auth_entity.dart';
 
 /// Base state for the [AuthCubit]
-sealed class AuthState {}
+sealed class AuthState {
+  const AuthState();
+}
 
 /// Initial Loading state.
-final class AuthLoading extends AuthState {}
+final class AuthLoading extends AuthState {
+  const AuthLoading();
+}
 
 /// State when a user is not authenticated.
-final class AuthUnauthenticated extends AuthState {}
+final class AuthUnauthenticated extends AuthState {
+  const AuthUnauthenticated();
+}
 
 /// State when a user is authenticated.
 ///
@@ -16,14 +22,14 @@ final class AuthAuthenticated extends AuthState {
   final AuthEntity authEntity;
   final bool isOnboarded;
 
-  AuthAuthenticated(this.authEntity, this.isOnboarded);
+  const AuthAuthenticated(this.authEntity, this.isOnboarded);
 }
 
 /// State when a user authentication fails.
 ///
-/// * [message] : The error message that is shown.
+/// * [appError] : The error message that is shown.
 final class AuthAuthenticationFailed extends AuthState {
-  final Object? message;
+  final Object? error;
 
-  AuthAuthenticationFailed({this.message});
+  const AuthAuthenticationFailed({required this.error});
 }

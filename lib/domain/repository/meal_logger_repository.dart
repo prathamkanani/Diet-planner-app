@@ -6,6 +6,7 @@ abstract interface class MealLoggerRepository {
   /// whether user is correctly following the meal plan or not.
   Future<void> logMeal(Map<MealType, MealEntity> logMeals, DateTime date);
 
+  /// It allows undo or deleting the logged meals.
   Future<void> deleteLoggedMeal(
     Map<MealType, MealEntity> loggedMeals,
     DateTime date,

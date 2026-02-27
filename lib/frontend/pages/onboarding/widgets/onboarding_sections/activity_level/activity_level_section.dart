@@ -6,11 +6,6 @@ import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import '../meal_planning/check_circle_container.dart';
 
-/// Contains:
-///
-/// what is your baseline activity level?
-///
-/// not very active, lightly active, active, very active
 class ActivityLevelSection extends StatefulWidget {
   final void Function(ActivityLevel) selectedActivity;
 
@@ -22,12 +17,6 @@ class ActivityLevelSection extends StatefulWidget {
 
 class _ActivityLevelSectionState extends State<ActivityLevelSection> {
   late final OnboardingCubit cubit = context.read<OnboardingCubit>();
-
-  void _handleTap(ActivityLevel activity) {
-    setState(() {
-      cubit.activityLevel = (cubit.activityLevel == activity) ? null : activity;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,4 +68,13 @@ class _ActivityLevelSectionState extends State<ActivityLevelSection> {
       ],
     );
   }
+
+  //region Custom Methods
+  void _handleTap(ActivityLevel activity) {
+    setState(() {
+      cubit.activityLevel = (cubit.activityLevel == activity) ? null : activity;
+    });
+  }
+
+//endregion
 }

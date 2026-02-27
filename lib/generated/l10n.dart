@@ -145,10 +145,10 @@ class S {
   }
 
   /// `We couldn’t sign you in. Please check your internet connection or try again.`
-  String get weCouldntSignYouIn {
+  String get weCouldNotSignYouIn {
     return Intl.message(
       'We couldn’t sign you in. Please check your internet connection or try again.',
-      name: 'weCouldntSignYouIn',
+      name: 'weCouldNotSignYouIn',
       desc: '',
       args: [],
     );
@@ -304,44 +304,14 @@ class S {
     return Intl.message('Log Meal!', name: 'logMeal', desc: '', args: []);
   }
 
-  /// `/${entity.targetCarbs} g`
-  String get entitytargetcarbsG {
-    return Intl.message(
-      '/\${entity.targetCarbs} g',
-      name: 'entitytargetcarbsG',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Carbs`
   String get carbs {
     return Intl.message('Carbs', name: 'carbs', desc: '', args: []);
   }
 
-  /// `/${entity.targetProtein} g`
-  String get targetproteinG {
-    return Intl.message(
-      '/\${entity.targetProtein} g',
-      name: 'targetproteinG',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Protein`
   String get protein {
     return Intl.message('Protein', name: 'protein', desc: '', args: []);
-  }
-
-  /// `/${entity.targetFats} g`
-  String get entitytargetfatsG {
-    return Intl.message(
-      '/\${entity.targetFats} g',
-      name: 'entitytargetfatsG',
-      desc: '',
-      args: [],
-    );
   }
 
   /// `Fat`
@@ -605,10 +575,10 @@ class S {
   }
 
   /// `Log meals, understand your intake, and build healthier habits—one day at a time.`
-  String get logMealsUnderstandYourIntakeAndBuildHealthierHabitsoneDay {
+  String get logMealsUnderstandYourIntakeAndBuildHealthierHabitsOneDay {
     return Intl.message(
       'Log meals, understand your intake, and build healthier habits—one day at a time.',
-      name: 'logMealsUnderstandYourIntakeAndBuildHealthierHabitsoneDay',
+      name: 'logMealsUnderstandYourIntakeAndBuildHealthierHabitsOneDay',
       desc: '',
       args: [],
     );
@@ -822,6 +792,346 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Select any one option to log.`
+  String get selectAnyOneOptionToLog {
+    return Intl.message(
+      'Select any one option to log.',
+      name: 'selectAnyOneOptionToLog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Meals Logged`
+  String get mealsLogged {
+    return Intl.message(
+      'Meals Logged',
+      name: 'mealsLogged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of meals logged for the week`
+  String get numberOfMealsLogged {
+    return Intl.message(
+      'Number of meals logged for the week',
+      name: 'numberOfMealsLogged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `kcal`
+  String get kcal {
+    return Intl.message('kcal', name: 'kcal', desc: '', args: []);
+  }
+
+  /// `g`
+  String get g {
+    return Intl.message('g', name: 'g', desc: '', args: []);
+  }
+
+  /// `Calories`
+  String get calories {
+    return Intl.message('Calories', name: 'calories', desc: '', args: []);
+  }
+
+  /// `Breakfast`
+  String get breakfast {
+    return Intl.message('Breakfast', name: 'breakfast', desc: '', args: []);
+  }
+
+  /// `Lunch`
+  String get lunch {
+    return Intl.message('Lunch', name: 'lunch', desc: '', args: []);
+  }
+
+  /// `Dinner`
+  String get dinner {
+    return Intl.message('Dinner', name: 'dinner', desc: '', args: []);
+  }
+
+  /// `Male`
+  String get male {
+    return Intl.message('Male', name: 'male', desc: '', args: []);
+  }
+
+  /// `Female`
+  String get female {
+    return Intl.message('Female', name: 'female', desc: '', args: []);
+  }
+
+  /// `Eat mindfully`
+  String get eatMindfully {
+    return Intl.message(
+      'Eat mindfully',
+      name: 'eatMindfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eat a balanced diet`
+  String get eatABalancedDiet {
+    return Intl.message(
+      'Eat a balanced diet',
+      name: 'eatABalancedDiet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eat more protein`
+  String get eatMoreProtein {
+    return Intl.message(
+      'Eat more protein',
+      name: 'eatMoreProtein',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eat more fiber`
+  String get eatMoreFiber {
+    return Intl.message(
+      'Eat more fiber',
+      name: 'eatMoreFiber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eat more fruit`
+  String get eatMoreFruit {
+    return Intl.message(
+      'Eat more fruit',
+      name: 'eatMoreFruit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eat more vegetable`
+  String get eatMoreVegetable {
+    return Intl.message(
+      'Eat more vegetable',
+      name: 'eatMoreVegetable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I'm not sure`
+  String get iAmNotSure {
+    return Intl.message(
+      'I\'m not sure',
+      name: 'iAmNotSure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Never`
+  String get never {
+    return Intl.message('Never', name: 'never', desc: '', args: []);
+  }
+
+  /// `Rarely`
+  String get rarely {
+    return Intl.message('Rarely', name: 'rarely', desc: '', args: []);
+  }
+
+  /// `Occasionally`
+  String get occasionally {
+    return Intl.message(
+      'Occasionally',
+      name: 'occasionally',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Frequently`
+  String get frequently {
+    return Intl.message('Frequently', name: 'frequently', desc: '', args: []);
+  }
+
+  /// `Always`
+  String get always {
+    return Intl.message('Always', name: 'always', desc: '', args: []);
+  }
+
+  /// `Not Very Active`
+  String get low {
+    return Intl.message('Not Very Active', name: 'low', desc: '', args: []);
+  }
+
+  /// `Lightly Active`
+  String get medium {
+    return Intl.message('Lightly Active', name: 'medium', desc: '', args: []);
+  }
+
+  /// `Very Active`
+  String get high {
+    return Intl.message('Very Active', name: 'high', desc: '', args: []);
+  }
+
+  /// `Vegetarian`
+  String get vegetarian {
+    return Intl.message('Vegetarian', name: 'vegetarian', desc: '', args: []);
+  }
+
+  /// `Non Vegetarian`
+  String get nonVegetarian {
+    return Intl.message(
+      'Non Vegetarian',
+      name: 'nonVegetarian',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vegan`
+  String get vegan {
+    return Intl.message('Vegan', name: 'vegan', desc: '', args: []);
+  }
+
+  /// `Pescatarian`
+  String get pescatarian {
+    return Intl.message('Pescatarian', name: 'pescatarian', desc: '', args: []);
+  }
+
+  /// `What's your preferred name?`
+  String get fullNameDialogTitle {
+    return Intl.message(
+      'What\'s your preferred name?',
+      name: 'fullNameDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We'll use it to make your experience more personal`
+  String get fullNameDialogContent {
+    return Intl.message(
+      'We\'ll use it to make your experience more personal',
+      name: 'fullNameDialogContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Let us know how often you plan meal`
+  String get mealPlanDialogTitle {
+    return Intl.message(
+      'Let us know how often you plan meal',
+      name: 'mealPlanDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This helps us shape the right program for you`
+  String get mealPlanDialogContent {
+    return Intl.message(
+      'This helps us shape the right program for you',
+      name: 'mealPlanDialogContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What's your activity level?`
+  String get activityLevelDialogTitle {
+    return Intl.message(
+      'What\'s your activity level?',
+      name: 'activityLevelDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your best guess. We'll use this to personalize your plan`
+  String get activityLevelDialogContent {
+    return Intl.message(
+      'Please enter your best guess. We\'ll use this to personalize your plan',
+      name: 'activityLevelDialogContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What's your meal preference?`
+  String get mealPrefDialogTitle {
+    return Intl.message(
+      'What\'s your meal preference?',
+      name: 'mealPrefDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your meal preference. We'll use this to personalize your plan`
+  String get mealPrefDialogContent {
+    return Intl.message(
+      'Please enter your meal preference. We\'ll use this to personalize your plan',
+      name: 'mealPrefDialogContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter all the fields.`
+  String get userDetailDialogTitle {
+    return Intl.message(
+      'Please enter all the fields.',
+      name: 'userDetailDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monday`
+  String get monday {
+    return Intl.message('Monday', name: 'monday', desc: '', args: []);
+  }
+
+  /// `Tuesday`
+  String get tuesday {
+    return Intl.message('Tuesday', name: 'tuesday', desc: '', args: []);
+  }
+
+  /// `Wednesday`
+  String get wednesday {
+    return Intl.message('Wednesday', name: 'wednesday', desc: '', args: []);
+  }
+
+  /// `Thursday`
+  String get thursday {
+    return Intl.message('Thursday', name: 'thursday', desc: '', args: []);
+  }
+
+  /// `Friday`
+  String get friday {
+    return Intl.message('Friday', name: 'friday', desc: '', args: []);
+  }
+
+  /// `Saturday`
+  String get saturday {
+    return Intl.message('Saturday', name: 'saturday', desc: '', args: []);
+  }
+
+  /// `Sunday`
+  String get sunday {
+    return Intl.message('Sunday', name: 'sunday', desc: '', args: []);
+  }
+
+  /// `UNDO`
+  String get undo {
+    return Intl.message('UNDO', name: 'undo', desc: '', args: []);
   }
 }
 

@@ -15,9 +15,9 @@ extension ContextExtension on BuildContext {
   ///   );
   /// }
   /// ```
-  Future<T?> push<T>(Widget child) async {
-    return Navigator.push(this, MaterialPageRoute(builder: (context) => child));
-  }
+  // Future<T?> push<T>(Widget child) async {
+  //   return Navigator.push(this, MaterialPageRoute(builder: (context) => child));
+  // }
 
   /// Shorthand method to push a required [child] and remove other routes.
   ///
@@ -33,13 +33,13 @@ extension ContextExtension on BuildContext {
   ///   );
   /// }
   /// ```
-  Future<void> pushAndRemoveUntil(Widget child) async {
-    Navigator.pushAndRemoveUntil(
-      this,
-      MaterialPageRoute(builder: (context) => child),
-      (context) => false,
-    );
-  }
+  // Future<void> pushAndRemoveUntil(Widget child) async {
+  //   Navigator.pushAndRemoveUntil(
+  //     this,
+  //     MaterialPageRoute(builder: (context) => child),
+  //     (context) => false,
+  //   );
+  // }
 
   /// Shorthand method to push a required [child] instead of the top-most route.
   ///
@@ -55,12 +55,12 @@ extension ContextExtension on BuildContext {
   ///   );
   /// }
   /// ```
-  Future<void> pushReplacement(Widget child) async {
-    Navigator.pushReplacement(
-      this,
-      MaterialPageRoute(builder: (context) => child),
-    );
-  }
+  // Future<void> pushReplacement(Widget child) async {
+  //   Navigator.pushReplacement(
+  //     this,
+  //     MaterialPageRoute(builder: (context) => child),
+  //   );
+  // }
 
   /// Shorthand method to pop a required [child].
   ///
@@ -108,5 +108,12 @@ extension ContextExtension on BuildContext {
   /// ```
   TextTheme get th {
     return TextTheme.of(this);
+  }
+
+  double get getLogoSize {
+    final Size size = MediaQuery.sizeOf(this);
+    final double shortestSide = size.shortestSide;
+    final double logoSize = (shortestSide * 0.22).clamp(120, 180).toDouble();
+    return logoSize;
   }
 }

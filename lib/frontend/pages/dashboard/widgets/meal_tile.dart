@@ -51,7 +51,7 @@ class _MealTileState extends State<MealTile> {
             initiallyExpanded: _isSameMealType(),
             childrenPadding: const .symmetric(horizontal: 16, vertical: 8),
             title: Text(
-              mealType?.mealType ?? '',
+              mealType?.name ?? '',
               style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             children:

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../generated/l10n.dart';
 import '../../../infrastructure/extension/context_extension.dart';
+import '../../app/router/route_paths.dart';
 import '../../config/app_spacing.dart';
-import '../login/login_page.dart';
 import 'widgets/overview_section_one.dart';
 import 'widgets/overview_section_three.dart';
 import 'widgets/overview_section_two.dart';
@@ -32,23 +33,11 @@ class _OverviewPageState extends State<OverviewPage> {
     super.dispose();
   }
 
-  void _goToNextPage() {
-    _controller.nextPage(
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.decelerate,
-    );
-  }
-
-  void onTap() {
-    (_controller.page?.toInt() ?? 0) < OverviewPageType.values.length - 1
-        ? _goToNextPage()
-        : context.pushReplacement(const LoginPage());
-  }
-
+  //region Build Method
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final ColorScheme colorScheme = ColorScheme.of(context);
+    final TextTheme th = context.th;
+    final ColorScheme cs = context.cs;
 
     return Scaffold(
       body: Center(
@@ -78,14 +67,10 @@ class _OverviewPageState extends State<OverviewPage> {
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: onTap,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                  ),
+                  style: FilledButton.styleFrom(backgroundColor: cs.primary),
                   child: Text(
                     S.of(context).next,
-                    style: textTheme.titleLarge?.copyWith(
-                      color: colorScheme.onPrimary,
-                    ),
+                    style: th.titleLarge?.copyWith(color: cs.onPrimary),
                   ),
                 ),
               ),
@@ -105,4 +90,22 @@ class _OverviewPageState extends State<OverviewPage> {
       ),
     );
   }
+
+  //endregion
+
+  //region Custom Methods
+  void _goToNextPage() {
+    _controller.nextPage(
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.decelerate,
+    );
+  }
+
+  void onTap() {
+    (_controller.page?.toInt() ?? 0) < OverviewPageType.values.length - 1
+        ? _goToNextPage()
+        : context.go(RoutePaths.login);
+  }
+
+  //endregion
 }

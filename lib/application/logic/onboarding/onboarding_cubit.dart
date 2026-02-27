@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entity/profile_entity.dart';
-import '../../../domain/entity/health_habits_entity.dart';
 import '../../../domain/entity/onboarding_entity.dart';
 import '../../../domain/entity/user_preferences.dart';
 import '../../../domain/repository/onboarding_repository.dart';
@@ -40,7 +39,6 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   /// This saves the details acquired at the time of onboarding.
   Future<void> saveOnboardingDetails(OnboardingEntity onboard) async {
     try {
-      appDataService.onboarding = onboard;
       final OnboardingEntity onboardingEntity = await repository
           .saveOnboardingDetails(onboard);
       emit(OnboardingLoadedState(onboardingEntity));
@@ -49,7 +47,6 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     }
   }
 
-  // TODO: To generate and save plan after user has onboarded and old meal plan has expired.
   /// This generates a new plan for the first time or when old plan is expired.
   Future<void> generateMealPlan(OnboardingEntity onboard, DateTime date) async {
     try {

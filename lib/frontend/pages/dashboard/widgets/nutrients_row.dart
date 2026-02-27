@@ -11,16 +11,10 @@ class NutrientsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        NutrientChip(
-          nutrientType: .calories,
-          nutrientValue: mealEntity.calorie,
-        ),
-        NutrientChip(nutrientType: .carbs, nutrientValue: mealEntity.carbs),
-        NutrientChip(
-          nutrientType: .protein,
-          nutrientValue: mealEntity.protein,
-        ),
-        NutrientChip(nutrientType: .fat, nutrientValue: mealEntity.fat),
+        NutrientChip(nutrientType: .calories, nutrientVal: mealEntity.calorie),
+        NutrientChip(nutrientType: .carbs, nutrientVal: mealEntity.carbs),
+        NutrientChip(nutrientType: .protein, nutrientVal: mealEntity.protein),
+        NutrientChip(nutrientType: .fat, nutrientVal: mealEntity.fat),
       ],
     );
   }

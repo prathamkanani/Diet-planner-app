@@ -18,10 +18,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   /// This method signs in the user.
   @override
-  Future<AuthEntity?> signIn() async {
+  Future<AuthEntity> signIn() async {
     // Signing in using google auth provider.
-    final user = await source.signIn(FederatedAuthType.google);
-    return user;
+    return await source.signIn(FederatedAuthType.google);
   }
 
   @override

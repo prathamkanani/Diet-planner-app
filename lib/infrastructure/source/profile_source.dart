@@ -21,7 +21,7 @@ class ProfileRemoteDataSource implements ProfileSource {
   Future<void> saveProfile(ProfileEntity userProfile) async {
     await supabase
         .from('profiles')
-        .update(ProfileModel.fromEntity(userProfile).toJson())
+        .update(ProfileModel.fromEntity(entity: userProfile).toJson())
         .eq('user_id', user.id);
   }
 

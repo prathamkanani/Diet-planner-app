@@ -6,7 +6,7 @@ abstract interface class AuthRepository {
   Future<AuthEntity?> getUser();
 
   /// Lets the user sign in.
-  Future<AuthEntity?> signIn();
+  Future<AuthEntity> signIn();
 
   /// Signs out the user.
   Future<void> signOut();

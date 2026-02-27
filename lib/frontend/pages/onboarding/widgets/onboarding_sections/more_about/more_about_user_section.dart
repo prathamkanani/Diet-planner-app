@@ -29,7 +29,10 @@ class MoreAboutUserSection extends StatelessWidget {
           AppSpacing.h08,
           TextFormField(controller: heightController, keyboardType: .number),
           AppSpacing.h16,
-          Text(S.of(context).howMuchDoYouWeighInKg, style: textTheme.titleSmall),
+          Text(
+            S.of(context).howMuchDoYouWeighInKg,
+            style: textTheme.titleSmall,
+          ),
           AppSpacing.h08,
           TextFormField(controller: weightController, keyboardType: .number),
         ],

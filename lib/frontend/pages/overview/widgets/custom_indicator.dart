@@ -29,7 +29,6 @@ class _CustomSmoothIndicatorState extends State<CustomSmoothIndicator> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
-    print(widget.controller.page);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

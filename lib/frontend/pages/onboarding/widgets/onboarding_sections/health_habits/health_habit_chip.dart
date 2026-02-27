@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/entity/health_habits_entity.dart';
+import 'package:intl/intl.dart';
+import '../../../../../../domain/entity/user_preferences.dart';
 
 class HealthHabitChip extends StatelessWidget {
   final HealthHabits habit;
@@ -37,7 +38,7 @@ class HealthHabitChip extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            habit.habits,
+            Intl.message(habit.name),
             style: textTheme.titleSmall?.copyWith(
               color: isSelected ? colorScheme.primary : null,
               fontWeight: FontWeight.w900,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../../domain/entity/dialog_entity.dart';
+import '../../../../../../domain/entity/dialog.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../infrastructure/extension/context_extension.dart';
 

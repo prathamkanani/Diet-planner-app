@@ -1,11 +1,4 @@
-enum Gender {
-  male("Male"),
-  female("Female");
-
-  final String gender;
-
-  const Gender(this.gender);
-}
+enum Gender { male, female }
 
 /// Represents basic user information
 class ProfileEntity {

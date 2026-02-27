@@ -5,6 +5,7 @@ import '../../../../application/logic/meal_log/meal_log_state.dart';
 import '../../../../domain/entity/meal_entity.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
+import '../../../config/app_color_palette.dart';
 import 'nutrients_row.dart';
 
 class ExpandableMealOption extends StatelessWidget {
@@ -78,14 +79,16 @@ class ExpandableMealOption extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isTypeLogged && isLogged
                     ? cs.primary.withValues(alpha: 0.3)
-                    : isTypeLogged && !isLogged ?
-                    cs.primaryContainer.withValues(alpha: 0.5)
+                    : isTypeLogged && !isLogged
+                    ? cs.tertiaryContainer
                     : isSelected
                     ? cs.primary.withValues(alpha: 0.3)
                     : cs.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: isSelected ? cs.primary : cs.primaryContainer,
+                  color: isSelected
+                      ? cs.primary
+                      : cs.onPrimaryContainer.withValues(alpha: 0.5),
                   width: 2,
                 ),
               ),
@@ -97,8 +100,8 @@ class ExpandableMealOption extends StatelessWidget {
                 subtitle: NutrientsRow(mealEntity: meal),
                 trailing: isPast && !isLogged
                     ? Icon(
-                        Icons.circle_outlined,
-                        color: cs.primaryContainer.withValues(alpha: 0.7),
+                        Icons.cancel,
+                        color: AppColorPalette.red.withValues(alpha: 0.8),
                       )
                     : isLogged
                     ? Icon(
@@ -107,11 +110,14 @@ class ExpandableMealOption extends StatelessWidget {
                       )
                     : isSelected
                     ? Icon(Icons.check_circle, color: cs.primary)
+                    : isTypeLogged
+                    ? Icon(
+                        Icons.cancel,
+                        color: AppColorPalette.red.withValues(alpha: 0.8),
+                      )
                     : Icon(
                         Icons.circle_outlined,
-                        color: isTypeLogged
-                            ? cs.primaryContainer.withValues(alpha: 0.7)
-                            : cs.primaryContainer,
+                        color: cs.onPrimaryContainer.withValues(alpha: 0.5),
                       ),
               ),
             ),

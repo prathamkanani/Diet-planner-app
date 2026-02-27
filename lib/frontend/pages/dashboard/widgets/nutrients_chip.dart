@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../../domain/entity/meal_entity.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
 import '../../../config/app_color_palette.dart';
 import '../../../config/app_spacing.dart';
 
 class NutrientChip extends StatelessWidget {
   final Nutrient nutrientType;
-  final int nutrientValue;
+  final int nutrientVal;
 
   const NutrientChip({
     super.key,
     required this.nutrientType,
-    required this.nutrientValue,
+    required this.nutrientVal,
   });
 
   Color colorFromType(Nutrient nutrient) {
@@ -54,7 +56,7 @@ class NutrientChip extends StatelessWidget {
             Text(emojiFromType(nutrientType)),
             AppSpacing.w04,
             Text(
-              '${nutrientType.nutrientType}:',
+              Intl.message(nutrientType.name),
               style: textTheme.bodySmall?.copyWith(
                 color: cs.secondary,
                 fontWeight: .w600,
@@ -63,14 +65,14 @@ class NutrientChip extends StatelessWidget {
             AppSpacing.w04,
             nutrientType == .calories
                 ? Text(
-                    '$nutrientValue kcal',
+                    "$nutrientVal ${S.of(context).kcal}",
                     style: textTheme.bodySmall?.copyWith(
                       color: cs.secondary,
                       fontWeight: .w600,
                     ),
                   )
                 : Text(
-                    '$nutrientValue g',
+                    "$nutrientVal ${S.of(context).g}",
                     style: textTheme.bodySmall?.copyWith(
                       color: cs.secondary,
                       fontWeight: .w600,

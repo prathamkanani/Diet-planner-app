@@ -7,12 +7,12 @@ class BootstrapRepositoryImpl implements BootstrapRepository {
   const BootstrapRepositoryImpl(this.source);
 
   @override
-  bool isUserAuthenticated() {
-    return source.isUserAuthenticated();
+  bool fetchAuthStatus() {
+    return source.fetchAuthStatus();
   }
 
   @override
-  Future<bool> isOnboardingCompleted() async {
-    return await source.isOnboardingCompleted();
+  Future<bool> fetchOnboardingStatus() async {
+    return await source.fetchOnboardingStatus();
   }
 }

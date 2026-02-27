@@ -15,6 +15,7 @@ class DailyMealsEntity {
   });
 }
 
+/// Information of the meals logged.
 class MealLoggerEntity {
   /// Target calories to be achieved by the user.
   final int targetCalories;

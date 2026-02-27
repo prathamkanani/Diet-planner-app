@@ -24,22 +24,16 @@ final class AppDataServiceImpl extends AppDataService {
   }
 
   @override
-  set planStartDate(final DateTime? date) {
-    if (date != null) {
-      prefs.setString('plan_start_date', date.toIso8601String());
-    }
-  }
-
-  @override
   DateTime? get planStartDate {
     final String? dateIso = prefs.getString("plan_start_date");
     return DateTime.tryParse(dateIso ?? '');
   }
 
-  /// Setter for checking active or non-active user.
   @override
-  set isUserLoggedIn(bool value) {
-    prefs.setBool('isUserLoggedIn', value);
+  set planStartDate(final DateTime? date) {
+    if (date != null) {
+      prefs.setString('plan_start_date', date.toIso8601String());
+    }
   }
 
   /// Getter for checking active or non-active user.
@@ -48,66 +42,9 @@ final class AppDataServiceImpl extends AppDataService {
     return prefs.getBool('isUserLoggedIn') ?? false;
   }
 
-  /// Getter for mealPlanId
+  /// Setter for checking active or non-active user.
   @override
-  String? get mealPlanId {
-    return prefs.getString("meal_plan_id");
-  }
-
-  /// Setter for mealPlanId
-  @override
-  set mealPlanId(final String? mealPlanId) {
-    final currentId = prefs.getString("meal_plan_id");
-
-    if (mealPlanId == null) {
-      prefs.remove("meal_plan_id");
-      return;
-    }
-
-    if (mealPlanId != currentId) {
-      prefs.setString("meal_plan_id", mealPlanId);
-    }
-  }
-
-  @override
-  String? get breakfastLogId {
-    return prefs.getString("breakfast_id");
-  }
-
-  @override
-  set breakfastLogId(final String? breakfastLogId) {
-    if (breakfastLogId == null) {
-      prefs.remove("breakfast_id");
-    } else {
-      prefs.setString("breakfast_id", breakfastLogId);
-    }
-  }
-
-  @override
-  String? get lunchLogId {
-    return prefs.getString("lunch_id");
-  }
-
-  @override
-  set lunchLogId(final String? lunchLogId) {
-    if (lunchLogId == null) {
-      prefs.remove("lunch_id");
-    } else {
-      prefs.setString("lunch_id", lunchLogId);
-    }
-  }
-
-  @override
-  String? get dinnerLogId {
-    return prefs.getString("dinner_id");
-  }
-
-  @override
-  set dinnerLogId(final String? dinnerLogId) {
-    if (dinnerLogId == null) {
-      prefs.remove("dinner_id");
-    } else {
-      prefs.setString("dinner_id", dinnerLogId);
-    }
+  set isUserLoggedIn(bool value) {
+    prefs.setBool('isUserLoggedIn', value);
   }
 }

@@ -3,9 +3,9 @@ import '../../application/service/app_data_service.dart';
 import '../app_injector.dart';
 
 abstract interface class BootstrapSource {
-  bool isUserAuthenticated();
+  bool fetchAuthStatus();
 
-  Future<bool> isOnboardingCompleted();
+  Future<bool> fetchOnboardingStatus();
 }
 
 class SupabaseBSource implements BootstrapSource {
@@ -15,7 +15,7 @@ class SupabaseBSource implements BootstrapSource {
   SupabaseBSource(this.supabase);
 
   @override
-  bool isUserAuthenticated() {
+  bool fetchAuthStatus() {
     final Session? session = supabase.auth.currentSession;
     final String? userId = session?.user.id;
     appDataService.userId = userId;
@@ -24,7 +24,7 @@ class SupabaseBSource implements BootstrapSource {
   }
 
   @override
-  Future<bool> isOnboardingCompleted() async {
+  Future<bool> fetchOnboardingStatus() async {
     final User? user = supabase.auth.currentUser;
     final String id = user!.id;
     final Map<String, dynamic>? res = await supabase

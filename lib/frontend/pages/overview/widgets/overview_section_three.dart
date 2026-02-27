@@ -40,7 +40,7 @@ class OverviewSectionThree extends StatelessWidget {
             child: Text(
               S
                   .of(context)
-                  .logMealsUnderstandYourIntakeAndBuildHealthierHabitsoneDay,
+                  .logMealsUnderstandYourIntakeAndBuildHealthierHabitsOneDay,
               style: textTheme.titleLarge?.copyWith(
                 color: colorScheme.primary,
                 fontWeight: .w600,

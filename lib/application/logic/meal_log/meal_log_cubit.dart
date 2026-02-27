@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entity/daily_meals_entity.dart';
 import '../../../domain/entity/meal_entity.dart';
@@ -22,17 +24,25 @@ class MealLogCubit extends Cubit<MealLogState> {
   /// For storing temporary logged meals.
   Map<MealType, MealEntity>? loggedMeals = {};
 
+  /// Timer for undo functionality.
+  Timer? undoTimer;
+
+  /// The meal(s) selected in order to log them.
   void selectMeal(MealType type, MealEntity meal) {
     selectedMealType[type] = meal;
     emit(MealSelectedState(selectedMealType));
   }
 
+  /// The unselected meals.
   void unselectMeal(MealType type) {
     selectedMealType.remove(type);
     emit(MealUnselectedState(selectedMealType));
   }
 
-  Future<void> didPressUndo() async {
+  /// This reverts the logged meals, it is valid for 10 secs timer.
+  Future<void> onUndo() async {
+    undoTimer?.cancel();
+    undoTimer = null;
     if (loggedMeals == null) return;
 
     try {
@@ -50,6 +60,7 @@ class MealLogCubit extends Cubit<MealLogState> {
     }
   }
 
+  /// This allows the user to log particular meal(s).
   Future<void> logMeals() async {
     if (selectedMealType.isEmpty) return;
     emit(const MealLoggingState());
@@ -62,12 +73,14 @@ class MealLogCubit extends Cubit<MealLogState> {
       selectedMealType.clear();
       emit(MealUndoAvailableState(dailyMealsEntity!));
 
-      await Future.delayed(const Duration(seconds: 10));
-
-      if (loggedMeals != null) {
-        loggedMeals = null;
-        emit(MealLogSuccessState(dailyMealsEntity));
-      }
+      // Cancel any previous timer.
+      undoTimer?.cancel();
+      undoTimer = Timer(const Duration(seconds: 10), () {
+        if (loggedMeals != null) {
+          loggedMeals = null;
+          emit(MealLogSuccessState(dailyMealsEntity));
+        }
+      });
     } catch (e) {
       emit(MealLogErrorState(e));
     }

@@ -11,20 +11,19 @@ class BootstrapCubit extends Cubit<BootstrapState> {
 
   final AppDataService appDataService = locator.get();
 
-  /// This checks whether a user is onboarded or not, if authenticated.
-  Future<void> isOnboardingCompleted() async {
+  /// This checks whether a user has onboarded or not, if authenticated.
+  Future<void> fetchOnboardingStatus() async {
     emit(const BootstrapLoadingState());
     try {
-      final isUserAuthenticated = repository.isUserAuthenticated();
-      if(isUserAuthenticated){
-        final isCompleted = await repository.isOnboardingCompleted();
-        appDataService.isNewUser = !isCompleted;
-        isCompleted
+      final bool isUserAuthenticated = repository.fetchAuthStatus();
+      if (isUserAuthenticated) {
+        final bool isCompleted = await repository.fetchOnboardingStatus();
+        return isCompleted
             ? emit(const UserOnboardedState())
             : emit(const UserDidNotOnboardState());
-        return;
       }
-      emit(const UserUnauthenticatedState());
+      await Future.delayed(const Duration(milliseconds: 1));
+      return emit(const UserUnauthenticatedState());
     } catch (e) {
       emit(BootstrapErrorState(e));
     }

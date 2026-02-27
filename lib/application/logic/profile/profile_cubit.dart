@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/repository/auth_repository.dart';
 import '../../../domain/repository/profile_repository.dart';
+import '../../../infrastructure/model/profile_model.dart';
 import 'profile_state.dart';
 
 /// The [Cubit] that is responsible for user profile operations.
@@ -26,6 +27,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  /// This checks whether any changes were made to the existing or saved profile.
   Future<void> onProfileChanged({required ProfileEntity profile}) async {
     if (_savedProfile == null) return;
     try {
@@ -55,11 +57,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     final String avatarSeed = const Uuid().v4();
     emit(
       ProfileEditState(
-        ProfileEntity(userId: profile.userId, avatarUrl: avatarSeed),
+        ProfileModel.fromEntity(entity: profile, email: null, seed: avatarSeed),
       ),
     );
   }
 
+  /// This allows the user to log out from the app.
   Future<void> logOut() async {
     try {
       await authRepository.signOut();

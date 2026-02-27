@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
-import '../../../../../../domain/entity/health_habits_entity.dart';
+import '../../../../../../domain/entity/user_preferences.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import 'health_habit_chip.dart';
 
-/// Contains:
-///
-/// chips listing different health habits and can multi-select chips like
-/// eat mindfully, eat a balanced diet, eat more protein,
-/// eat more whole foods, eat more fibre, eat more vegetables,
-/// eat more fruit, something else, I'm not sure
 class HealthHabitsSection extends StatefulWidget {
   final void Function(List<HealthHabits>) selectedHabit;
 
@@ -24,16 +18,6 @@ class HealthHabitsSection extends StatefulWidget {
 class _HealthHabitsSectionState extends State<HealthHabitsSection> {
   late final OnboardingCubit cubit = context.read<OnboardingCubit>();
   late final List<HealthHabits> selectedHabits = cubit.healthHabits;
-
-  void _handleTap(HealthHabits habit) {
-    setState(() {
-      if (selectedHabits.contains(habit)) {
-        selectedHabits.remove(habit);
-        return;
-      }
-      selectedHabits.add(habit);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,4 +50,17 @@ class _HealthHabitsSectionState extends State<HealthHabitsSection> {
       ],
     );
   }
+
+  //region Custom Methods
+  void _handleTap(HealthHabits habit) {
+    setState(() {
+      if (selectedHabits.contains(habit)) {
+        selectedHabits.remove(habit);
+        return;
+      }
+      selectedHabits.add(habit);
+    });
+  }
+
+//endregion
 }

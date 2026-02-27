@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/profile_entity.dart';
 import '../../../../../../generated/l10n.dart';
@@ -55,7 +56,7 @@ class _UserDetailSectionState extends State<UserDetailSection> {
                 child: Padding(
                   padding: EdgeInsets.only(right: (g.index == 0) ? 8.0 : 0.0),
                   child: CheckCircleContainer(
-                    title: g.gender,
+                    title: Intl.message(g.name),
                     isSelected: isSelected,
                     onTap: _handleTap,
                     value: g,

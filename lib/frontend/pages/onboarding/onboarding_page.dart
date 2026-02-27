@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../application/logic/onboarding/onboarding_state.dart';
 import '../../../application/service/app_data_service.dart';
-import '../../../domain/entity/dialog_entity.dart';
-import '../../../domain/entity/health_habits_entity.dart';
+import '../../../domain/entity/dialog.dart';
 import '../../../domain/entity/onboarding_entity.dart';
 import '../../../domain/entity/profile_entity.dart';
 import '../../../domain/entity/user_preferences.dart';
 import '../../../infrastructure/app_injector.dart';
 import '../../../infrastructure/extension/context_extension.dart';
+import '../../../infrastructure/model/dialog_model.dart';
 import '../../../infrastructure/model/profile_model.dart';
+import '../../app/router/route_paths.dart';
 import '../../config/app_spacing.dart';
-import '../home/home_page.dart';
-import '../setup/setup_page.dart';
 import 'widgets/bottom_action_bar.dart';
 import 'widgets/onboarding_sections/meal_preference/meal_preference.dart';
 import 'widgets/pageview_indicator.dart';
@@ -51,19 +51,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
       locationController,
       heightController,
       weightController;
-  // late final ValueNotifier<int> _currentPage;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
-    // _currentPage = ValueNotifier(0);
-    // _pageController.addListener(() {
-    //   if (!_pageController.hasClients) return;
-    //
-    //   final page = _pageController.page?.round() ?? 0;
-    //   if (_currentPage.value != page) _currentPage.value = page;
-    // });
     ageController = TextEditingController();
     locationController = TextEditingController();
     userNameController = TextEditingController();
@@ -75,7 +67,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   void dispose() {
     _pageController.dispose();
-    // _currentPage.dispose();
     userNameController.dispose();
     ageController.dispose();
     locationController.dispose();
@@ -85,6 +76,67 @@ class _OnboardingPageState extends State<OnboardingPage> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme cs = context.cs;
+
+    return BlocListener(
+      bloc: cubit,
+      listenWhen: (prev, next) {
+        return next is OnboardingPromptState;
+      },
+      listener: (context, state) {
+        if (state is OnboardingPromptState && state.isLoading == true) {
+          context.go(RoutePaths.setup);
+        } else {
+          context.go(RoutePaths.home);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: cs.secondaryContainer,
+        body: Column(
+          children: [
+            SizedBox(height: MediaQuery.sizeOf(context).height * 0.06),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: PageviewIndicator(
+                count: OnboardingSection.values.length,
+                controller: _pageController,
+              ),
+            ),
+            AppSpacing.h16,
+            Expanded(
+              child: OnboardingView(
+                cubit: cubit,
+                pageController: _pageController,
+                userNameController: userNameController,
+                ageController: ageController,
+                locationController: locationController,
+                heightController: heightController,
+                weightController: weightController,
+              ),
+            ),
+          ],
+        ),
+        // This lifts up the bottom nav bar.
+        // insets - part of the screen completely
+        // obscured by system UI(like keyboard).
+        // viewInsetsOf.bottom pushes the content
+        // up by the exact height of keyboard.
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.viewInsetsOf(context).bottom,
+          ),
+          child: BottomActionBar(
+            onPrevious: _goBack,
+            onNext: () => _next(context),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //region Custom Methods
   void _goBack() {
     FocusManager.instance.primaryFocus?.unfocus();
     _pageController.previousPage(
@@ -126,8 +178,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   void _next(BuildContext context) {
-    // final page = _currentPage.value;
-    final page = (_pageController.page ?? 0).toDouble();
+    final page = (_pageController.page ?? 0).toInt();
     if ((userNameController.text.isEmpty && page == 0) ||
         (cubit.mealPlan == null && page == 2) ||
         (cubit.activityLevel == null && page == 3) ||
@@ -149,120 +200,90 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return dialogs.map((dialog) {
-          return CustomAlertDialog(dialog: dialog);
+        return DialogEnum.values.map((dialog) {
+          return CustomAlertDialog(dialog: dialogMapper(dialog));
         }).toList()[page];
       },
     );
   }
+  //endregion
+}
+
+class OnboardingView extends StatelessWidget {
+  const OnboardingView({
+    super.key,
+    required this.cubit,
+    required PageController pageController,
+    required this.userNameController,
+    required this.ageController,
+    required this.locationController,
+    required this.heightController,
+    required this.weightController,
+  }) : _pageController = pageController;
+
+  final OnboardingCubit cubit;
+  final PageController _pageController;
+  final TextEditingController userNameController;
+  final TextEditingController ageController;
+  final TextEditingController locationController;
+  final TextEditingController heightController;
+  final TextEditingController weightController;
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme cs = context.cs;
-
-    return BlocListener(
-      bloc: cubit,
-      listenWhen: (prev, next) {
-        return next is OnboardingPromptState;
-      },
-      listener: (context, state) {
-        if (state is OnboardingPromptState && state.isLoading == true) {
-          context.push(const SetupPage());
-        } else {
-          context.pushAndRemoveUntil(const HomePage());
-        }
-      },
-      child: Scaffold(
-        backgroundColor: cs.secondaryContainer,
-        body: Column(
-          children: [
-            SizedBox(height: MediaQuery.sizeOf(context).height * 0.06),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: PageviewIndicator(
-                count: OnboardingSection.values.length,
-                controller: _pageController,
-              ),
+    return BlocProvider.value(
+      value: cubit,
+      child: PageView.builder(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: OnboardingSection.values.length,
+        itemBuilder: (_, final int index) {
+          final OnboardingSection type = .values[index];
+          final Widget section = switch (type) {
+            OnboardingSection.usernameSection => UsernameSection(
+              controller: userNameController,
             ),
-            AppSpacing.h16,
-            Expanded(
-              child: BlocProvider.value(
-                value: cubit,
-                child: PageView.builder(
-                  controller: _pageController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: OnboardingSection.values.length,
-                  itemBuilder: (_, final int index) {
-                    final OnboardingSection type = .values[index];
-                    final Widget section = switch (type) {
-                      OnboardingSection.usernameSection => UsernameSection(
-                        controller: userNameController,
-                      ),
 
-                      OnboardingSection.healthHabitsSection =>
-                        HealthHabitsSection(
-                          selectedHabit: (List<HealthHabits> h) {
-                            cubit.healthHabits = h;
-                          },
-                        ),
-
-                      OnboardingSection.mealPlanningSection =>
-                        MealPlanningSection(
-                          advanceMealPlanning: (MealPlanning m) {
-                            cubit.mealPlan = m;
-                          },
-                        ),
-
-                      OnboardingSection.activityLevelSection =>
-                        ActivityLevelSection(
-                          selectedActivity: (ActivityLevel a) {
-                            cubit.activityLevel = a;
-                          },
-                        ),
-
-                      OnboardingSection.mealPreferenceSection =>
-                        MealPreferenceView(
-                          selectedMealPref: (MealPreferences m) {
-                            cubit.mealPref = m;
-                          },
-                        ),
-
-                      OnboardingSection.userDetailSection => UserDetailSection(
-                        ageController: ageController,
-                        locationController: locationController,
-                        selectedGender: (Gender g) {
-                          cubit.gender = g;
-                        },
-                      ),
-
-                      OnboardingSection.moreAboutUserSection =>
-                        MoreAboutUserSection(
-                          heightController: heightController,
-                          weightController: weightController,
-                        ),
-                    };
-
-                    return Padding(padding: const .all(16), child: section);
-                  },
-                ),
-              ),
+            OnboardingSection.healthHabitsSection => HealthHabitsSection(
+              selectedHabit: (List<HealthHabits> h) {
+                cubit.healthHabits = h;
+              },
             ),
-          ],
-        ),
-        // This lifts up the bottom nav bar.
-        // insets - part of the screen completely
-        // obscured by system UI(like keyboard).
-        // viewInsetsOf.bottom pushes the content
-        // up by the exact height of keyboard.
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(context).bottom,
-          ),
-          child: BottomActionBar(
-            onPrevious: _goBack,
-            onNext: () => _next(context),
-          ),
-        ),
+
+            OnboardingSection.mealPlanningSection => MealPlanningSection(
+              advanceMealPlanning: (MealPlanning m) {
+                cubit.mealPlan = m;
+              },
+            ),
+
+            OnboardingSection.activityLevelSection => ActivityLevelSection(
+              selectedActivity: (ActivityLevel a) {
+                cubit.activityLevel = a;
+              },
+            ),
+
+            OnboardingSection.mealPreferenceSection => MealPreferenceView(
+              selectedMealPref: (MealPreferences m) {
+                cubit.mealPref = m;
+              },
+            ),
+
+            OnboardingSection.userDetailSection => UserDetailSection(
+              ageController: ageController,
+              locationController: locationController,
+              selectedGender: (Gender g) {
+                cubit.gender = g;
+              },
+            ),
+
+            OnboardingSection.moreAboutUserSection => MoreAboutUserSection(
+              heightController: heightController,
+              weightController: weightController,
+            ),
+          };
+
+          return Padding(padding: const .all(16), child: section);
+        },
       ),
     );
   }

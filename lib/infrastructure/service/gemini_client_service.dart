@@ -15,8 +15,8 @@ class GeminiClientService {
 
     USER PROFILE:
     - Country: ${userPreferences.country}
-    - Activity level: ${userPreferences.activityLevel.title}
-    - Meal Preference: ${userPreferences.mealPref.label}
+    - Activity level: ${userPreferences.activityLevel.name}
+    - Meal Preference: ${userPreferences.mealPref.name}
     - Daily calorie target: Research what is average calorie target according 
       to the provided data and consider that value.
       

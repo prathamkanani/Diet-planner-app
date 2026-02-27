@@ -7,7 +7,7 @@ import '../app_injector.dart';
 
 // Defines contracts for authentication operations.
 abstract interface class AuthDataSource {
-  Future<AuthEntity?> signIn(FederatedAuthType type);
+  Future<AuthEntity> signIn(FederatedAuthType type);
 
   Future<void> signOut(FederatedAuthType type);
 
@@ -32,7 +32,7 @@ class SupabaseAuthSource implements AuthDataSource {
 
   /// Lets user sign in.
   @override
-  Future<AuthEntity?> signIn(FederatedAuthType type) async {
+  Future<AuthEntity> signIn(FederatedAuthType type) async {
     final SessionEntity sessionEntity = await authService.signIn(type);
 
     // Handing over to supabase.
@@ -51,15 +51,24 @@ class SupabaseAuthSource implements AuthDataSource {
         .eq('user_id', currentUser.id)
         .maybeSingle();
 
-    // appDataService.profile = ProfileEntity(userId: currentUser.id);
     appDataService.userId = currentUser.id;
     appDataService.isUserLoggedIn = true;
+
+    // If a user already having an account, logs in and gets the existing plan.
+    final res = await supabase
+        .from('meal_plan')
+        .select('plan_start')
+        .eq('user_id', currentUser.id)
+        .order('plan_start', ascending: false)
+        .limit(1)
+        .maybeSingle();
+    appDataService.planStartDate = DateTime.tryParse(res?['plan_start']);
 
     if (response?['id'] != null) {
       return AuthEntity(userId: currentUser.id, isOnboarded: true);
     }
 
-    // Converts supabase's user to auth entity.
+    // Converts supabase user to auth entity.
     return AuthEntity(userId: currentUser.id);
   }
 

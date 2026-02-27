@@ -21,7 +21,7 @@ class MacroProgress extends StatelessWidget {
                 CustomProgressIndicator(
                   target: entity.targetCarbs,
                   consumed: entity.consumedCarbs,
-                  subtitle: '/${entity.targetCarbs} g',
+                  subtitle: '/${entity.targetCarbs} ${S.of(context).g}',
                   color: AppColorPalette.red,
                 ),
                 Text(S.of(context).carbs),
@@ -35,7 +35,7 @@ class MacroProgress extends StatelessWidget {
                 CustomProgressIndicator(
                   target: entity.targetProtein,
                   consumed: entity.consumedProtein,
-                  subtitle: '/${entity.targetProtein} g',
+                  subtitle: '/${entity.targetProtein} ${S.of(context).g}',
                   color: AppColorPalette.orange,
                 ),
                 Text(S.of(context).protein),
@@ -49,7 +49,7 @@ class MacroProgress extends StatelessWidget {
                 CustomProgressIndicator(
                   target: entity.targetFats,
                   consumed: entity.consumedFats,
-                  subtitle: '/${entity.targetFats} g',
+                  subtitle: '/${entity.targetFats} ${S.of(context).g}',
                   color: AppColorPalette.blue,
                 ),
                 Text(S.of(context).fat),

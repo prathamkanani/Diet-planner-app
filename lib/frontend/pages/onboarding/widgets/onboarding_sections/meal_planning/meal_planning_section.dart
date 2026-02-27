@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../application/logic/onboarding/onboarding_cubit.dart';
 import '../../../../../../domain/entity/user_preferences.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../config/app_spacing.dart';
 import 'check_circle_container.dart';
 
-/// Contains:
-///
-/// How often does a user plan meals in advance?
-///
-/// never
-/// rarely
-/// occasionally
-/// frequently
-/// always
 class MealPlanningSection extends StatefulWidget {
   final void Function(MealPlanning) advanceMealPlanning;
 
@@ -26,12 +18,6 @@ class MealPlanningSection extends StatefulWidget {
 
 class _MealPlanningSectionState extends State<MealPlanningSection> {
   late final OnboardingCubit cubit = context.read<OnboardingCubit>();
-
-  void _handleTap(MealPlanning meal) {
-    setState(() {
-      cubit.mealPlan = (cubit.mealPlan == meal) ? null : meal;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +38,7 @@ class _MealPlanningSectionState extends State<MealPlanningSection> {
               bool isSelected = cubit.mealPlan == meal;
               isSelected ? widget.advanceMealPlanning(cubit.mealPlan!) : null;
               return CheckCircleContainer<MealPlanning>(
-                title: meal.meal,
+                title: Intl.message(meal.name),
                 isSelected: isSelected,
                 onTap: _handleTap,
                 value: meal,
@@ -63,4 +49,13 @@ class _MealPlanningSectionState extends State<MealPlanningSection> {
       ],
     );
   }
+
+  //region Custom Methods
+  void _handleTap(MealPlanning meal) {
+    setState(() {
+      cubit.mealPlan = (cubit.mealPlan == meal) ? null : meal;
+    });
+  }
+
+  //endregion
 }

@@ -30,11 +30,11 @@ class MealLoadingCubit extends Cubit<MealState> {
       fetchExistingMealPlan(currentDate);
       return;
     }
-    fetchUserPreferencesAndGenerateNewPlan(appDataService.userId!, currentDate);
+    fetchUserPrefsAndGenerateNewPlan(appDataService.userId!, currentDate);
   }
 
   /// This generates another plan for user based on selected user preferences.
-  Future<void> fetchUserPreferencesAndGenerateNewPlan(
+  Future<void> fetchUserPrefsAndGenerateNewPlan(
     String userId,
     DateTime date,
   ) async {
@@ -92,7 +92,7 @@ class MealLoadingCubit extends Cubit<MealState> {
 
   /// When the date is changed to look at previous meals or logs.
   Future<void> changedDate(DateTime date) async {
-    if(isToday(date)) return;
+    if(dateOnly(selectedDate) == dateOnly(date)) return;
 
     selectedDate = date;
     emit(const MealLoadingState());
@@ -102,14 +102,5 @@ class MealLoadingCubit extends Cubit<MealState> {
     } catch (e) {
       emit(MealErrorState(e));
     }
-  }
-
-  /// Helper function to check whether selected date is today or not.
-  /// This does not allow showing of future meals.
-  bool isToday(DateTime date) {
-    final now = DateTime.now();
-    return date.year == now.year &&
-        date.month == now.month &&
-        date.day == now.day;
   }
 }

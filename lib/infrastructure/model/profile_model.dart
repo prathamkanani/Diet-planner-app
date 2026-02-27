@@ -36,18 +36,18 @@ class ProfileModel extends ProfileEntity {
     );
   }
 
-  ProfileModel.fromAvatar({required String userId, required String avatar})
+  ProfileModel.changedAvatar({required String userId, required String avatar})
     : this(userId: userId, avatarUrl: avatar);
 
   factory ProfileModel.fromAuthEntity(AuthEntity auth, String seed) {
     return ProfileModel(userId: auth.userId, avatarUrl: seed);
   }
 
-  factory ProfileModel.fromEntity(
-    ProfileEntity entity, [
+  factory ProfileModel.fromEntity({
+    required ProfileEntity entity,
     String? email,
     String? seed,
-  ]) {
+  }) {
     return ProfileModel(
       userId: entity.userId,
       avatarUrl: seed ?? entity.avatarUrl,

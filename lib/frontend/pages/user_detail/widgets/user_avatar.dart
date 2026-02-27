@@ -23,10 +23,10 @@ class UserAvatar extends StatelessWidget {
         BlocBuilder<ProfileCubit, ProfileState>(
           bloc: profileCubit,
           builder: (BuildContext context, ProfileState state) {
-            if(state is ProfileSavedState) {
+            if (state is ProfileSavedState) {
               String avatarSeed = state.profile.avatarUrl ?? '';
               return AvatarPlus(avatarSeed, height: 100, width: 100);
-            } else if(state is ProfileEditState) {
+            } else if (state is ProfileEditState) {
               String avatarSeed = state.profile.avatarUrl ?? '';
               return AvatarPlus(avatarSeed, height: 100, width: 100);
             }

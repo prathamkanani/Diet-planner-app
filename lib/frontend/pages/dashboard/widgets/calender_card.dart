@@ -52,7 +52,7 @@ class WeekCalendarCard extends StatelessWidget {
           onHeaderTapped: (focusDay) async {
             final picked = await showDatePicker(
               context: context,
-              firstDate: DateTime(2000),
+              firstDate: appDataService.planStartDate!,
               lastDate: DateTime.now(),
               initialDate: date,
             );

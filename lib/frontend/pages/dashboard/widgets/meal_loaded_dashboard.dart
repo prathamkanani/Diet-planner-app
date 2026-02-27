@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../application/logic/meal_log/meal_log_cubit.dart';
 import '../../../../application/logic/meal_log/meal_log_state.dart';
 import '../../../../domain/entity/daily_meals_entity.dart';
@@ -29,7 +30,7 @@ class MealLoadedDashboard extends StatefulWidget {
 }
 
 class _MealLoadedDashboardState extends State<MealLoadedDashboard>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int count = 0;
 
@@ -49,14 +50,6 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
   }
 
   void setTab() {
-    // final DateTime currentDate = widget.mealLoggerEntity.currentDate;
-    // if (mealType == fromTime(currentDate) && mealType == .breakfast) {
-    //   tabController.animateTo(0);
-    // } else if (mealType == fromTime(currentDate) && mealType == .lunch) {
-    //   tabController.animateTo(1);
-    // } else if (mealType == fromTime(currentDate)) {
-    //   tabController.animateTo(2);
-    // }
     final DateTime currentDate = widget.mealLoggerEntity.currentDate;
     return switch (fromTime(currentDate)) {
       MealType.breakfast => tabController.animateTo(0),
@@ -85,7 +78,6 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
             return next is MealLogInitialState;
           },
           builder: (context, state) {
-            print(count);
             return SliverMainAxisGroup(
               slivers: [
                 SliverPersistentHeader(
@@ -98,17 +90,17 @@ class _MealLoadedDashboardState extends State<MealLoadedDashboard>
                   child: TabBarView(
                     controller: tabController,
                     children: widget.meals.map((final mealOption) {
-                      // final MealType mealType = mealOption.mealType;
-                      // checkMealType(mealType);
                       return Column(
                         mainAxisSize: .min,
                         mainAxisAlignment: .start,
                         children: [
                           Text(
-                            mealOption.mealType.mealType,
+                            Intl.message(mealOption.mealType.name),
                             style: textTheme.titleLarge,
                           ),
                           AppSpacing.h16,
+                          Text(S.of(context).selectAnyOneOptionToLog),
+                          AppSpacing.h08,
                           Expanded(
                             child: MealOptionList(
                               loggedMeals: widget.mealLoggerEntity.loggedMeal,
