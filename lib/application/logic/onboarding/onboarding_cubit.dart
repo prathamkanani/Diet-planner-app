@@ -47,6 +47,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     }
   }
 
+  // TODO: To generate and save plan after user has onboarded and old meal plan has expired.
   /// This generates a new plan for the first time or when old plan is expired.
   Future<void> generateMealPlan(OnboardingEntity onboard, DateTime date) async {
     try {
