@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../application/service/app_data_service.dart';
 import '../../domain/entity/meal_entity.dart';
 import '../app_injector.dart';
+import '../utils/helpers.dart';
 
 abstract interface class MealLogSource {
   Future<void> logMeal(Map<MealType, MealEntity> logMeals, DateTime date);
@@ -81,6 +82,7 @@ class MealLogRemoteSource implements MealLogSource {
         .from('meal_logs')
         .delete()
         .eq('meal_id', mealId)
+        .eq('log_date', dateOnly(date))
         .inFilter('meal_type', logMeals.keys.map((t) => t.name).toList());
   }
 }

@@ -172,9 +172,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
         country: locationController.text,
       ),
     );
+    appDataService.planStartDate = DateTime.now();
+    appDataService.firstPlanDate = DateTime.now();
     cubit.saveOnboardingDetails(onboard);
     cubit.generateMealPlan(onboard, DateTime.now());
-    appDataService.planStartDate = DateTime.now();
   }
 
   void _next(BuildContext context) {
@@ -206,6 +207,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       },
     );
   }
+
   //endregion
 }
 

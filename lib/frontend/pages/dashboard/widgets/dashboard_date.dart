@@ -16,6 +16,7 @@ class DashboardDate extends StatelessWidget {
 
     return BlocBuilder<MealLoadingCubit, MealState>(
       bloc: cubit,
+      buildWhen: (_, next) => next is MealLoadingState,
       builder: (context, state) {
         return Column(
           children: [

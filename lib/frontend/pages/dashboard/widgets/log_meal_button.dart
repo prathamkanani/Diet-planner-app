@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../application/logic/meal_load/meal_cubit.dart';
 import '../../../../application/logic/meal_log/meal_log_cubit.dart';
 import '../../../../application/logic/meal_log/meal_log_state.dart';
 import '../../../../generated/l10n.dart';
@@ -9,30 +11,39 @@ import '../../../config/app_spacing.dart';
 class LogMealButton extends StatelessWidget {
   const LogMealButton({super.key});
 
+  static final _UndoSnackBarController _snackBarController =
+      _UndoSnackBarController();
+
   @override
   Widget build(BuildContext context) {
     final ColorScheme cs = context.cs;
     final TextTheme textTheme = TextTheme.of(context);
-    final MealLogCubit mealLogCubit = context.read<MealLogCubit>();
+    final MealLogCubit mealLogCubit = context.read();
+
+    // Gets the selected date from the dashboard.
+    final MealLoadingCubit mealLoadingCubit = context.read();
+    final DateTime selectedDate = mealLoadingCubit.selectedDate;
 
     return BlocConsumer<MealLogCubit, MealLogState>(
       bloc: mealLogCubit,
+      listenWhen: (prev, next) =>
+          !(prev is MealLogSuccessState && next is MealLogSuccessState),
       listener: (context, state) {
-        if (state is MealUndoAvailableState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+        if (state is MealLogSuccessState) {
+          _snackBarController.show(
+            context,
+            snackBar: SnackBar(
               content: Text(S.of(context).mealLoggedSuccessfully),
               action: SnackBarAction(
                 label: S.of(context).undo,
                 onPressed: () {
-                  mealLogCubit.onUndo();
+                  _snackBarController.clear();
+                  mealLogCubit.onUndo(selectedDate);
                 },
               ),
               behavior: .floating,
             ),
           );
-        } else if (state is MealLogSuccessState) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
         }
 
         if (state is MealLogErrorState) {
@@ -55,7 +66,7 @@ class LogMealButton extends StatelessWidget {
           return const SizedBox.shrink();
         }
         return FilledButton(
-          onPressed: () => mealLogCubit.logMeals(),
+          onPressed: () => mealLogCubit.logMeals(selectedDate),
           style: FilledButton.styleFrom(fixedSize: const Size.fromHeight(44)),
           child: Row(
             mainAxisSize: .min,
@@ -74,5 +85,32 @@ class LogMealButton extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class _UndoSnackBarController {
+  Timer? timer;
+
+  void show(
+    BuildContext context, {
+    required SnackBar snackBar,
+    Duration timeout = const Duration(seconds: 10),
+  }) {
+    final messenger = ScaffoldMessenger.of(context);
+
+    timer?.cancel();
+    timer = null;
+
+    messenger.removeCurrentSnackBar();
+    messenger.showSnackBar(snackBar);
+
+    timer = Timer((timeout), () {
+      messenger.hideCurrentSnackBar();
+    });
+  }
+
+  void clear() {
+    timer?.cancel();
+    timer = null;
   }
 }

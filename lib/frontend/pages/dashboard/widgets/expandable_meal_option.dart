@@ -54,9 +54,6 @@ class ExpandableMealOption extends StatelessWidget {
 
     return BlocBuilder<MealLogCubit, MealLogState>(
       bloc: cubit,
-      // buildWhen: (_, next) {
-      //   return !(next is MealLoggingState && next.isLogging);
-      // },
       builder: (context, state) {
         bool isSelected = false;
         if (state is MealSelectedState) {
@@ -77,7 +74,9 @@ class ExpandableMealOption extends StatelessWidget {
             child: Container(
               margin: const .symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: isTypeLogged && isLogged
+                color: isPast && !isTypeLogged
+                    ? cs.tertiaryContainer
+                    : isTypeLogged && isLogged
                     ? cs.primary.withValues(alpha: 0.3)
                     : isTypeLogged && !isLogged
                     ? cs.tertiaryContainer

@@ -16,7 +16,7 @@ class MealLogCubit extends Cubit<MealLogState> {
   final MealRepository mealRepository;
   final MealLoggerRepository mealLoggerRepository;
 
-  final DateTime selectedDate = DateTime.now();
+  // final DateTime selectedDate = DateTime.now();
 
   /// For currently selected meals.
   final Map<MealType, MealEntity> selectedMealType = {};
@@ -40,16 +40,14 @@ class MealLogCubit extends Cubit<MealLogState> {
   }
 
   /// This reverts the logged meals, it is valid for 10 secs timer.
-  Future<void> onUndo() async {
-    undoTimer?.cancel();
-    undoTimer = null;
+  Future<void> onUndo(DateTime date) async {
     if (loggedMeals == null) return;
 
     try {
-      await mealLoggerRepository.deleteLoggedMeal(loggedMeals!, selectedDate);
+      await mealLoggerRepository.deleteLoggedMeal(loggedMeals!, date);
 
       final DailyMealsEntity? meals = await mealRepository.fetchExistingMeal(
-        selectedDate,
+        date,
       );
 
       loggedMeals = null;
@@ -61,26 +59,17 @@ class MealLogCubit extends Cubit<MealLogState> {
   }
 
   /// This allows the user to log particular meal(s).
-  Future<void> logMeals() async {
+  Future<void> logMeals(DateTime date) async {
     if (selectedMealType.isEmpty) return;
     emit(const MealLoggingState());
 
     try {
       loggedMeals = Map.from(selectedMealType);
-      await mealLoggerRepository.logMeal(selectedMealType, selectedDate);
+      await mealLoggerRepository.logMeal(selectedMealType, date);
       final DailyMealsEntity? dailyMealsEntity = await mealRepository
-          .fetchExistingMeal(selectedDate);
+          .fetchExistingMeal(date);
       selectedMealType.clear();
-      emit(MealUndoAvailableState(dailyMealsEntity!));
-
-      // Cancel any previous timer.
-      undoTimer?.cancel();
-      undoTimer = Timer(const Duration(seconds: 10), () {
-        if (loggedMeals != null) {
-          loggedMeals = null;
-          emit(MealLogSuccessState(dailyMealsEntity));
-        }
-      });
+      emit(MealLogSuccessState(dailyMealsEntity!));
     } catch (e) {
       emit(MealLogErrorState(e));
     }

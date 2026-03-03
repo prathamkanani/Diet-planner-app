@@ -12,6 +12,9 @@ abstract class AppDataService {
   /// Checks if user has active session or not.
   bool isUserLoggedIn = false;
 
-  /// Storing first meal plan date to know whether to generate or get meal plan.
+  /// Storing meal plan date to know whether to generate or get meal plan.
   DateTime? planStartDate;
+
+  /// Stores first ever meal planned by a user.
+  DateTime? firstPlanDate;
 }

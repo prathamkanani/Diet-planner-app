@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../domain/entity/daily_meal_log_entity.dart';
 import '../../../../generated/l10n.dart';
+import '../../../../infrastructure/utils/helpers.dart';
 
 class MealLogBarChart extends StatelessWidget {
   final List<DailyMealLogEntity> logs;
@@ -12,7 +13,7 @@ class MealLogBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: MediaQuery.heightOf(context) * 0.4,
       child: BarChart(
         BarChartData(
           maxY: 3,
@@ -48,8 +49,11 @@ class MealLogBarChart extends StatelessWidget {
                 getTitlesWidget: (value, _) {
                   final index = value.toInt();
                   final date = logs[index].date;
+                  bool isTodayDate = isToday(date);
                   return Text(
-                    DateFormat('d MMM').format(date),
+                    isTodayDate
+                        ? S.of(context).today
+                        : DateFormat('d MMM').format(date),
                     style: const TextStyle(fontSize: 10),
                   );
                 },

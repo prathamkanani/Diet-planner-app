@@ -814,10 +814,10 @@ class S {
     );
   }
 
-  /// `Number of meals logged for the week`
+  /// `Number of meals logged`
   String get numberOfMealsLogged {
     return Intl.message(
-      'Number of meals logged for the week',
+      'Number of meals logged',
       name: 'numberOfMealsLogged',
       desc: '',
       args: [],
@@ -1132,6 +1132,11 @@ class S {
   /// `UNDO`
   String get undo {
     return Intl.message('UNDO', name: 'undo', desc: '', args: []);
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message('Today', name: 'today', desc: '', args: []);
   }
 }
 

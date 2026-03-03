@@ -8,8 +8,5 @@ class MealOptionListEntity {
   /// The options shown for a specific [MealType].
   final List<MealEntity>? mealOptions;
 
-  const MealOptionListEntity({
-    required this.mealType,
-    this.mealOptions,
-  });
+  const MealOptionListEntity({required this.mealType, this.mealOptions});
 }

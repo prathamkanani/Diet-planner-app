@@ -23,6 +23,12 @@ final class ProfileSavedState extends ProfileState {
   const ProfileSavedState(this.profile);
 }
 
+final class ProfileSavingState extends ProfileState {
+  final ProfileEntity profile;
+
+  const ProfileSavingState(this.profile);
+}
+
 final class ProfileLogOutState extends ProfileState {
   const ProfileLogOutState();
 }

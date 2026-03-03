@@ -68,29 +68,4 @@ class _BootstrapPageState extends State<BootstrapPage> {
       ),
     );
   }
-
-  //region Custom Methods
-  /// This is a must needed initial step for system bootstrap
-  // Future<void> start() async {
-  //   // Locate the dependencies.
-  //   await DependencyInjector().init();
-  //
-  //   // Only allow portrait mode.
-  //   await SystemChrome.setPreferredOrientations([.portraitUp, .portraitDown]);
-  // }
-  //
-  // Future<void> regBoot() async {
-  //   await SupabaseConfig.initializeSupabase();
-  //   locator.registerSingleton(Supabase.instance.client);
-  //   locator.registerFactory<BootstrapSource>(
-  //         () => SupabaseBSource(locator.get()),
-  //   );
-  //   locator.registerFactory<BootstrapRepository>(
-  //         () => BootstrapRepositoryImpl(locator.get()),
-  //   );
-  //   cubit = locator.get<BootstrapCubit>();
-  //   cubit.fetchOnboardingStatus();
-  // }
-
-  //endregion
 }

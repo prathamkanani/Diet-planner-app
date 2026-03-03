@@ -17,7 +17,7 @@ class DashboardView extends StatelessWidget {
     return BlocListener<MealLogCubit, MealLogState>(
       bloc: mealLogCubit,
       listener: (context, state) {
-        if (state is MealUndoAvailableState || state is MealLogSuccessState) {
+        if (state is MealLogSuccessState) {
           mealLoadingCubit.loadAfterMealLogging();
         }
       },

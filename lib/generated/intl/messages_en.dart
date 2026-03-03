@@ -174,7 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "notVeryActive": MessageLookupByLibrary.simpleMessage("Not Very Active"),
     "numberOfMealsLogged": MessageLookupByLibrary.simpleMessage(
-      "Number of meals logged for the week",
+      "Number of meals logged",
     ),
     "nutripal": MessageLookupByLibrary.simpleMessage("NutriPal"),
     "occasionally": MessageLookupByLibrary.simpleMessage("Occasionally"),
@@ -237,6 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tell us a little bit about yourself",
     ),
     "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
+    "today": MessageLookupByLibrary.simpleMessage("Today"),
     "tryAgain": MessageLookupByLibrary.simpleMessage("Try again"),
     "tryForFree": MessageLookupByLibrary.simpleMessage("Try for free!"),
     "tuesday": MessageLookupByLibrary.simpleMessage("Tuesday"),

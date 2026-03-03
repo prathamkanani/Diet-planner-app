@@ -47,4 +47,17 @@ final class AppDataServiceImpl extends AppDataService {
   set isUserLoggedIn(bool value) {
     prefs.setBool('isUserLoggedIn', value);
   }
+
+  @override
+  DateTime? get firstPlanDate {
+    final date = prefs.getString("first_plan_date");
+    return DateTime.tryParse(date ?? "");
+  }
+
+  @override
+  set firstPlanDate(final DateTime? date) {
+    if(date != null) {
+      prefs.setString("first_plan_date", date.toIso8601String());
+    }
+  }
 }

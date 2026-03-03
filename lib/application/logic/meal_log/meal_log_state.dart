@@ -25,11 +25,11 @@ final class MealUnselectedState extends MealLogState {
   const MealUnselectedState(this.selectedMeals);
 }
 
-final class MealUndoAvailableState extends MealLogState {
-  final DailyMealsEntity meals;
-
-  const MealUndoAvailableState(this.meals);
-}
+// final class MealUndoAvailableState extends MealLogState {
+//   final DailyMealsEntity meals;
+//
+//   const MealUndoAvailableState(this.meals);
+// }
 
 final class MealLogSuccessState extends MealLogState {
   final DailyMealsEntity meals;

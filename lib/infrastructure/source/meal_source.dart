@@ -40,7 +40,8 @@ class MealRemoteSource implements MealSource {
       final mealLogs = await supabase
           .from('meal_logs')
           .select('meal_type, option, calories, carbs, fats, proteins')
-          .eq('meal_id', response?['id']);
+          .eq('meal_id', response?['id'])
+          .eq('log_date', dateOnly(currentDate));
       return DailyMealsModel.fromJson(
         currentDate,
         planStartDate,

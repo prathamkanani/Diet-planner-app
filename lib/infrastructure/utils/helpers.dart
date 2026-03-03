@@ -36,6 +36,17 @@ bool isWithinPlan({
       !currentDateOnly.isAfter(planStartDate);
 }
 
+bool isSameWeek({
+  required DateTime startDate,
+  required DateTime currentDate,
+}) {
+  final startDateOnly = dateOnly(startDate);
+  final currentDateOnly = dateOnly(currentDate);
+  final planStartDate = startDateOnly.add(const Duration(days: 7));
+  return !currentDateOnly.isBefore(startDateOnly) &&
+      !currentDateOnly.isAfter(planStartDate);
+}
+
 /// This parses to date from generic days like `today`, `yesterday`,
 /// `day before yesterday` or a specific_date.
 DateTime dateFromGenericDay(GenericDay day, String? specificDate) {
@@ -60,9 +71,9 @@ DateTime dateFromGenericDay(GenericDay day, String? specificDate) {
 
 MealType fromTime(DateTime date) {
   int currentHour = date.hour;
-  if (currentHour <= 9) {
+  if (currentHour < 10) {
     return .breakfast;
-  } else if (currentHour <= 14) {
+  } else if (currentHour < 16) {
     return .lunch;
   } else {
     return .dinner;

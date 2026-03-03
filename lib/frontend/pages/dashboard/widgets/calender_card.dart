@@ -3,6 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../application/service/app_data_service.dart';
 import '../../../../infrastructure/app_injector.dart';
 import '../../../../infrastructure/extension/context_extension.dart';
+import '../../../../infrastructure/utils/helpers.dart';
 
 class WeekCalendarCard extends StatelessWidget {
   final DateTime date;
@@ -34,10 +35,11 @@ class WeekCalendarCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
+        // TODO: check why 1 March is not included in the ISO week 23-1?
         child: TableCalendar(
-          firstDay: appDataService.planStartDate!,
-          lastDay: DateTime.now(),
-          focusedDay: date,
+          firstDay: startOfTheWeek(appDataService.planStartDate!),
+          lastDay: dateOnly(DateTime.now()),
+          focusedDay: startOfTheWeek(date),
           calendarFormat: .week,
           startingDayOfWeek: .monday,
           selectedDayPredicate: (day) => isSameDay(date, day),
@@ -49,15 +51,16 @@ class WeekCalendarCard extends StatelessWidget {
             formatButtonVisible: false,
             titleCentered: true,
           ),
-          onHeaderTapped: (focusDay) async {
+          onHeaderTapped: (_) async {
             final picked = await showDatePicker(
               context: context,
-              firstDate: appDataService.planStartDate!,
+              firstDate: startOfTheWeek(appDataService.planStartDate!),
               lastDate: DateTime.now(),
               initialDate: date,
             );
             picked != null ? onDatePicked(picked) : null;
           },
+          // TODO: check why 1 March is not included in the ISO week 23-1?
           calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, day, focusedDay) {
               return DayCard(day: day, isToday: false);

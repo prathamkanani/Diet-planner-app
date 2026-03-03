@@ -86,7 +86,7 @@
   "pescatarianSubtitle": "Excludes meat and poultry, but includes fish, seafood, and often dairy and eggs.",
   "selectAnyOneOptionToLog": "Select any one option to log.",
   "mealsLogged": "Meals Logged",
-  "numberOfMealsLogged": "Number of meals logged for the week",
+  "numberOfMealsLogged": "Number of meals logged",
   "kcal": "kcal",
   "g": "g",
   "calories": "Calories",
@@ -130,5 +130,6 @@
   "friday": "Friday",
   "saturday": "Saturday",
   "sunday": "Sunday",
-  "undo": "UNDO"
+  "undo": "UNDO",
+  "today": "Today"
 }

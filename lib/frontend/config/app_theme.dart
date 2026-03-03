@@ -43,6 +43,11 @@ class AppTheme {
       selectionColor: Colors.blue,
       selectionHandleColor: Colors.blue,
     ),
+
+    datePickerTheme: const DatePickerThemeData(
+      headerHelpStyle: TextStyle(fontSize: 18),
+      headerHeadlineStyle: TextStyle(fontSize: 16)
+    )
   );
 
   static final ThemeData darkTheme = ThemeData(

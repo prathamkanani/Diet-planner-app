@@ -92,13 +92,15 @@ class MealLoadingCubit extends Cubit<MealState> {
 
   /// When the date is changed to look at previous meals or logs.
   Future<void> changedDate(DateTime date) async {
-    if(dateOnly(selectedDate) == dateOnly(date)) return;
+    if (dateOnly(selectedDate) == dateOnly(date)) return;
 
-    selectedDate = date;
+    // If current day is picked, passing the date with time so
+    // that dashboard shows the right meal according to the time.
+    isToday(date) ? selectedDate = DateTime.now() : selectedDate = date;
     emit(const MealLoadingState());
 
     try {
-      checkForNewPlan(appDataService.planStartDate!, date);
+      checkForNewPlan(appDataService.planStartDate!, selectedDate);
     } catch (e) {
       emit(MealErrorState(e));
     }

@@ -9,8 +9,13 @@ class ReportCubit extends Cubit<ReportState> {
 
   ReportCubit({required this.repository}) : super(const ReportLoadingState());
 
+  /// To persist date range selected by the user.
+  DateTime? startDate, endDate;
+
   /// This counts the total number of meals logged within a time range.
   Future<void> getMealLogCount(DateTime start, DateTime end) async {
+    startDate = start;
+    endDate = end;
     try {
       final List<DailyMealLogEntity> entity = await repository
           .fetchMealLogCount(start, end);
